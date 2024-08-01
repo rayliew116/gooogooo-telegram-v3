@@ -48,7 +48,9 @@ function App() {
           <TransferTon />
           <Jetton /> */}
           <img src={ GoooGooo } alt="Gooo Gooo" />
-          {/* style={{ width: '200px', height: '150px' }} */}
+          <h3 style={{ fontSize:'40px', textAlign:'center', fontWeight:'bold', color:'yellow' }}>
+            GoooGooo will be right with 'ya!
+          </h3>
         </FlexBoxCol>
       </AppContainer>
     </StyledApp>
