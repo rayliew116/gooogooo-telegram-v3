@@ -46,6 +46,7 @@ function App() {
           {/* <Counter />
           <TransferTon />
           <Jetton /> */}
+          <img src="GoooGooo.png" alt="Gooo Gooo" style={{ width: '200px', height: '150px' }} />;
         </FlexBoxCol>
       </AppContainer>
     </StyledApp>
