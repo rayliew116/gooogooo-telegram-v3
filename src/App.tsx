@@ -48,7 +48,7 @@ function App() {
           <TransferTon />
           <Jetton /> */}
           <img src={ GoooGooo } alt="Gooo Gooo" />
-          <h3 style={{ fontSize:'40px', textAlign:'center', fontWeight:'bold', color:'yellow' }}>
+          <h3 style={{ fontSize:'40px', textAlign:'center', fontWeight:'bold', color:'yellow', fontFamily:'sans-serif' }}>
             GoooGooo will be right with 'ya!
           </h3>
         </FlexBoxCol>
