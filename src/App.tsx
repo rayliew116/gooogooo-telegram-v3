@@ -8,6 +8,7 @@ import { Button, FlexBoxCol, FlexBoxRow } from "./components/styled/styled";
 import { useTonConnect } from "./hooks/useTonConnect";
 import { CHAIN } from "@tonconnect/protocol";
 import "@twa-dev/sdk";
+import GoooGooo from "./GoooGooo.png"
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -46,7 +47,7 @@ function App() {
           {/* <Counter />
           <TransferTon />
           <Jetton /> */}
-          <img src="./GoooGooo.png" alt="Gooo Gooo" />
+          <img src={ GoooGooo } alt="Gooo Gooo" />
           {/* style={{ width: '200px', height: '150px' }} */}
         </FlexBoxCol>
       </AppContainer>
