@@ -1164,7 +1164,7 @@ PERFORMANCE OF THIS SOFTWARE.
   @media (prefers-color-scheme: dark) {
     border: 1px solid #fefefe;
   }
-`;function BT(){const[e]=Yv(),t=SB();return{sender:{send:async n=>{var a;e.sendTransaction({messages:[{address:n.to.toString(),amount:n.value.toString(),payload:(a=n.body)==null?void 0:a.toBoc().toString("base64")}],validUntil:Date.now()+5*60*1e3})}},connected:!!(t!=null&&t.account.address),wallet:(t==null?void 0:t.account.address)??null,network:(t==null?void 0:t.account.chain)??null}}const TT=oo.div`
+`;function BT(){const[e]=Yv(),t=SB();return{sender:{send:async n=>{var a;e.sendTransaction({messages:[{address:n.to.toString(),amount:n.value.toString(),payload:(a=n.body)==null?void 0:a.toBoc().toString("base64")}],validUntil:Date.now()+5*60*1e3})}},connected:!!(t!=null&&t.account.address),wallet:(t==null?void 0:t.account.address)??null,network:(t==null?void 0:t.account.chain)??null}}const TT="/mytontestbot/assets/GoooGooo-77d29ea8.png",IT=oo.div`
   background-color: #e8e8e8;
   color: black;
 
@@ -1174,7 +1174,7 @@ PERFORMANCE OF THIS SOFTWARE.
   }
   min-height: 100vh;
   padding: 20px 20px;
-`,IT=oo.div`
+`,PT=oo.div`
   max-width: 900px;
   margin: 0 auto;
-`;function PT(){const{network:e}=BT();return Ti(TT,{children:Ti(IT,{children:u2(kT,{children:[u2(AT,{children:[Ti(_B,{}),Ti(RT,{children:e?e===Os.MAINNET?"mainnet":"testnet":"N/A"})]}),Ti("img",{src:"./GoooGooo.png",alt:"Gooo Gooo"})]})})})}const LT="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json",OT=new Vb({defaultOptions:{queries:{refetchOnWindowFocus:!1}}});Z1.createRoot(document.getElementById("root")).render(Ti(bB,{manifestUrl:LT,children:Ti(ex,{client:OT,children:Ti(PT,{})})}));
+`;function LT(){const{network:e}=BT();return Ti(IT,{children:Ti(PT,{children:u2(kT,{children:[u2(AT,{children:[Ti(_B,{}),Ti(RT,{children:e?e===Os.MAINNET?"mainnet":"testnet":"N/A"})]}),Ti("img",{src:TT,alt:"Gooo Gooo"})]})})})}const OT="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json",NT=new Vb({defaultOptions:{queries:{refetchOnWindowFocus:!1}}});Z1.createRoot(document.getElementById("root")).render(Ti(bB,{manifestUrl:OT,children:Ti(ex,{client:NT,children:Ti(LT,{})})}));
