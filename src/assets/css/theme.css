@@ -1,0 +1,151 @@
+@font-face {
+    font-family: 'Digital7';
+    src: url('../fonts/digital-7-webfont.woff2') format('woff2'),
+         url('../fonts/digital-7-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../fonts/gilroy-medium-webfont.woff2') format('woff2'),
+         url('../fonts/gilroy-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Moon';
+    src: url('../fonts/moon_get-heavy-webfont.woff2') format('woff2'),
+         url('../fonts/moon_get-heavy-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pixellari';
+    src: url('../fonts/pixellari-webfont.woff2') format('woff2'),
+         url('../fonts/pixellari-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.brand-yellow {color:#FDC300;}
+.text-gray {color:#a8a8a8;}
+.profit-green {color:#48a600;}
+
+body {
+    margin:0;
+    padding:0;
+    background-color: #000;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+body::-webkit-scrollbar {
+    display: none;
+}
+
+h1, h2, h3, h4, h5, h6 {font-family: 'Pixellari';}
+
+h2 {font-size: 56px;}
+@media (max-width: 575px) {
+    h2 {font-size: 36px;}
+}
+
+
+p {
+    font-family: 'Gilroy';
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 575px) {
+    p {font-size: 16px;}
+}
+
+.small-font {
+    font-size: 14px;
+}
+
+
+.fluid-padding {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+@media (min-width: 1200px) {
+    .fluid-padding {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+@media (min-width: 1400px) {
+    .fluid-padding {
+        padding-left: 200px;
+        padding-right: 200px;
+    }
+}
+@media (min-width: 1700px) {
+    .fluid-padding {
+        padding-left: 320px;
+        padding-right: 320px;
+    }
+}
+
+
+button:focus {
+    box-shadow: none !important;
+}
+
+
+
+.desktop-sm {
+    display: block;
+}
+@media (max-width: 575px) {
+    .desktop-sm {
+        display: none;
+    }
+}
+.mobile-sm {
+    display: none;
+}
+@media (max-width: 575px) {
+    .mobile-sm {
+        display: block;
+    }
+}
+.desktop-md {
+    display: block;
+}
+@media (max-width: 767px) {
+    .desktop-md {
+        display: none;
+    }
+}
+.mobile-md {
+    display: none;
+}
+@media (max-width: 767px) {
+    .mobile-md {
+        display: block;
+    }
+}
+.desktop-lg {
+    display: block;
+}
+@media (max-width: 991px) {
+    .desktop-lg {
+        display: none;
+    }
+}
+.mobile-lg {
+    display: none;
+}
+@media (max-width: 991px) {
+    .mobile-lg {
+        display: block;
+    }
+}
