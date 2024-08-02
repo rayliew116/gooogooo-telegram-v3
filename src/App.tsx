@@ -204,7 +204,7 @@ const App: React.FC = () => {
         <div className="row">
           <div className="col-12 px-0">
             <div className="game-bg pb-5">
-              <div className="row header-section">
+              {/* <div className="row header-section">
                 <div className="col-6">
                   <img className="header-logo" src={MainLogo} alt="Logo"></img>
                   <button className="btn p-0" onClick={(e) => {
@@ -251,13 +251,13 @@ const App: React.FC = () => {
                                   style={{ backgroundColor: '#222', color: '#fff' }}
                                 />
                               </div>
-                              {/* <div className="col-6 text-center">
+                              <div className="col-6 text-center">
                                 <CopyToClipboard text={`https://gooodjob.xyz/?referral_code=${userData._id}`} onCopy={copyReferral}>
                                   <button className="btn btn-referral px-1 py-0">
                                     <img className="referral-icon" src={CopyBtn}></img>
                                   </button>
                                 </CopyToClipboard>
-                              </div> */}
+                              </div>
                               <div className="col-6 text-center">
                                 <button className="btn btn-referral px-1 py-0" onClick={() => {
                                   const text = `Check out this cool game! Use my referral link to get started: https://gooodjob.xyz/?referral_code=${userData._id}`;
@@ -339,16 +339,14 @@ const App: React.FC = () => {
                     <img className="checkin-googoo" src={CheckInGooGoo}></img>
                   </div>
                   <div className="col-12 text-center mb-4">
-                    {/* <Countdown
+                    <Countdown
                       date={Moment().add(1, 'days').toDate()}
                       renderer={missionCountdown}
-                    /> */}
-                    <h1 className='coming-soon'>
-                      Coming Soon!
-                    </h1>
+                    />
+                    
                   </div>
                 </>
-              )}
+              )} */}
             </div>
           </div>
         </div>

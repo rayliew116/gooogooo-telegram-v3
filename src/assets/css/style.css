@@ -5,7 +5,8 @@
 
 .game-bg {
   min-height: 100vh;
-  background-image: url('../img/main-bg.png');
+  /* background-image: url('../img/main-bg.png'); */
+  background-image: url('../img/construction.jpg');
   background-position: center bottom;
   background-repeat: no-repeat;
   background-size: cover;
