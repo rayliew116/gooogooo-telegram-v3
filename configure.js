@@ -70,7 +70,7 @@ let githubUsername, githubRepo, botUsername;
     {
       menu_button: {
         type: "web_app",
-        text: "GoooGooo",
+        text: "Mini App",
         web_app: {
           url: url,
         },
