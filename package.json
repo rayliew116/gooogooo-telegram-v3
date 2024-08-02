@@ -4,12 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "configbot": "node configure.js",
-    "dev:vite": "vite",
-    "dev:bot": "node botServer.js",
-    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:bot\""
+    "configbot": "node configure.js"
   },
   "dependencies": {
     "@orbs-network/ton-access": "^2.2.2",
