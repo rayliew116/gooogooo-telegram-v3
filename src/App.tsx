@@ -51,7 +51,7 @@ const App: React.FC = () => {
   const [copyText, setCopyText] = useState('');
   const [referralCode, setReferralCode] = useState('');
   const [userData, setUserData] = useState<UserData | undefined>(undefined);
-  const [totalPlayers, setTotalPlayers] = useState<number | undefined>(undefined);
+  const [totalPlayers, setTotalPlayers] = useState('');
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | undefined>(undefined);
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
@@ -77,11 +77,11 @@ const App: React.FC = () => {
   };
 
   const handleLogin = () => {
-    window.location.href = `https://gooodjob.xyz/api/auth/twitter?referral_code=${referralCode}`;
+    window.location.href = `http://localhost:5173/auth/twitter?referral_code=${referralCode}`;
   };
 
   const fetchUserData = () => {
-    fetch('https://gooodjob.xyz/api/auth/current_user', {
+    fetch("http://localhost:5173/auth/current_user", {
       method: 'GET',
       credentials: 'include',
     })
@@ -100,14 +100,20 @@ const App: React.FC = () => {
     const json = await response.json();
     if (response.ok) {
       setTotalPlayers(json);
+      console.log(json);
     }
+  };
+
+  const [points, setPoints] = useState(0);
+  const clickTheFuckOutOfIt = async () => {
+    setPoints(points+1);
   };
 
   const fetchLeaderboard = async () => {
     if (!userData) {
       fetchUserData();
     }
-    const response = await fetch(`https://gooodjob.xyz/api/user/leaderboard/${userData?._id}`);
+    const response = await fetch(`https://http://localhost:5173/api/user/leaderboard/${userData?._id}`);
     const json = await response.json();
     if (response.ok) {
       setLeaderboardData(json);
@@ -193,6 +199,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     fetchUserData();
+    getTotalPlayers();
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('referral_code');
     setReferralCode(code ?? '');
@@ -223,7 +230,7 @@ const App: React.FC = () => {
                       <img className="header-menu" src={MenuIcon} alt="Menu"></img>
                     </button>
                   ) : (
-                    <></>
+                    <><h4 className="this-is-tes text-white">{totalPlayers}</h4></>
                   )}
                 </div>
               </div>
@@ -247,12 +254,12 @@ const App: React.FC = () => {
                                   className="referral-input w-100"
                                   type="text"
                                   readOnly
-                                  value={`https://gooodjob.xyz/?referral_code=${userData._id}`}
+                                  value={`http://localhost:5173/?referral_code=${userData._id}`}
                                   style={{ backgroundColor: '#222', color: '#fff' }}
                                 />
                               </div>
                               {/* <div className="col-6 text-center">
-                                <CopyToClipboard text={`https://gooodjob.xyz/?referral_code=${userData._id}`} onCopy={copyReferral}>
+                                <CopyToClipboard text={`https://http://localhost:5173/?referral_code=${userData._id}`} onCopy={copyReferral}>
                                   <button className="btn btn-referral px-1 py-0">
                                     <img className="referral-icon" src={CopyBtn}></img>
                                   </button>
@@ -260,9 +267,9 @@ const App: React.FC = () => {
                               </div> */}
                               <div className="col-6 text-center">
                                 <button className="btn btn-referral px-1 py-0" onClick={() => {
-                                  const text = `Check out this cool game! Use my referral link to get started: https://gooodjob.xyz/?referral_code=${userData._id}`;
+                                  const text = `Check out this cool game! Use my referral link to get started: https://http://localhost:5173/?referral_code=${userData._id}`;
                                   if (navigator.share) {
-                                    navigator.share({ title: 'Join GooodJob!', text: text, url: `https://gooodjob.xyz/?referral_code=${userData._id}` });
+                                    navigator.share({ title: 'Join GooodJob!', text: text, url: `https://http://localhost:5173/?referral_code=${userData._id}` });
                                   } else {
                                     alert('Sharing is not supported in this browser.');
                                   }
@@ -335,17 +342,16 @@ const App: React.FC = () => {
                   <div className="col-12 mt-3 text-center">
                     <img className="checkin-header w-75" src={CheckInHeader}></img>
                   </div>
-                  <div className="col-12 mt-3 text-center">
+                  {/* <div className="col-12 mt-3 text-center">
                     <img className="checkin-googoo" src={CheckInGooGoo}></img>
-                  </div>
+                  </div> */}
                   <div className="col-12 text-center mb-4">
-                    {/* <Countdown
-                      date={Moment().add(1, 'days').toDate()}
-                      renderer={missionCountdown}
-                    /> */}
-                    <h1 className='coming-soon'>
-                      Coming Soon!
-                    </h1>
+                    <h4 className="text-white">{points}</h4>
+                    <button className="btn p-0 w-100" style={{height:"400px"}} onClick={(e) => {
+                      clickTheFuckOutOfIt();
+                    }}>
+                      Click Me
+                    </button>
                   </div>
                 </>
               )}
