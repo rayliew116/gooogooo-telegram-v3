@@ -251,13 +251,13 @@ const App: React.FC = () => {
                                   style={{ backgroundColor: '#222', color: '#fff' }}
                                 />
                               </div>
-                              <div className="col-6 text-center">
+                              {/* <div className="col-6 text-center">
                                 <CopyToClipboard text={`https://gooodjob.xyz/?referral_code=${userData._id}`} onCopy={copyReferral}>
                                   <button className="btn btn-referral px-1 py-0">
                                     <img className="referral-icon" src={CopyBtn}></img>
                                   </button>
                                 </CopyToClipboard>
-                              </div>
+                              </div> */}
                               <div className="col-6 text-center">
                                 <button className="btn btn-referral px-1 py-0" onClick={() => {
                                   const text = `Check out this cool game! Use my referral link to get started: https://gooodjob.xyz/?referral_code=${userData._id}`;
