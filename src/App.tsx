@@ -26,6 +26,7 @@ import SmallCashSound from './assets/sound/cash-register-small.mp3';
 import LoudCashSound from './assets/sound/cash-register-loud.mp3';
 import { useClaim } from './hooks/useClaim';
 
+
 interface UserData {
   _id: string;
   profileImageUrl: string;
