@@ -136,7 +136,7 @@ const App: React.FC = () => {
   //   },
   // });
   const swiperNoSwiping = useSwipeable({
-    onSwiping: (eventData) => {
+    onSwiped: (eventData) => {
       const now = Date.now();
       if (
         eventData.dir !== lastSwipeDirectionRef.current &&
