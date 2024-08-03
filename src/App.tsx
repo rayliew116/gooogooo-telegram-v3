@@ -130,23 +130,23 @@ const App: React.FC = () => {
   };
 
   // const swiperNoSwiping = useSwipeable({
-  //   onSwiping: (eventData) => {
+  //   onSwiped: (eventData) => {
   //     console.log("User Swiped!", eventData);
   //     setPoints(points+1);
   //   },
   // });
   const swiperNoSwiping = useSwipeable({
-    onSwiped: (eventData) => {
+    onSwiping: (eventData) => {
       const now = Date.now();
       if (
         eventData.dir !== lastSwipeDirectionRef.current &&
-        now - lastSwipeTimeRef.current > 500 // 500ms debounce time
+        now - lastSwipeTimeRef.current > 400 // 500ms debounce time
       ) {
         setPoints(points+1);
         lastSwipeDirectionRef.current = eventData.dir;
         lastSwipeTimeRef.current = now;
       }
-      },
+    }
   });
 
 
