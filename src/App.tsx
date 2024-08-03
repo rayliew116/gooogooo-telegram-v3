@@ -46,13 +46,29 @@ interface LeaderboardData {
   }>;
 }
 
+const defaultUserData: UserData = {
+  _id: '',
+  profileImageUrl: '',
+  username: '',
+  boosters: 0,
+  points: 0,
+  lastClaim: ''
+}
+
+const defaultLeaderboardData: LeaderboardData = {
+  currentUser: {
+    rank: 0
+  },
+  leaderboard: []
+}
+
 const App: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [copyText, setCopyText] = useState('');
   const [referralCode, setReferralCode] = useState('');
-  const [userData, setUserData] = useState<UserData | undefined>(undefined);
+  const [userData, setUserData] = useState<UserData>(defaultUserData);
   const [totalPlayers, setTotalPlayers] = useState('');
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | undefined>(undefined);
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData>(defaultLeaderboardData);
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
   const [checked3, setChecked3] = useState(false);
@@ -77,11 +93,11 @@ const App: React.FC = () => {
   };
 
   const handleLogin = () => {
-    window.location.href = `http://localhost:5173/auth/twitter?referral_code=${referralCode}`;
+    window.location.href = `https://gooodjob.xyz/api/auth/twitter?referral_code=${referralCode}`;
   };
 
   const fetchUserData = () => {
-    fetch("http://localhost:5173/auth/current_user", {
+    fetch("https://gooodjob.xyz/api/auth/current_user", {
       method: 'GET',
       credentials: 'include',
     })
@@ -113,7 +129,7 @@ const App: React.FC = () => {
     if (!userData) {
       fetchUserData();
     }
-    const response = await fetch(`https://http://localhost:5173/api/user/leaderboard/${userData?._id}`);
+    const response = await fetch('https://gooodjob.xyz/api/user/leaderboard/'+userData._id);
     const json = await response.json();
     if (response.ok) {
       setLeaderboardData(json);
@@ -200,6 +216,7 @@ const App: React.FC = () => {
   useEffect(() => {
     fetchUserData();
     getTotalPlayers();
+    fetchLeaderboard();
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('referral_code');
     setReferralCode(code ?? '');
@@ -230,7 +247,22 @@ const App: React.FC = () => {
                       <img className="header-menu" src={MenuIcon} alt="Menu"></img>
                     </button>
                   ) : (
-                    <><h4 className="this-is-tes text-white">{totalPlayers}</h4></>
+                    <><h4 className="this-is-tes text-white">{totalPlayers}</h4>
+                    <div className="col-12 mt-3 text-center">
+                        <h5 className="text-white">Leaderboard</h5>
+                        <ul className="leaderboard-list">
+                          {leaderboardData?.leaderboard.map((player, index) => (
+                            <li key={index} className={`leaderboard-item ${userData._id === player._id ? 'leaderboard-item-current' : ''}`}>
+                              <div className="row">
+                                <div className="col-2">{index + 1}</div>
+                                <div className="col-8">{player.username}</div>
+                                <div className="col-2">{player.points}</div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div></>
+                    
                   )}
                 </div>
               </div>
@@ -254,12 +286,12 @@ const App: React.FC = () => {
                                   className="referral-input w-100"
                                   type="text"
                                   readOnly
-                                  value={`http://localhost:5173/?referral_code=${userData._id}`}
+                                  value={`http://localhost:3000/?referral_code=${userData._id}`}
                                   style={{ backgroundColor: '#222', color: '#fff' }}
                                 />
                               </div>
                               {/* <div className="col-6 text-center">
-                                <CopyToClipboard text={`https://http://localhost:5173/?referral_code=${userData._id}`} onCopy={copyReferral}>
+                                <CopyToClipboard text={`http://localhost:3000/?referral_code=${userData._id}`} onCopy={copyReferral}>
                                   <button className="btn btn-referral px-1 py-0">
                                     <img className="referral-icon" src={CopyBtn}></img>
                                   </button>
@@ -267,9 +299,9 @@ const App: React.FC = () => {
                               </div> */}
                               <div className="col-6 text-center">
                                 <button className="btn btn-referral px-1 py-0" onClick={() => {
-                                  const text = `Check out this cool game! Use my referral link to get started: https://http://localhost:5173/?referral_code=${userData._id}`;
+                                  const text = `Check out this cool game! Use my referral link to get started: http://localhost:3000/?referral_code=${userData._id}`;
                                   if (navigator.share) {
-                                    navigator.share({ title: 'Join GooodJob!', text: text, url: `https://http://localhost:5173/?referral_code=${userData._id}` });
+                                    navigator.share({ title: 'Join GooodJob!', text: text, url: `http://localhost:3000/?referral_code=${userData._id}` });
                                   } else {
                                     alert('Sharing is not supported in this browser.');
                                   }
@@ -345,14 +377,14 @@ const App: React.FC = () => {
                   {/* <div className="col-12 mt-3 text-center">
                     <img className="checkin-googoo" src={CheckInGooGoo}></img>
                   </div> */}
-                  <div className="col-12 text-center mb-4">
+                  {/* <div className="col-12 text-center mb-4">
                     <h4 className="text-white">{points}</h4>
                     <button className="btn p-0 w-100" style={{height:"400px"}} onClick={(e) => {
                       clickTheFuckOutOfIt();
                     }}>
                       Click Me
                     </button>
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>
