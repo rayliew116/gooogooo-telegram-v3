@@ -28,6 +28,7 @@
     "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.0",
+    "react-swipeable": "^7.0.1",
     "styled-components": "^5.3.6",
     "ton": "^6.13.1",
     "ton-core": "^0.46.0",

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Countdown, { zeroPad } from 'react-countdown';
 import Moment from 'moment';
+import { useSwipeable } from 'react-swipeable'
 // import { CopyToClipboard } from 'react-copy-to-clipboard';
 import MainLogo from './assets/img/logo.png';
 import MenuIcon from './assets/img/menu.png';
@@ -77,6 +78,8 @@ const App: React.FC = () => {
   const [boostedPoints, setBoostedPoints] = useState(0);
   const [checkedIn, setCheckedIn] = useState(false);
   const { claimRewardPoints } = useClaim();
+  const lastSwipeDirectionRef = useRef<string | null>(null);
+  const lastSwipeTimeRef = useRef<number>(0);
 
   const copyReferral = () => {
     setCopied(true);
@@ -124,6 +127,27 @@ const App: React.FC = () => {
   const clickTheFuckOutOfIt = async () => {
     setPoints(points+1);
   };
+
+  // const swiperNoSwiping = useSwipeable({
+  //   onSwiping: (eventData) => {
+  //     console.log("User Swiped!", eventData);
+  //     setPoints(points+1);
+  //   },
+  // });
+  const swiperNoSwiping = useSwipeable({
+    onSwiping: (eventData) => {
+      const now = Date.now();
+      if (
+        eventData.dir !== lastSwipeDirectionRef.current &&
+        now - lastSwipeTimeRef.current > 500 // 500ms debounce time
+      ) {
+        setPoints(points+1);
+        lastSwipeDirectionRef.current = eventData.dir;
+        lastSwipeTimeRef.current = now;
+      }
+      },
+  });
+
 
   const fetchLeaderboard = async () => {
     if (!userData) {
@@ -215,8 +239,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     fetchUserData();
-    getTotalPlayers();
     fetchLeaderboard();
+    getTotalPlayers();
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('referral_code');
     setReferralCode(code ?? '');
@@ -246,22 +270,9 @@ const App: React.FC = () => {
                     }}>
                       <img className="header-menu" src={MenuIcon} alt="Menu"></img>
                     </button>
+                    
                   ) : (
-                    <><h4 className="this-is-tes text-white">{totalPlayers}</h4>
-                    <div className="col-12 mt-3 text-center">
-                        <h5 className="text-white">Leaderboard</h5>
-                        <ul className="leaderboard-list">
-                          {leaderboardData?.leaderboard.map((player, index) => (
-                            <li key={index} className={`leaderboard-item ${userData._id === player._id ? 'leaderboard-item-current' : ''}`}>
-                              <div className="row">
-                                <div className="col-2">{index + 1}</div>
-                                <div className="col-8">{player.username}</div>
-                                <div className="col-2">{player.points}</div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div></>
+                    <></>
                     
                   )}
                 </div>
@@ -344,28 +355,22 @@ const App: React.FC = () => {
                       <div className="col-12 mt-3 text-center">
                         <img className="login-header w-75" src={LoginHeader}></img>
                       </div>
-                      <div className="col-12 text-center mb-5">
+                      <div className="col-12 text-center mb-5" {...swiperNoSwiping} style={{ touchAction: 'pan-y' }}>
                         <img className="login-googoo" src={LoginGooGoo}></img>
+                        <h4 className="text-white">Swipe on GoooGooo!</h4>
+                        <h4 className="text-white">{points}</h4>
                       </div>
-                      <div className="col-12 text-center mb-5">
+                      {/* <div className="col-12 text-center mb-5">
                         <button className="btn login-btn p-0" onClick={handleLogin}>
                           <img className="w-100" src={LoginButton}></img>
                         </button>
-                      </div>
-                      <div className="col-12 mt-3 text-center">
-                        <h5 className="text-white">Leaderboard</h5>
-                        <ul className="leaderboard-list">
-                          {leaderboardData?.leaderboard.map((player, index) => (
-                            <li key={index} className={`leaderboard-item ${userData._id === player._id ? 'leaderboard-item-current' : ''}`}>
-                              <div className="row">
-                                <div className="col-2">{index + 1}</div>
-                                <div className="col-8">{player.username}</div>
-                                <div className="col-2">{player.points}</div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      </div> */}
+                      {/* <div className="col-12 text-center mb-4" {...swiperNoSwiping} style={{ touchAction: 'pan-y' }}>
+                        <h4 className="text-white">{points}</h4>
+                        <button className="btn p-0 w-100" style={{height:"400px"}}>
+                          Swipe Me
+                        </button>
+                      </div> */}
                     </>
                   )}
                 </>
