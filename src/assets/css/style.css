@@ -5,7 +5,7 @@
 
 .game-bg {
   min-height: 100vh;
-  background-image: url('../img/main-bg.png');
+  background-image: url('../img/new/bg-default.jpg');
   /* background-image: url('../img/construction.jpg'); */
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -25,13 +25,50 @@
 }
 
 .header-logo {
-  width: 130px;
+  width: 100%;
+  margin: auto;
 }
-/* @media (max-width: 575px) {
-  .header-logo {
-    width: 160px;
-  }
-} */
+
+.total-earned {
+  padding: 5px;
+  background-color: white;
+  margin: auto;
+}
+
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  width: auto;
+  display: flex;
+  justify-content: center;
+}
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 15px;
+}
+.navbar li {
+  display: inline;
+  background-color: #333;
+}
+.navbar a {
+  display: block;
+  padding: 10px 16px;
+  color: white;
+  text-decoration: none;
+}
+.navbar a:hover {
+  background-color: #575757;
+}
 
 .menu-icon {
   margin-top: 5px;
