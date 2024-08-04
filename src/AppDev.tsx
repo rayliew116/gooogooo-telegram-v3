@@ -28,21 +28,21 @@ import { useClaim } from './hooks/useClaim';
 
 
 const App: React.FC = () => {
-  const lastSwipeDirectionRef = useRef<string | null>(null);
-  const lastSwipeTimeRef = useRef<number>(0);
-
- 
+  
+  
   const [points, setPoints] = useState(0);
   const clickTheFuckOutOfIt = async () => {
     setPoints(points+1);
   };
-
+  
+  const lastSwipeDirectionRef = useRef<string | null>(null);
+  const lastSwipeTimeRef = useRef(Date.now());
   const swiperNoSwiping = useSwipeable({
     onSwiping: (eventData) => {
       const now = Date.now();
       if (
-        eventData.dir !== lastSwipeDirectionRef.current &&
-        now - lastSwipeTimeRef.current > 400 // 500ms debounce time
+        eventData.dir !== lastSwipeDirectionRef.current ||
+        now - lastSwipeTimeRef.current > 380
       ) {
         setPoints(points+1);
         lastSwipeDirectionRef.current = eventData.dir;
