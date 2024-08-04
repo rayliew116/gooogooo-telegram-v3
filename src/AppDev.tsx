@@ -42,7 +42,7 @@ const App: React.FC = () => {
       const now = Date.now();
       if (
         eventData.dir !== lastSwipeDirectionRef.current ||
-        now - lastSwipeTimeRef.current > 380
+        now - lastSwipeTimeRef.current > 600
       ) {
         setPoints(points+1);
         lastSwipeDirectionRef.current = eventData.dir;
