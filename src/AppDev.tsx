@@ -3,21 +3,25 @@
 // import { useClaim } from './hooks/useClaim';
 // import { CopyToClipboard } from 'react-copy-to-clipboard';
 import React, { useEffect, useState, useRef } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, NavLink } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable'
 
 // Import images
 import MainLogo from './assets/img/new/logo.png';
 import GoooGooo from './assets/img/new/gg-main.png';
 import GoooGoooGif from './assets/img/new/gg.gif';
-import NavHome from './assets/img/new/nav-home.png'
-import NavGG from './assets/img/new/nav-gooogooo.png'
-import NavEarn from './assets/img/new/nav-earn.png'
-import NavFriends from './assets/img/new/nav-friends.png'
-import NavAirdrop from './assets/img/new/nav-airdrop.png'
-import TotalPoints from './assets/img/new/total-points.png'
+import NavHome from './assets/img/new/nav-home.png';
+import NavGG from './assets/img/new/nav-gooogooo.png';
+import NavEarn from './assets/img/new/nav-earn.png';
+import NavFriends from './assets/img/new/nav-friends.png';
+import NavAirdrop from './assets/img/new/nav-airdrop.png';
+import TotalPoints from './assets/img/new/total-points.png';
 
-
+// import pages here
+import GooGooPage from './pages/GooGooPage/GooGoo';
+import EarnPage from './pages/EarnPage/Earn';
+import FriendsPage from './pages/FriendsPage/Friends';
+import AirdropPage from './pages/AirdropPage/Airdrop';
 
 const App: React.FC = () => {
   
@@ -51,61 +55,72 @@ const App: React.FC = () => {
         <div className="row">
           <div className="col-12 px-0">
             <div className="game-bg pb-5">
+
               <div className="row header-section">
-                <div className="header-logo">
-                  <img className="header-logo" src={MainLogo} />
-                </div>
-                {/* <div className="total-earned">
-                  <h4>Total coins earned here</h4>
-                </div> */}
-              </div>
-            
-              <div className="col-12 text-center mb-5">
-                <h4 className="text-white">Swipe Me!</h4>
-                <div className="total-earned">
-                  <img className="total-earned" src={TotalPoints} alt="" />
-                  <h2 className="m-0">{points.toLocaleString()}</h2>
-                </div>
-                <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
-                  <img src={GoooGoooGif} alt="" />
+                <div className="col-12">
+                  <div className="header-logo">
+                    <img className="header-logo" src={MainLogo} />
+                  </div>
                 </div>
               </div>
-              {/* <div className="col-12 text-center mb-5">
-                <button className="btn login-btn p-0" onClick={handleLogin}>
-                  <img className="w-100" src={LoginButton}></img>
-                </button>
-              </div> */}
+
+              <Routes>
+                <Route path="/" element={
+                  <>
+                    <div className="row">
+                      <div className="col-12 text-center mb-5">
+                        <h4 className="text-white">Swipe Me!</h4>
+                        <div className="total-earned">
+                          <img className="total-earned" src={TotalPoints} alt="" />
+                          <h2 className="m-0">{points.toLocaleString()}</h2>
+                        </div>
+                        <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
+                          <img src={GoooGoooGif} alt="" />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                }/>
+
+
+                <Route path="/googoo" element={<GooGooPage/>}/>
+                <Route path="/earn" element={<EarnPage/>}/>
+                <Route path="/friends" element={<FriendsPage/>}/>
+                <Route path="/airdrop" element={<AirdropPage/>}/>
+              </Routes>
+
+
               <div className="navbar py-0" id='navbar'>
                 <ul>
                   <li>
-                    <a href="#">
+                    <NavLink to="/">
                       <img src={NavHome} style={{width:"70px"}}alt="" />
                       <p>Home</p>
-                    </a>
+                    </NavLink>
                   </li>
                   <li>
-                    <a href="#">
+                    <NavLink to="/googoo">
                       <img src={NavGG} style={{width:"70px"}}alt="" />
                       <p>Gooo Gooo</p>
-                    </a>
+                    </NavLink>
                   </li>
                   <li>
-                    <a href="#">
+                    <NavLink to="/earn">
                       <img src={NavEarn} style={{width:"70px"}}alt="" />
                       <p>Earn</p>
-                    </a>
+                    </NavLink>
                   </li>
                   <li>
-                    <a href="#">
+                    <NavLink to="/friends">
                       <img src={NavFriends} style={{width:"70px"}}alt="" />
                       <p>Friends</p>
-                    </a>
+                    </NavLink>
                   </li>
                   <li>
-                    <a href="#">
+                    <NavLink to="/airdrop">
                       <img src={NavAirdrop} style={{width:"70px"}}alt="" />
                       <p>Airdrop</p>
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </div>
