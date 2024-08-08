@@ -6,28 +6,49 @@
 .game-bg {
   height: 100vh;
   background-image: url('../img/new/bg-default.png');
-  /* background-image: url('../img/construction.jpg'); */
   background-position: center bottom;
   background-repeat: no-repeat;
   background-size: cover;
 }
-
-/* Coming Soon Text */
-/* .coming-soon {
-  font-family: "Moon" !important;
-  color: #FDC300;
-} */
 
 /* Header */
 .header-section {
   padding: 15px 10px;
   background-color: transparent;
 }
-
+.header-box {
+  /* display: flex;
+  align-items: center;
+  justify-content: space-between; */
+  max-width: 455px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
 .header-logo {
-  width: 70%;
+  /* width: 70%;
   margin: auto;
-  display: block;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center; */
+  flex: 1;
+  text-align: center;
+}
+.header-logo img {
+  max-width: 100%;
+}
+.header-icons {
+  /* width: 30px;
+  display: flex;
+  align-items: center; */
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+.header-icons img {
+  width: 24px;
+  height: 24px;
 }
 
 .total-earned {
@@ -81,8 +102,7 @@
   text-decoration: none;
   text-transform: uppercase;
 }
-.navbar a:hover {
-  /* background-color: #575757; */
+.navbar button:hover, .active-link {
   background-image: url('../img/new/nav-onhoverbg.png');
   background-position: center bottom;
   background-repeat: no-repeat;

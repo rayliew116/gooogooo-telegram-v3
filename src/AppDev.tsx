@@ -16,6 +16,8 @@ import NavEarn from './assets/img/new/nav-earn.png';
 import NavFriends from './assets/img/new/nav-friends.png';
 import NavAirdrop from './assets/img/new/nav-airdrop.png';
 import TotalPoints from './assets/img/new/total-points.png';
+import LanguageIcon from './assets/img/new/language-icon.png'
+import MusicIcon from './assets/img/new/music-icon.png'
 
 // import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
@@ -25,6 +27,8 @@ import AirdropPage from './pages/AirdropPage/Airdrop';
 
 const App: React.FC = () => {
   
+  // Menu State
+  const [activeLink, setActiveLink] = useState<string | null>(null);
   
   const [points, setPoints] = useState(0);
   const lastSwipeDirectionRef = useRef<string | null>(null);
@@ -55,11 +59,14 @@ const App: React.FC = () => {
         <div className="row">
           <div className="col-12 px-0">
             <div className="game-bg pb-5">
-
               <div className="row header-section">
-                <div className="col-12">
+                <div className="col-12 header-box">
                   <div className="header-logo">
-                    <img className="header-logo" src={MainLogo} />
+                    <img className="header-logo" src={MainLogo} style={{display:"block"}} />
+                  </div>
+                  <div className="header-icons">
+                    <button className="btn" style={{backgroundColor:"transparent"}}><img src={LanguageIcon} alt="" /></button>
+                    <button className="btn" style={{backgroundColor:"transparent"}}><img src={MusicIcon} alt="" /></button>
                   </div>
                 </div>
               </div>
@@ -81,51 +88,46 @@ const App: React.FC = () => {
                     </div>
                   </>
                 }/>
-
-
                 <Route path="/googoo" element={<GooGooPage/>}/>
                 <Route path="/earn" element={<EarnPage/>}/>
                 <Route path="/friends" element={<FriendsPage/>}/>
                 <Route path="/airdrop" element={<AirdropPage/>}/>
               </Routes>
 
-
               <div className="navbar py-0" id='navbar'>
                 <ul>
                   <li>
-                    <NavLink to="/">
+                    <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                       <img src={NavHome} style={{width:"70px"}}alt="" />
                       <p>Home</p>
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/googoo">
+                    <NavLink to="/googoo" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                       <img src={NavGG} style={{width:"70px"}}alt="" />
-                      <p>Gooo Gooo</p>
+                      <p>Goo Goo</p>
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/earn">
+                    <NavLink to="/earn" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                       <img src={NavEarn} style={{width:"70px"}}alt="" />
                       <p>Earn</p>
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/friends">
+                    <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                       <img src={NavFriends} style={{width:"70px"}}alt="" />
                       <p>Friends</p>
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/airdrop">
+                    <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                       <img src={NavAirdrop} style={{width:"70px"}}alt="" />
                       <p>Airdrop</p>
                     </NavLink>
                   </li>
                 </ul>
               </div>
-
-        
             </div>
           </div>
         </div>

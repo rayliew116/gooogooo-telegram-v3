@@ -1,55 +1,55 @@
 @font-face {
-    font-family: 'Gilroy';
-    src: url('../fonts/Gilroy-Medium.woff2') format('woff2'),
-        url('../fonts/Gilroy-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Gilroy';
+  src: url('../fonts/Gilroy-Medium.woff2') format('woff2'),
+       url('../fonts/Gilroy-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Gilroy';
-    src: url('../fonts/Gilroy-Bold.woff2') format('woff2'),
-        url('../fonts/Gilroy-Bold.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Gilroy';
+  src: url('../fonts/Gilroy-Bold.woff2') format('woff2'),
+       url('../fonts/Gilroy-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Bebas Neue';
-    src: url('../fonts/BebasNeue-Regular.woff2') format('woff2'),
-        url('../fonts/BebasNeue-Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Bebas Neue';
+  src: url('../fonts/BebasNeue-Regular.woff2') format('woff2'),
+       url('../fonts/BebasNeue-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'ITC Avant Garde Gothic LT';
-    src: url('../fonts/AvantGardeLT-Medium.woff2') format('woff2'),
-        url('../fonts/AvantGardeLT-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'ITC Avant Garde Gothic LT';
+  src: url('../fonts/AvantGardeLT-Medium.woff2') format('woff2'),
+       url('../fonts/AvantGardeLT-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'MOON GET!';
-    src: url('../fonts/moon_get-Heavy.woff2') format('woff2'),
-        url('../fonts/moon_get-Heavy.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'MOON GET!';
+  src: url('../fonts/moon_get-Heavy.woff2') format('woff2'),
+       url('../fonts/moon_get-Heavy.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'PEPSI';
-    src: url('../fonts/PEPSI.woff2') format('woff2'),
-        url('../fonts/PEPSI.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'PEPSI';
+  src: url('../fonts/PEPSI.woff2') format('woff2'),
+       url('../fonts/PEPSI.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 
@@ -58,18 +58,18 @@
 .profit-green {color:#48a600;}
 
 body {
-    max-width: 900px;
-    height: 100vh;
-    margin:0 auto;
-    padding:0;
-    background-color: #000;
-    overflow: hidden;
-    /* overflow-y: scroll; */
-    scroll-behavior: smooth;
-    
+  max-width: 900px;
+  height: 100vh;
+  margin:0 auto;
+  padding:0;
+  background-color: #000;
+  overflow: hidden;
+  /* overflow-y: scroll; */
+  scroll-behavior: smooth;
+  
 }
 body::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 h1, h2, h3 {font-family: 'PEPSI';}
@@ -77,119 +77,103 @@ h4, h5, h6 {font-family: 'Bebas Neue';}
 
 h2 {font-size: 56px;}
 @media (max-width: 575px) {
-    h2 {font-size: 36px;}
+  h2 {font-size: 36px;}
 }
 
 
 p {
-    font-family: 'Bebas Neue';
-    letter-spacing: 1px;
+  font-family: 'Bebas Neue';
+  letter-spacing: 1px;
 }
 
 @media (max-width: 575px) {
-    p {font-size: 16px;}
+  p {font-size: 16px;}
 }
 
 .small-font {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 
 .fluid-padding {
-    padding-left: 25px;
-    padding-right: 25px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 @media (min-width: 1200px) {
-    .fluid-padding {
-        padding-left: 50px;
-        padding-right: 50px;
-    }
+  .fluid-padding {
+      padding-left: 50px;
+      padding-right: 50px;
+  }
 }
 @media (min-width: 1400px) {
-    .fluid-padding {
-        padding-left: 200px;
-        padding-right: 200px;
-    }
+  .fluid-padding {
+      padding-left: 200px;
+      padding-right: 200px;
+  }
 }
 @media (min-width: 1700px) {
-    .fluid-padding {
-        padding-left: 320px;
-        padding-right: 320px;
-    }
+  .fluid-padding {
+      padding-left: 320px;
+      padding-right: 320px;
+  }
 }
-
 
 button:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
-
-
 
 .desktop-sm {
-    display: block;
+  display: block;
 }
 @media (max-width: 575px) {
-    .desktop-sm {
-        display: none;
-    }
+  .desktop-sm {
+      display: none;
+  }
 }
 .mobile-sm {
-    display: none;
+  display: none;
 }
 @media (max-width: 575px) {
-    .mobile-sm {
-        display: block;
-    }
+  .mobile-sm {
+      display: block;
+  }
 }
 .desktop-md {
-    display: block;
+  display: block;
 }
 @media (max-width: 767px) {
-    .desktop-md {
-        display: none;
-    }
+  .desktop-md {
+      display: none;
+  }
 }
 .mobile-md {
-    display: none;
+  display: none;
 }
 @media (max-width: 767px) {
-    .mobile-md {
-        display: block;
-    }
+  .mobile-md {
+      display: block;
+  }
 }
 .desktop-lg {
-    display: block;
+  display: block;
 }
 @media (max-width: 991px) {
-    .desktop-lg {
-        display: none;
-    }
+  .desktop-lg {
+      display: none;
+  }
 }
 .mobile-lg {
-    display: none;
+  display: none;
 }
 @media (max-width: 991px) {
-    .mobile-lg {
-        display: block;
-    }
+  .mobile-lg {
+      display: block;
+  }
 }
 
-/* .selectDisable {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-    -webkit-user-drag: none;
-    user-drag: 
-} */
 img {
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-  }
-
-/* a {
-    font-family: 'Roboto'
-} */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;   
+}

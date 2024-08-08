@@ -8,3 +8,4 @@ export default defineConfig({
   plugins: [react(), nodePolyfills()],
   base: ((process.env.GITHUB_REPOSITORY ?? "") + "/").match(/(\/.*)/)?.[1],
 });
+
