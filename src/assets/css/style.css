@@ -31,9 +31,19 @@
 }
 
 .total-earned {
+  position: relative;
   padding: 5px;
-  background-color: white;
+  width: 100%;
   margin: auto;
+  display: block;
+}
+.total-earned h2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -38%);
+  color: white;
+  font-size: 45px;
 }
 
 /* Navbar */
@@ -66,9 +76,11 @@
 .navbar a {
   display: block;
   padding: 10px 0;
-  color: white;
-  text-decoration: none;
+  color: #FDC300;
   font-size: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
 }
 .navbar a:hover {
   /* background-color: #575757; */
@@ -76,6 +88,7 @@
   background-position: center bottom;
   background-repeat: no-repeat;
   background-size: cover;
+  color: white;
 }
 
 .gg-swipe img {

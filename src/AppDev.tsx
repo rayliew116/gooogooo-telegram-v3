@@ -14,6 +14,7 @@ import NavGG from './assets/img/new/nav-gooogooo.png'
 import NavEarn from './assets/img/new/nav-earn.png'
 import NavFriends from './assets/img/new/nav-friends.png'
 import NavAirdrop from './assets/img/new/nav-airdrop.png'
+import TotalPoints from './assets/img/new/total-points.png'
 
 
 
@@ -60,9 +61,11 @@ const App: React.FC = () => {
               </div>
             
               <div className="col-12 text-center mb-5">
-                <img></img>
                 <h4 className="text-white">Swipe Me!</h4>
-                <h4 className="text-white">{points}</h4>
+                <div className="total-earned">
+                  <img className="total-earned" src={TotalPoints} alt="" />
+                  <h2 className="m-0">{points}</h2>
+                </div>
                 <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
                   <img src={GoooGooo} alt="" />
                 </div>
@@ -72,7 +75,7 @@ const App: React.FC = () => {
                   <img className="w-100" src={LoginButton}></img>
                 </button>
               </div> */}
-              <div className="navbar p-0" id='navbar'>
+              <div className="navbar py-0" id='navbar'>
                 <ul>
                   <li>
                     <a href="#">
