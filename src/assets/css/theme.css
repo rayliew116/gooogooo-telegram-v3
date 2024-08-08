@@ -1,34 +1,57 @@
 @font-face {
-    font-family: 'Digital7';
-    src: url('../fonts/digital-7-webfont.woff2') format('woff2'),
-         url('../fonts/digital-7-webfont.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Gilroy';
+    src: url('../fonts/Gilroy-Medium.woff2') format('woff2'),
+        url('../fonts/Gilroy-Medium.woff') format('woff');
+    font-weight: 500;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'Gilroy';
-    src: url('../fonts/gilroy-medium-webfont.woff2') format('woff2'),
-         url('../fonts/gilroy-medium-webfont.woff') format('woff');
-    font-weight: normal;
+    src: url('../fonts/Gilroy-Bold.woff2') format('woff2'),
+        url('../fonts/Gilroy-Bold.woff') format('woff');
+    font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Moon';
-    src: url('../fonts/moon_get-heavy-webfont.woff2') format('woff2'),
-         url('../fonts/moon_get-heavy-webfont.woff') format('woff');
+    font-family: 'Bebas Neue';
+    src: url('../fonts/BebasNeue-Regular.woff2') format('woff2'),
+        url('../fonts/BebasNeue-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Pixellari';
-    src: url('../fonts/pixellari-webfont.woff2') format('woff2'),
-         url('../fonts/pixellari-webfont.woff') format('woff');
+    font-family: 'ITC Avant Garde Gothic LT';
+    src: url('../fonts/AvantGardeLT-Medium.woff2') format('woff2'),
+        url('../fonts/AvantGardeLT-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MOON GET!';
+    src: url('../fonts/moon_get-Heavy.woff2') format('woff2'),
+        url('../fonts/moon_get-Heavy.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PEPSI';
+    src: url('../fonts/PEPSI.woff2') format('woff2'),
+        url('../fonts/PEPSI.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
+
 
 .brand-yellow {color:#FDC300;}
 .text-gray {color:#a8a8a8;}
@@ -49,7 +72,8 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-h1, h2, h3, h4, h5, h6 {font-family: 'Pixellari';}
+h1, h2, h3 {font-family: 'PEPSI';}
+h4, h5, h6 {font-family: 'Bebas Neue';}
 
 h2 {font-size: 56px;}
 @media (max-width: 575px) {
@@ -58,8 +82,7 @@ h2 {font-size: 56px;}
 
 
 p {
-    font-family: 'Gilroy';
-    font-size: 20px;
+    font-family: 'Bebas Neue';
     letter-spacing: 1px;
 }
 

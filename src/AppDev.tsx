@@ -9,6 +9,7 @@ import { useSwipeable } from 'react-swipeable'
 // Import images
 import MainLogo from './assets/img/new/logo.png';
 import GoooGooo from './assets/img/new/gg-main.png';
+import GoooGoooGif from './assets/img/new/gg.gif';
 import NavHome from './assets/img/new/nav-home.png'
 import NavGG from './assets/img/new/nav-gooogooo.png'
 import NavEarn from './assets/img/new/nav-earn.png'
@@ -38,8 +39,7 @@ const App: React.FC = () => {
     },
     trackMouse: true,
   });
-
-
+  
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('referral_code');
@@ -64,10 +64,10 @@ const App: React.FC = () => {
                 <h4 className="text-white">Swipe Me!</h4>
                 <div className="total-earned">
                   <img className="total-earned" src={TotalPoints} alt="" />
-                  <h2 className="m-0">{points}</h2>
+                  <h2 className="m-0">{points.toLocaleString()}</h2>
                 </div>
                 <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
-                  <img src={GoooGooo} alt="" />
+                  <img src={GoooGoooGif} alt="" />
                 </div>
               </div>
               {/* <div className="col-12 text-center mb-5">
@@ -80,31 +80,31 @@ const App: React.FC = () => {
                   <li>
                     <a href="#">
                       <img src={NavHome} style={{width:"70px"}}alt="" />
-                      Home
+                      <p>Home</p>
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={NavGG} style={{width:"70px"}}alt="" />
-                      Gooo Gooo
+                      <p>Gooo Gooo</p>
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={NavEarn} style={{width:"70px"}}alt="" />
-                      Earn
+                      <p>Earn</p>
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={NavFriends} style={{width:"70px"}}alt="" />
-                      Friends
+                      <p>Friends</p>
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={NavAirdrop} style={{width:"70px"}}alt="" />
-                      Airdrop
+                      <p>Airdrop</p>
                     </a>
                   </li>
                 </ul>
