@@ -70,6 +70,10 @@
   background-color: #575757;
 }
 
+.gg-swipe img {
+  width: 80%;
+}
+
 .menu-icon {
   margin-top: 5px;
   width: 40px;

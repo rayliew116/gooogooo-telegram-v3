@@ -5,6 +5,7 @@ import Moment from 'moment';
 import { useSwipeable } from 'react-swipeable'
 // import { CopyToClipboard } from 'react-copy-to-clipboard';
 import MainLogo from './assets/img/old/logo.png';
+import GoooGooo from './assets/img/new/gg-main.png';
 import MenuIcon from './assets/img/old/menu.png';
 import UserIcon from './assets/img/old/user-icon.png';
 import LoginHeader from './assets/img/old/login-header-text.png';
@@ -74,7 +75,9 @@ const App: React.FC = () => {
               </div>
             
               <div className="col-12 text-center mb-5">
-                <div className="p-0 w-100" {...swiperNoSwiping} style={{touchAction: 'pan-y', height:'400px', backgroundColor:'white'}}></div>
+                <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
+                  <img src={GoooGooo} alt="" />
+                </div>
                 <h4 className="text-white">Swipe Me!</h4>
                 <h4 className="text-white">{points}</h4>
               </div>
