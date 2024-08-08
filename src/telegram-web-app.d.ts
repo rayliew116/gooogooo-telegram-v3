@@ -5,7 +5,7 @@ interface TelegramWebApp {
     // Add other methods and properties you need
 }
 
-interface window {
+interface Window {
     Telegram: {
         WebApp: TelegramWebApp;
     };

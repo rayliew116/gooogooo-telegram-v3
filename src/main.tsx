@@ -16,7 +16,8 @@ window.addEventListener('DOMContentLoaded', () => {
   if (window.Telegram?.WebApp) {
       // Initialize Telegram Web Apps SDK
       window.Telegram.WebApp.ready();
-
+      //Expand Web App window automatically to full height
+      window.Telegram.WebApp.expand();
       // Call disableVerticalSwipes() to prevent vertical swipes
       window.Telegram.WebApp.disableVerticalSwipes();
   }
