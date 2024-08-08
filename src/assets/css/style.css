@@ -4,8 +4,8 @@
 }
 
 .game-bg {
-  min-height: 100vh;
-  background-image: url('../img/new/bg-default.jpg');
+  height: 100vh;
+  background-image: url('../img/new/bg-default.png');
   /* background-image: url('../img/construction.jpg'); */
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -13,10 +13,10 @@
 }
 
 /* Coming Soon Text */
-.coming-soon {
+/* .coming-soon {
   font-family: "Moon" !important;
   color: #FDC300;
-}
+} */
 
 /* Header */
 .header-section {
@@ -25,7 +25,7 @@
 }
 
 .header-logo {
-  width: 80%;
+  width: 70%;
   margin: auto;
   display: block;
 }
@@ -36,6 +36,7 @@
   margin: auto;
 }
 
+/* Navbar */
 .navbar {
   position: fixed;
   bottom: 0;
@@ -43,10 +44,10 @@
   transform: translateX(-50%);
   color: white;
   text-align: center;
-  padding: 10px 20px;
-  width: auto;
   display: flex;
   justify-content: center;
+  width: 100%;
+  max-width: 455px;
 }
 .navbar ul {
   list-style-type: none;
@@ -56,19 +57,25 @@
   justify-content: space-around;
   width: 100%;
   gap: 15px;
+  /* background-color: black; */
+  background-image: linear-gradient(transparent, black);
 }
 .navbar li {
   display: inline;
-  background-color: #333;
 }
 .navbar a {
   display: block;
-  padding: 10px 16px;
+  padding: 10px 0;
   color: white;
   text-decoration: none;
+  font-size: 10px;
 }
 .navbar a:hover {
-  background-color: #575757;
+  /* background-color: #575757; */
+  background-image: url('../img/new/nav-onhoverbg.png');
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .gg-swipe img {

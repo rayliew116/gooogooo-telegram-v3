@@ -1,41 +1,26 @@
+// import Countdown, { zeroPad } from 'react-countdown';
+// import Moment from 'moment';
+// import { useClaim } from './hooks/useClaim';
+// import { CopyToClipboard } from 'react-copy-to-clipboard';
 import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Countdown, { zeroPad } from 'react-countdown';
-import Moment from 'moment';
 import { useSwipeable } from 'react-swipeable'
-// import { CopyToClipboard } from 'react-copy-to-clipboard';
-import MainLogo from './assets/img/old/logo.png';
+
+// Import images
+import MainLogo from './assets/img/new/logo.png';
 import GoooGooo from './assets/img/new/gg-main.png';
-import MenuIcon from './assets/img/old/menu.png';
-import UserIcon from './assets/img/old/user-icon.png';
-import LoginHeader from './assets/img/old/login-header-text.png';
-import LoginButton from './assets/img/old/login-button.png';
-import LoginGooGoo from './assets/img/old/googoo-welcome.png';
-import CheckInHeader from './assets/img/old/checkin.png';
-import CheckInGooGoo from './assets/img/old/googoo-checkin.png';
-import CheckInBtn1 from './assets/img/old/checkinBtn1.png';
-import CheckInBtn2 from './assets/img/old/checkinBtn2.png';
-import CheckInBtn3 from './assets/img/old/checkinBtn3.png';
-import Checked from './assets/img/old/checked.png';
-import ClaimBtn from './assets/img/old/claim.png';
-import BoosterIcon from './assets/img/old/booster.png';
-import ArrowDownBtn from './assets/img/old/arrow-down.png';
-import ReferralHeader from './assets/img/old/referral-header.png';
-import CopyBtn from './assets/img/old/copy.png';
-import ShareBtn from './assets/img/old/share.png';
-import SmallCashSound from './assets/sound/cash-register-small.mp3';
-import LoudCashSound from './assets/sound/cash-register-loud.mp3';
-import { useClaim } from './hooks/useClaim';
+import NavHome from './assets/img/new/nav-home.png'
+import NavGG from './assets/img/new/nav-gooogooo.png'
+import NavEarn from './assets/img/new/nav-earn.png'
+import NavFriends from './assets/img/new/nav-friends.png'
+import NavAirdrop from './assets/img/new/nav-airdrop.png'
+
 
 
 const App: React.FC = () => {
   
   
   const [points, setPoints] = useState(0);
-  const clickTheFuckOutOfIt = async () => {
-    setPoints(points+1);
-  };
-  
   const lastSwipeDirectionRef = useRef<string | null>(null);
   const lastSwipeTimeRef = useRef(Date.now());
   const swiperNoSwiping = useSwipeable({
@@ -87,16 +72,41 @@ const App: React.FC = () => {
                   <img className="w-100" src={LoginButton}></img>
                 </button>
               </div> */}
-
-              <div className="navbar">
+              <div className="navbar p-0" id='navbar'>
                 <ul>
-                  <li><a href="#">Home</a></li>
-                  <li><a href="#">Gooo<br></br>Gooo</a></li>
-                  <li><a href="#">Earn</a></li>
-                  <li><a href="#">Friends</a></li>
-                  <li><a href="#">Airdrop</a></li>
+                  <li>
+                    <a href="#">
+                      <img src={NavHome} style={{width:"70px"}}alt="" />
+                      Home
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src={NavGG} style={{width:"70px"}}alt="" />
+                      Gooo Gooo
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src={NavEarn} style={{width:"70px"}}alt="" />
+                      Earn
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src={NavFriends} style={{width:"70px"}}alt="" />
+                      Friends
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <img src={NavAirdrop} style={{width:"70px"}}alt="" />
+                      Airdrop
+                    </a>
+                  </li>
                 </ul>
               </div>
+
         
             </div>
           </div>
