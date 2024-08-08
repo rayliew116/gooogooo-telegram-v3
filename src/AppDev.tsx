@@ -69,17 +69,17 @@ const App: React.FC = () => {
                 <div className="header-logo">
                   <img className="header-logo" src={MainLogo} />
                 </div>
-                <div className="total-earned">
+                {/* <div className="total-earned">
                   <h4>Total coins earned here</h4>
-                </div>
+                </div> */}
               </div>
             
               <div className="col-12 text-center mb-5">
+                <h4 className="text-white">Swipe Me!</h4>
+                <h4 className="text-white">{points}</h4>
                 <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
                   <img src={GoooGooo} alt="" />
                 </div>
-                <h4 className="text-white">Swipe Me!</h4>
-                <h4 className="text-white">{points}</h4>
               </div>
               {/* <div className="col-12 text-center mb-5">
                 <button className="btn login-btn p-0" onClick={handleLogin}>
