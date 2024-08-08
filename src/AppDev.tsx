@@ -75,6 +75,7 @@ const App: React.FC = () => {
               </div>
             
               <div className="col-12 text-center mb-5">
+                <img></img>
                 <h4 className="text-white">Swipe Me!</h4>
                 <h4 className="text-white">{points}</h4>
                 <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
