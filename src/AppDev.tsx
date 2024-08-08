@@ -97,7 +97,11 @@ const App: React.FC = () => {
               <div className="navbar py-0" id='navbar'>
                 <ul>
                   <li>
-                    <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                    {/* <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                      <img src={NavHome} style={{width:"70px"}}alt="" />
+                      <p>Home</p>
+                    </NavLink> */}
+                    <NavLink to="/" end className={({ isActive }) => (isActive ? 'active-link' : '')}>
                       <img src={NavHome} style={{width:"70px"}}alt="" />
                       <p>Home</p>
                     </NavLink>
