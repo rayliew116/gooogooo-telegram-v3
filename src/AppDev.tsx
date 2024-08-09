@@ -19,7 +19,10 @@ import TotalPoints from './assets/img/new/total-points.png';
 import LanguageIcon from './assets/img/new/language-icon.png'
 import MusicIcon from './assets/img/new/music-icon.png'
 
-// import pages here
+// Import sound effects
+import GGSound from './assets/sound/gg-sound.mp3'
+
+// Import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
 import EarnPage from './pages/EarnPage/Earn';
 import FriendsPage from './pages/FriendsPage/Friends';
@@ -27,23 +30,50 @@ import AirdropPage from './pages/AirdropPage/Airdrop';
 
 const App: React.FC = () => {
   
-  // Menu State
-  const [activeLink, setActiveLink] = useState<string | null>(null);
-  
   const [points, setPoints] = useState(0);
+  const [isSwiping, setIsSwiping] = useState(false);
   const lastSwipeDirectionRef = useRef<string | null>(null);
   const lastSwipeTimeRef = useRef(Date.now());
+  // Load the sound effect
+  const swipeSound = useRef<HTMLAudioElement | null>(null);
+  const isSoundPlayingRef = useRef(false);
+
+  const playSwipeSound = () => {
+    if (swipeSound.current) {
+      // Play sound from the start for each swipe
+      swipeSound.current.currentTime = 0;
+      swipeSound.current.play();
+      isSoundPlayingRef.current = true; // Mark the sound as playing
+    }
+  };
+
+  const stopSwipeSound = () => {
+    if (swipeSound.current && isSoundPlayingRef.current) {
+      swipeSound.current.pause(); // Stop the sound
+      swipeSound.current.currentTime = 0; // Reset the sound
+      isSoundPlayingRef.current = false; // Mark the sound as stopped
+    }
+  };
+
   const swiperNoSwiping = useSwipeable({
     onSwiping: (eventData) => {
       const now = Date.now();
+      if (!isSwiping) {
+        setIsSwiping(true);
+        playSwipeSound();
+      }
       if (
         eventData.dir !== lastSwipeDirectionRef.current ||
         now - lastSwipeTimeRef.current > 600
       ) {
-        setPoints(points+1);
+        setPoints((prevPoints) => prevPoints + 1);
         lastSwipeDirectionRef.current = eventData.dir;
         lastSwipeTimeRef.current = now;
       }
+    },
+    onSwiped: () => {
+      setIsSwiping(false);
+      stopSwipeSound(); // Stop the sound when the swipe ends
     },
     trackMouse: true,
   });
@@ -82,7 +112,13 @@ const App: React.FC = () => {
                           <h2 className="m-0">{points.toLocaleString()}</h2>
                         </div>
                         <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
-                          <img src={GoooGoooGif} alt="" />
+                        <audio ref={swipeSound} src={GGSound} />
+                        {isSwiping ? (
+                           <img src={GoooGoooGif} alt="" />
+                        ) : (
+                          <img src={GoooGooo} alt="" />
+                        )}
+                         
                         </div>
                       </div>
                     </div>
