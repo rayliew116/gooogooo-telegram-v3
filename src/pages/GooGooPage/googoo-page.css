@@ -1,0 +1,39 @@
+.profile-pic {
+    width: 100%;
+    max-width: 180px;
+}
+
+.profile-lvl {
+    width: 100%;
+    max-width: 160px;
+    margin-top:-12%;
+}
+
+.lvl-text {
+    margin-top: -48px;
+    font-family: 'PEPSI';
+    font-size: 16px;
+}
+@media (max-width: 389px) {
+    .lvl-text {
+        margin-top: -11%;
+    }
+}
+@media (max-width: 399px) {
+    .lvl-text {
+        margin-top: -12%;
+    }
+}
+
+.refer-btn {
+    width: 65%;
+}
+
+.aliens-container {
+    overflow-x: hidden;
+}
+
+.gooogooo {
+    margin-top: -45%;
+    width: 50%;
+}

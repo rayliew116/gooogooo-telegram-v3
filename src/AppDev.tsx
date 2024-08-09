@@ -24,6 +24,7 @@ import GGSound from './assets/sound/gg-sound.mp3'
 
 // Import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
+import ReferralPage from './pages/ReferralPage/Referral';
 import EarnPage from './pages/EarnPage/Earn';
 import FriendsPage from './pages/FriendsPage/Friends';
 import AirdropPage from './pages/AirdropPage/Airdrop';
@@ -89,16 +90,19 @@ const App: React.FC = () => {
         <div className="row">
           <div className="col-12 px-0">
             <div className="game-bg pb-5">
+
               <div className="row header-section">
-                <div className="col-12 header-box">
-                  <div className="header-logo">
-                    <img className="header-logo" src={MainLogo} style={{display:"block"}} />
-                  </div>
-                  <div className="header-icons">
-                    <button className="btn" style={{backgroundColor:"transparent"}}><img src={LanguageIcon} alt="" /></button>
-                    <button className="btn" style={{backgroundColor:"transparent"}}><img src={MusicIcon} alt="" /></button>
-                  </div>
+                <div className="col-3"></div>
+                <div className="col-6 text-center">
+                  <img className="header-logo" src={MainLogo} style={{display:"block"}} />
                 </div>
+                <div className="col-3 text-right">
+                  {/* <button className="btn p-0" style={{backgroundColor:"transparent"}}><img className="header-icons" src={LanguageIcon} alt="" /></button> */}
+                  <button className="btn p-0" style={{backgroundColor:"transparent"}}><img className="header-icons" src={MusicIcon} alt="" /></button>
+                </div>
+                {/* <div className="col-12 header-box">
+
+                </div> */}
               </div>
 
               <Routes>
@@ -106,7 +110,6 @@ const App: React.FC = () => {
                   <>
                     <div className="row">
                       <div className="col-12 text-center mb-5">
-                        <h4 className="text-white">Swipe Me!</h4>
                         <div className="total-earned">
                           <img className="total-earned" src={TotalPoints} alt="" />
                           <h2 className="m-0">{points.toLocaleString()}</h2>
@@ -125,6 +128,7 @@ const App: React.FC = () => {
                   </>
                 }/>
                 <Route path="/googoo" element={<GooGooPage/>}/>
+                <Route path="/referral" element={<ReferralPage/>}/>
                 <Route path="/earn" element={<EarnPage/>}/>
                 <Route path="/friends" element={<FriendsPage/>}/>
                 <Route path="/airdrop" element={<AirdropPage/>}/>
@@ -142,7 +146,7 @@ const App: React.FC = () => {
                   <li>
                     <NavLink to="/googoo" className={({ isActive }) => (isActive ? 'active-link' : '')}>
                       <img src={NavGG} style={{width:"70px"}}alt="" />
-                      <p>Goo Goo</p>
+                      <p>Gooo Gooo</p>
                     </NavLink>
                   </li>
                   <li>
