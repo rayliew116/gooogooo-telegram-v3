@@ -60,7 +60,6 @@ const App: React.FC = () => {
       setPoints((prevPoints) => prevPoints + 1);
     }, 300); // Increment every 100ms
   };
-
   const stopHoldInterval = () => {
     if (holdIntervalRef.current) {
       clearInterval(holdIntervalRef.current);
@@ -68,7 +67,6 @@ const App: React.FC = () => {
     }
   };
   
-
   const swiperNoSwiping = useSwipeable({
     onSwiping: (eventData) => {
       const now = Date.now();
@@ -88,10 +86,8 @@ const App: React.FC = () => {
     },
     onSwiped: () => {
       setIsSwiping(false);
-      stopSwipeSound();
-    
+      stopSwipeSound();   
       stopHoldInterval();
-  
     },
     trackMouse: true,
   });
