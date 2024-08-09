@@ -36,6 +36,7 @@ const App: React.FC = () => {
   const lastSwipeDirectionRef = useRef<string | null>(null);
   const lastSwipeTimeRef = useRef(Date.now());
   const swipeSound = useRef<HTMLAudioElement | null>(null);
+  const holdIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const playSwipeSound = () => {
     if (swipeSound.current && !swipeSound.current.onplaying) {
@@ -54,6 +55,19 @@ const App: React.FC = () => {
       swipeSound.current.play(); 
     }
   };
+  const startHoldInterval = () => {
+    holdIntervalRef.current = setInterval(() => {
+      setPoints((prevPoints) => prevPoints + 1);
+    }, 300); // Increment every 100ms
+  };
+
+  const stopHoldInterval = () => {
+    if (holdIntervalRef.current) {
+      clearInterval(holdIntervalRef.current);
+      holdIntervalRef.current = null;
+    }
+  };
+  
 
   const swiperNoSwiping = useSwipeable({
     onSwiping: (eventData) => {
@@ -61,10 +75,11 @@ const App: React.FC = () => {
       if (!isSwiping) {
         setIsSwiping(true);
         playSwipeSound();
+        startHoldInterval();
       }
       if (
         eventData.dir !== lastSwipeDirectionRef.current ||
-        now - lastSwipeTimeRef.current > 500
+        now - lastSwipeTimeRef.current > 300
       ) {
         setPoints((prevPoints) => prevPoints + 1);
         lastSwipeDirectionRef.current = eventData.dir;
@@ -74,6 +89,9 @@ const App: React.FC = () => {
     onSwiped: () => {
       setIsSwiping(false);
       stopSwipeSound();
+    
+      stopHoldInterval();
+  
     },
     trackMouse: true,
   });
@@ -81,6 +99,9 @@ const App: React.FC = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('referral_code');
+    return () => {
+      stopHoldInterval(); // Cleanup interval on component unmount
+    };
   }, []);
 
   return (
