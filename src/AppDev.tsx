@@ -35,24 +35,23 @@ const App: React.FC = () => {
   const [isSwiping, setIsSwiping] = useState(false);
   const lastSwipeDirectionRef = useRef<string | null>(null);
   const lastSwipeTimeRef = useRef(Date.now());
-  // Load the sound effect
   const swipeSound = useRef<HTMLAudioElement | null>(null);
-  const isSoundPlayingRef = useRef(false);
 
   const playSwipeSound = () => {
-    if (swipeSound.current) {
-      // Play sound from the start for each swipe
+    if (swipeSound.current && !swipeSound.current.onplaying) {
       swipeSound.current.currentTime = 0;
       swipeSound.current.play();
-      isSoundPlayingRef.current = true; // Mark the sound as playing
     }
   };
-
   const stopSwipeSound = () => {
-    if (swipeSound.current && isSoundPlayingRef.current) {
-      swipeSound.current.pause(); // Stop the sound
-      swipeSound.current.currentTime = 0; // Reset the sound
-      isSoundPlayingRef.current = false; // Mark the sound as stopped
+    if (swipeSound.current) {
+      swipeSound.current.pause(); 
+      swipeSound.current.currentTime = 0; 
+    }
+  };
+  const handleSoundEnd = () => {
+    if (isSwiping && swipeSound.current) {
+      swipeSound.current.play(); 
     }
   };
 
@@ -65,7 +64,7 @@ const App: React.FC = () => {
       }
       if (
         eventData.dir !== lastSwipeDirectionRef.current ||
-        now - lastSwipeTimeRef.current > 600
+        now - lastSwipeTimeRef.current > 500
       ) {
         setPoints((prevPoints) => prevPoints + 1);
         lastSwipeDirectionRef.current = eventData.dir;
@@ -74,7 +73,7 @@ const App: React.FC = () => {
     },
     onSwiped: () => {
       setIsSwiping(false);
-      stopSwipeSound(); // Stop the sound when the swipe ends
+      stopSwipeSound();
     },
     trackMouse: true,
   });
@@ -89,8 +88,7 @@ const App: React.FC = () => {
       <div className="container game-container">
         <div className="row">
           <div className="col-12 px-0">
-            <div className="game-bg pb-5">
-
+            <div className="game-bg">
               <div className="row header-section">
                 <div className="col-3"></div>
                 <div className="col-6 text-center">
@@ -101,10 +99,8 @@ const App: React.FC = () => {
                   <button className="btn p-0" style={{backgroundColor:"transparent"}}><img className="header-icons" src={MusicIcon} alt="" /></button>
                 </div>
                 {/* <div className="col-12 header-box">
-
                 </div> */}
               </div>
-
               <Routes>
                 <Route path="/" element={
                   <>
@@ -115,7 +111,7 @@ const App: React.FC = () => {
                           <h2 className="m-0">{points.toLocaleString()}</h2>
                         </div>
                         <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
-                        <audio ref={swipeSound} src={GGSound} />
+                        <audio ref={swipeSound} src={GGSound} onEnded={handleSoundEnd}/>
                         {isSwiping ? (
                            <img src={GoooGoooGif} alt="" />
                         ) : (
@@ -134,41 +130,40 @@ const App: React.FC = () => {
                 <Route path="/airdrop" element={<AirdropPage/>}/>
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
-
-              <div className="navbar py-0" id='navbar'>
-                <ul>
-                  <li>
-                    <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                      <img src={NavHome} style={{width:"70px"}}alt="" />
-                      <p>Home</p>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/googoo" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                      <img src={NavGG} style={{width:"70px"}}alt="" />
-                      <p>Gooo Gooo</p>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/earn" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                      <img src={NavEarn} style={{width:"70px"}}alt="" />
-                      <p>Earn</p>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                      <img src={NavFriends} style={{width:"70px"}}alt="" />
-                      <p>Friends</p>
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                      <img src={NavAirdrop} style={{width:"70px"}}alt="" />
-                      <p>Airdrop</p>
-                    </NavLink>
-                  </li>
-                </ul>
-              </div>
+            </div>
+            <div className="navbar p-0" id='navbar'>
+              <ul>
+                <li>
+                  <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                    <img src={NavHome} style={{width:"70px"}}alt="" />
+                    <p>Home</p>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/googoo" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                    <img src={NavGG} style={{width:"70px"}}alt="" />
+                    <p>Gooo Gooo</p>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/earn" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                    <img src={NavEarn} style={{width:"70px"}}alt="" />
+                    <p>Earn</p>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                    <img src={NavFriends} style={{width:"70px"}}alt="" />
+                    <p>Friends</p>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                    <img src={NavAirdrop} style={{width:"70px"}}alt="" />
+                    <p>Airdrop</p>
+                  </NavLink>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

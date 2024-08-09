@@ -4,11 +4,13 @@
 }
 
 .game-bg {
-  height: 100vh;
+  min-height: 100vh;
   background-image: url('../img/new/bg-default.png');
-  background-position: center bottom;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
+  padding-bottom: 200px;
 }
 
 /* Header */
@@ -17,9 +19,6 @@
   background-color: transparent;
 }
 .header-box {
-  /* display: flex;
-  align-items: center;
-  justify-content: space-between; */
   max-width: 455px;
   margin: 0 auto;
   display: flex;
@@ -42,17 +41,17 @@
 .total-earned {
   position: relative;
   padding: 5px;
-  width: 100%;
+  width: 95%;
   margin: auto;
   display: block;
 }
 .total-earned h2 {
   position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -38%);
   color: white;
-  font-size: 45px;
+  font-size: 40px;
 }
 
 /* Navbar */
@@ -75,9 +74,7 @@
   display: flex;
   justify-content: space-around;
   width: 100%;
-  gap: 15px;
-  /* background-color: black; */
-  background-image: linear-gradient(transparent, black);
+  background-image: linear-gradient(to bottom, transparent, black, black 90%);
 }
 .navbar li {
   display: inline;
@@ -86,18 +83,21 @@
   display: block;
   padding: 10px 0;
   color: #FDC300;
-  font-size: 10px;
   text-decoration: none;
-  text-transform: uppercase;
 }
-.navbar button:hover, .active-link {
+.navbar a:hover, .active-link {
   background-image: url('../img/new/nav-onhoverbg.png');
   background-position: center bottom;
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
 }
-
+.active-link p  {
+  color: white;
+}
+.navbar a, p {
+  font-size: 10px;
+}
 .gg-swipe img {
   width: 80%;
 }
