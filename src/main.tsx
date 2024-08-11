@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import React from 'react';
 import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from 'react-router-dom';
 import App from "./AppDev";
 import "./index.css";
 import "./assets/css/bootstrap.min.css";
@@ -37,7 +38,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-  <App />
-</React.StrictMode>
+    <Router>
+      <App />
+    </Router>
+  </React.StrictMode>
 );
 
