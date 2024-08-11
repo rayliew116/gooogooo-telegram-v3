@@ -5,7 +5,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable'
-import useBodyClass from './hooks/useBodyClass';
 
 // Import images
 import MainLogo from './assets/img/new/logo.png';
@@ -32,7 +31,7 @@ import AirdropPage from './pages/AirdropPage/Airdrop';
 
 
 const App: React.FC = () => {
-  
+
   const [points, setPoints] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const lastSwipeDirectionRef = useRef<string | null>(null);
@@ -77,7 +76,6 @@ const App: React.FC = () => {
     onSwiped: () => {
       setIsSwiping(false);
       stopSwipeSound();   
-
     },
     trackMouse: true,
   });
