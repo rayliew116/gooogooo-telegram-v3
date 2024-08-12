@@ -1,0 +1,87 @@
+/* .points-bar {
+    background-color: black;
+} */
+
+.earn-container {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+@media (max-width: 399px) {
+    .earn-container {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+.earn {
+    width: 100%;
+    max-width: 340px;
+}
+.earn-items {
+    width: 100%;
+    max-width: 340px;
+    height: 42px;
+    display: flex;
+    position: absolute;
+    top: 16%;
+    left: 15%;
+    background-image: url('./img/item-main-bg.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    align-items: center;
+    justify-items: center;
+}
+.earn-items button {
+    width: 33.33333%;
+    font-size: 12px;
+    color: white;
+    margin: 0;
+    padding: 8px 0;
+    text-align: center;
+    background-color: transparent;
+}
+.earn-items button:hover, .earn-items button:active {
+    background-image: url('./img/item-highlight-bg.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.earn-list {
+    width: 100%;
+    max-width: 340px;
+    color: white;
+    position: absolute;
+    top: 25%;
+    left: 15%;
+}
+.earn-list ul {
+    padding: 0;
+    margin: 0;
+}
+.earn-list li {
+    width: 100%;
+    max-width: 350px;
+    height: 50px;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    background-image: url('./img/purple-bar.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.earn-list p {
+    margin: 0;
+}
+.earn-des {
+    display: flex;
+    align-items: center;
+}
+.earn-des img {
+    width: 8%;
+    height: 8%;
+}

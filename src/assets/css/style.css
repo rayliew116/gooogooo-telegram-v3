@@ -88,6 +88,8 @@
   padding: 10px 0;
   color: #FDC300;
   text-decoration: none;
+  font-family: 'Bebas Neue';
+  letter-spacing: 1px;
 }
 .navbar a:hover, .active-link {
   background-image: url('../img/new/nav-onhoverbg.png');

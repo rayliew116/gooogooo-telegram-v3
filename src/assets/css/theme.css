@@ -73,21 +73,21 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-h1, h2, h3 {font-family: 'PEPSI';}
-h4, h5, h6 {font-family: 'Bebas Neue'; letter-spacing: 2px;}
+/* h1, h2, h3 {font-family: 'PEPSI';}
+h4, h5, h6 {font-family: 'Bebas Neue'; letter-spacing: 2px;} */
 
-h2 {font-size: 56px;}
+/* h2 {font-size: 56px;}
 @media (max-width: 575px) {
   h2 {font-size: 36px;}
-}
+} */
 
 h4 {font-size: 30px;}
 
 
-p {
+/* p {
   font-family: 'Bebas Neue';
   letter-spacing: 2px;
-}
+} */
 
 @media (max-width: 575px) {
   p {font-size: 16px;}
