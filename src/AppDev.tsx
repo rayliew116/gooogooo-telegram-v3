@@ -4,7 +4,9 @@
 // import { CopyToClipboard } from 'react-copy-to-clipboard';
 import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
-import { useSwipeable } from 'react-swipeable'
+import { useSwipeable, SwipeableHandlers } from 'react-swipeable'
+import Hammer from 'hammerjs';
+
 
 // Import images
 import MainLogo from './assets/img/new/logo.png';
@@ -18,6 +20,7 @@ import NavAirdrop from './assets/img/new/nav-airdrop.png';
 import TotalPoints from './assets/img/new/total-points.png';
 import LanguageIcon from './assets/img/new/language-icon.png'
 import MusicIcon from './assets/img/new/music-icon.png'
+import AlienBig from './assets/img/new/alien-big.png'
 
 // Import sound effects
 import GGSound from './assets/sound/gg-sound.mp3'
@@ -38,6 +41,7 @@ const App: React.FC = () => {
   const lastSwipeTimeRef = useRef(Date.now());
   const swipeSound = useRef<HTMLAudioElement | null>(null);
   const location = useLocation();
+  const [imageKey, setImageKey] = useState(0);
 
   const playSwipeSound = () => {
     if (swipeSound.current && !swipeSound.current.onplaying) {
@@ -55,6 +59,18 @@ const App: React.FC = () => {
     if (isSwiping && swipeSound.current) {
       swipeSound.current.play(); 
     }
+  };
+  const handleSwipe: SwipeableHandlers = useSwipeable({
+    onSwiped: () => {
+      setPoints((prevPoints) => prevPoints + 1);
+      setImageKey((prevKey) => prevKey + 1); // Force re-render to add a new image
+    },
+    trackMouse: true, // Optional: allows mouse swiping
+  });
+  const generateRandomPosition = (): { top: number; left: number } => {
+    const top = Math.random() * (window.innerHeight - 100); // Adjust 100 to your image height
+    const left = Math.random() * (window.innerWidth - 100);  // Adjust 100 to your image width
+    return { top, left };
   };
   
   const swiperNoSwiping = useSwipeable({
@@ -75,11 +91,34 @@ const App: React.FC = () => {
     },
     onSwiped: () => {
       setIsSwiping(false);
-      stopSwipeSound();   
+      stopSwipeSound();  
     },
     trackMouse: true,
   });
 
+  useEffect(() => {
+    const addImageToGameArea = () => {
+      const gameArea = document.getElementById('gameArea');
+      if (gameArea) {
+        const img = document.createElement('img');
+        img.src = AlienBig; // Replace with your image path
+        img.style.position = 'absolute';
+        img.style.width = '20%'
+
+        const { top, left } = generateRandomPosition();
+        img.style.top = `${top}px`;
+        img.style.left = `${left}px`;
+        img.style.zIndex = '1000'; // Ensure image is on top
+
+        // Attach swipeable behavior directly using the handlers
+        Object.assign(img, handleSwipe);
+
+        gameArea.appendChild(img);
+      }
+    };
+
+    addImageToGameArea(); // Add the image when the component mounts or when imageKey changes
+  }, [imageKey]);
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('referral_code');
@@ -93,6 +132,7 @@ const App: React.FC = () => {
       document.body.style.overflow = "";
     };
   }, [location.pathname]);
+  
 
 
   return (
@@ -121,7 +161,7 @@ const App: React.FC = () => {
                         <img className="total-earned" src={TotalPoints} alt="" />
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
-                      <div className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
+                      <div id="gameArea" className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
                       <audio ref={swipeSound} src={GGSound} onEnded={handleSoundEnd}/>
                       {isSwiping ? (
                           <img src={GoooGoooGif} alt="" />

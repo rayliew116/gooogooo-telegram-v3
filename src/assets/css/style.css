@@ -58,6 +58,10 @@
   font-size: 40px;
 }
 
+#gameArea {
+  height: 400px;
+}
+
 /* Navbar */
 .navbar {
   position: fixed;
