@@ -13,7 +13,7 @@ import SampleTwo from '../../assets/img/new/item-sample2.png';
 import SampleThree from '../../assets/img/new/item-sample3.png';
 import SampleFour from '../../assets/img/new/item-sample4.png';
 
-import TotalPoints from '../../assets/img/new/total-points.png';
+import PointsBar from '../../assets/img/new/points-bar.png';
 
 import GoooGooo from '../../assets/img/new/gg-main.png';
 import AliensGroup from './img/aliens.png';
@@ -42,7 +42,7 @@ const GooGooPage = (props: Props) => {
     
             <div className="col-12 text-center">
               <div className="total-earned">
-                <img className="total-earned" src={TotalPoints} alt="" />
+                <img className="total-earned" src={PointsBar} alt="" />
                 <h2 className="m-0">0</h2>
               </div>
             </div>

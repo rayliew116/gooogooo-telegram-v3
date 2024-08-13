@@ -2,57 +2,58 @@ import React from "react";
 import './friends-page.css';
 
 //Import images here
-import Title1 from './img/title-1.png'
+import Title from './img/title-1.png'
 import Gift1 from './img/gift-1.png'
 import Gift2 from './img/gift-2.png'
 import Crystal from './img/crystal-icon.png'
-import Title2 from './img/title-2.png'
 import LeaderboardBg from './img/leaderboard-bg.png'
 import ProfilePic from './img/profile-pic.png'
 import InviteButton from './img/invite-button.png'
 import CopyButton from './img/copy-button.png'
-// import LeaderboardItemBgTop from './img/leaderboard-item-bg-top.png'
-// import LeaderboardItemBg from './img/leaderboard-item-bg.png'
+import PurpleBar from './img/leaderboard-item-bg-top.png'
+import BlackBar from './img/leaderboard-item-bg.png'
+import TasklistBg from './img/task-bg.png'
 
 interface Props {}
 
 const FriendsPage = (props: Props) => {
     return (
         <>
-            <div className="row">
+            <div className="row friends-container">
                 <div className="col-12 text-center">
-                    <img src={Title1} style={{width:"38%"}} />
-                    <h5 className="brand-yellow">INVITE A FRIEND</h5>
-                    <h5 className="text-white">You and your friend will receive bonuses</h5>
+                    <img src={Title} style={{width:"45%"}} />
+                    <h5 className="brand-yellow mt-1 mb-0" style={{fontSize:"13px",fontWeight:"bold",letterSpacing:"1px"}}>INVITE A FRIEND</h5>
+                    <h5 className="text-white" style={{fontSize:"10px",fontWeight:"light",letterSpacing:"1px"}}>You and your friend will receive bonuses</h5>
                 </div>
                 <div className="col-12">
                     <div className="task-container">
-                        <div className="row tasklist-box mt-2 mx-auto">
-                            <div className="col-2 p-0">
-                                <img className="task-icon" style={{transform:"rotate(17deg)"}} src={Gift1} ></img>
-                            </div>
-                            <div className="col-8 ml-0 pl-2">
-                                <p className="task-title text-white m-0">Invite a friend</p>
-                                <div className="task-des">
-                                    <img src={Crystal} />
-                                    <p className="text-white m-0"><em>+5K</em> for you and your friend</p>
+                        <div className="row tasklist mx-auto mb-2">
+                            <img className="tasklist-bg" src={TasklistBg} />
+                            <div className="tasklist-content">
+                                <img className="present-icon" style={{transform:"rotate(18deg)"}} src={Gift1} ></img>
+                                <div className="ml-0 pl-3">
+                                    <p className="text-white m-0">Invite a friend</p>
+                                    <div className="task-des">
+                                        <img src={Crystal} />
+                                        <p className="text-white m-0"><em>+5K</em> for you and your friend</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="row tasklist-box mt-2 mx-auto">
-                            <div className="col-2 p-0">
-                                <img className="task-icon" src={Gift2}></img>
-                            </div>
-                            <div className="col-8 ml-0 pl-2">
-                                <p className="task-title text-white m-0">Invite a friend with Telegram</p>
-                                <div className="task-des">
-                                    <img src={Crystal} />
-                                    <p className="text-white m-0"><em>+25K</em> for you and your friend</p>
+                        <div className="row tasklist mx-auto mb-2">
+                            <img className="tasklist-bg" src={TasklistBg} />
+                            <div className="tasklist-content">
+                                <img className="present-icon" src={Gift2} ></img>
+                                <div className="ml-0 pl-3">
+                                    <p className="text-white m-0">Invite a friend with Telegram</p>
+                                    <div className="task-des">
+                                        <img src={Crystal} />
+                                        <p className="text-white m-0"><em>+25K</em> for you and your friend</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="row mt-5">
-                            <img src={Title2} style={{width:"38%",position:"absolute",top:"28%",left:"31%"}}/>
+                        <div className="row mt-3">
                             <img src={LeaderboardBg} style={{width:"100%"}}/>
                             <div className="leaderboard">
                                 <div className="leaderboard-items">
@@ -64,96 +65,111 @@ const FriendsPage = (props: Props) => {
                                 <div className="leaderboard-list">
                                     <ul>
                                         <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
+                                            <img className="leaderboard-item-bg" src={PurpleBar} />
+                                            <div className="item-content">
+                                                <p style={{width:"8%"}}>1</p>
+                                                <div className="user-details">
+                                                    <img className="profile-icon" src={ProfilePic} />
+                                                    <p>Layla</p>
+                                                </div>
+                                                <p style={{width:"19%"}}>12345</p>
+                                                <div className="ref-earnings">
+                                                    <img src={Crystal} />
+                                                    <p>+8.787</p>
+                                                </div>
                                             </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
-
                                         </li>
                                         <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
+                                            <img className="leaderboard-item-bg" src={PurpleBar} />
+                                            <div className="item-content">
+                                                <p style={{width:"8%"}}>1</p>
+                                                <div className="user-details">
+                                                    <img className="profile-icon" src={ProfilePic} />
+                                                    <p>Layla</p>
+                                                </div>
+                                                <p style={{width:"19%"}}>12345</p>
+                                                <div className="ref-earnings">
+                                                    <img src={Crystal} />
+                                                    <p>+8.787</p>
+                                                </div>
                                             </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
                                         </li>
                                         <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
+                                            <img className="leaderboard-item-bg" src={PurpleBar} />
+                                            <div className="item-content">
+                                                <p style={{width:"8%"}}>1</p>
+                                                <div className="user-details">
+                                                    <img className="profile-icon" src={ProfilePic} />
+                                                    <p>Layla</p>
+                                                </div>
+                                                <p style={{width:"19%"}}>12345</p>
+                                                <div className="ref-earnings">
+                                                    <img src={Crystal} />
+                                                    <p>+8.787</p>
+                                                </div>
                                             </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
                                         </li>
                                         <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
+                                            <img className="leaderboard-item-bg" src={BlackBar} />
+                                            <div className="item-content">
+                                                <p style={{width:"8%"}}>1</p>
+                                                <div className="user-details">
+                                                    <img className="profile-icon" src={ProfilePic} />
+                                                    <p>Layla</p>
+                                                </div>
+                                                <p style={{width:"19%"}}>12345</p>
+                                                <div className="ref-earnings">
+                                                    <img src={Crystal} />
+                                                    <p>+8.787</p>
+                                                </div>
                                             </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
                                         </li>
                                         <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
+                                            <img className="leaderboard-item-bg" src={BlackBar} />
+                                            <div className="item-content">
+                                                <p style={{width:"8%"}}>1</p>
+                                                <div className="user-details">
+                                                    <img className="profile-icon" src={ProfilePic} />
+                                                    <p>Layla</p>
+                                                </div>
+                                                <p style={{width:"19%"}}>12345</p>
+                                                <div className="ref-earnings">
+                                                    <img src={Crystal} />
+                                                    <p>+8.787</p>
+                                                </div>
                                             </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
                                         </li>
                                         <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
+                                            <img className="leaderboard-item-bg" src={BlackBar} />
+                                            <div className="item-content">
+                                                <p style={{width:"8%"}}>1</p>
+                                                <div className="user-details">
+                                                    <img className="profile-icon" src={ProfilePic} />
+                                                    <p>Layla</p>
+                                                </div>
+                                                <p style={{width:"19%"}}>12345</p>
+                                                <div className="ref-earnings">
+                                                    <img src={Crystal} />
+                                                    <p>+8.787</p>
+                                                </div>
                                             </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
                                         </li>
                                         <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
+                                            <img className="leaderboard-item-bg" src={BlackBar} />
+                                            <div className="item-content">
+                                                <p style={{width:"8%"}}>1</p>
+                                                <div className="user-details">
+                                                    <img className="profile-icon" src={ProfilePic} />
+                                                    <p>Layla</p>
+                                                </div>
+                                                <p style={{width:"19%"}}>12345</p>
+                                                <div className="ref-earnings">
+                                                    <img src={Crystal} />
+                                                    <p>+8.787</p>
+                                                </div>
                                             </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
                                         </li>
-                                        <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
-                                            </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
-                                        </li>
-                                        <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
-                                            </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
-                                        </li>
-                                        <li>
-                                            <p style={{width:"10%"}}>1</p>
-                                            <div style={{width:"49%",display:"flex",alignItems:"center",gap:"5px"}}>
-                                                <img src={ProfilePic} style={{width:"18%"}}/>
-                                                <p >Layla</p>
-                                            </div>
-                                            <p style={{width:"19%"}}>12345</p>
-                                            <p className="brand-yellow" style={{width:"22%"}}><img src={Crystal} style={{width:"20%",marginRight:"2px"}} />+ 8.787</p>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                             </div>

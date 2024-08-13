@@ -17,9 +17,12 @@ import NavGG from './assets/img/new/nav-gooogooo.png';
 import NavEarn from './assets/img/new/nav-earn.png';
 import NavFriends from './assets/img/new/nav-friends.png';
 import NavAirdrop from './assets/img/new/nav-airdrop.png';
-import TotalPoints from './assets/img/new/total-points.png';
+import PointsBar from './assets/img/new/points-bar.png';
 import LanguageIcon from './assets/img/new/language-icon.png'
 import MusicIcon from './assets/img/new/music-icon.png'
+import ExpBar from './assets/img/new/expbar-empty.png'
+import ExpBarProgress from './assets/img/new/expbar-progress.png'
+import ExpBarIcon from './assets/img/new/expbar-icon.png'
 import AlienBig from './assets/img/new/alien-big.png'
 
 // Import sound effects
@@ -41,7 +44,7 @@ const App: React.FC = () => {
   const lastSwipeTimeRef = useRef(Date.now());
   const swipeSound = useRef<HTMLAudioElement | null>(null);
   const location = useLocation();
-  const [imageKey, setImageKey] = useState(0);
+  // const [imageKey, setImageKey] = useState(0);
 
   const playSwipeSound = () => {
     if (swipeSound.current && !swipeSound.current.onplaying) {
@@ -63,15 +66,15 @@ const App: React.FC = () => {
   const handleSwipe: SwipeableHandlers = useSwipeable({
     onSwiped: () => {
       setPoints((prevPoints) => prevPoints + 1);
-      setImageKey((prevKey) => prevKey + 1); // Force re-render to add a new image
+      // setImageKey((prevKey) => prevKey + 1); // Force re-render to add a new image
     },
     trackMouse: true, // Optional: allows mouse swiping
   });
-  const generateRandomPosition = (): { top: number; left: number } => {
-    const top = Math.random() * (window.innerHeight - 100); // Adjust 100 to your image height
-    const left = Math.random() * (window.innerWidth - 100);  // Adjust 100 to your image width
-    return { top, left };
-  };
+  // const generateRandomPosition = (): { top: number; left: number } => {
+  //   const top = Math.random() * (window.innerHeight - 100); // Adjust 100 to your image height
+  //   const left = Math.random() * (window.innerWidth - 100);  // Adjust 100 to your image width
+  //   return { top, left };
+  // };
   
   const swiperNoSwiping = useSwipeable({
     onSwiping: (eventData) => {
@@ -96,29 +99,29 @@ const App: React.FC = () => {
     trackMouse: true,
   });
 
-  useEffect(() => {
-    const addImageToGameArea = () => {
-      const gameArea = document.getElementById('gameArea');
-      if (gameArea) {
-        const img = document.createElement('img');
-        img.src = AlienBig; // Replace with your image path
-        img.style.position = 'absolute';
-        img.style.width = '20%'
+  // useEffect(() => {
+  //   const addImageToGameArea = () => {
+  //     const gameArea = document.getElementById('gameArea');
+  //     if (gameArea) {
+  //       const img = document.createElement('img');
+  //       img.src = AlienBig; // Replace with your image path
+  //       img.style.position = 'absolute';
+  //       img.style.width = '20%'
 
-        const { top, left } = generateRandomPosition();
-        img.style.top = `${top}px`;
-        img.style.left = `${left}px`;
-        img.style.zIndex = '1000'; // Ensure image is on top
+  //       const { top, left } = generateRandomPosition();
+  //       img.style.top = `${top}px`;
+  //       img.style.left = `${left}px`;
+  //       img.style.zIndex = '1000'; // Ensure image is on top
 
-        // Attach swipeable behavior directly using the handlers
-        Object.assign(img, handleSwipe);
+  //       // Attach swipeable behavior directly using the handlers
+  //       Object.assign(img, handleSwipe);
 
-        gameArea.appendChild(img);
-      }
-    };
+  //       gameArea.appendChild(img);
+  //     }
+  //   };
+  //   addImageToGameArea(); // Add the image when the component mounts or when imageKey changes
+  // }, [imageKey]);
 
-    addImageToGameArea(); // Add the image when the component mounts or when imageKey changes
-  }, [imageKey]);
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('referral_code');
@@ -143,22 +146,31 @@ const App: React.FC = () => {
             <div className="row header-section">
               <div className="col-3"></div>
               <div className="col-6 text-center">
-                <img className="header-logo" src={MainLogo} style={{display:"block"}} />
+                <img className="header-logo" src={MainLogo} />
               </div>
-              <div className="col-3 text-right">
-                {/* <button className="btn p-0" style={{backgroundColor:"transparent"}}><img className="header-icons" src={LanguageIcon} alt="" /></button> */}
-                <button className="btn p-0" style={{backgroundColor:"transparent"}}><img className="header-icons" src={MusicIcon} alt="" /></button>
+              <div className="col-3 header-icons-box">
+                <button className="btn p-0"><img className="header-icons" src={LanguageIcon} alt="" /></button>
+                <button className="btn p-0"><img className="header-icons" src={MusicIcon} alt="" /></button>
               </div>
-              {/* <div className="col-12 header-box">
-              </div> */}
             </div>
             <Routes>
               <Route path="/" element={
                 <>
                   <div className="row">
                     <div className="col-12 text-center mb-5">
+                      <div className="exp-bar">
+                        <div className='exp-bar-text'>
+                          <h6>STEEL</h6>
+                          <h6>TIERS 4/10</h6>
+                        </div>
+                        <div className='exp-bar-level'>
+                          <img className="exp-icon" src={ExpBarIcon} />
+                          <img className="exp-empty" src={ExpBar} />
+                          <img className="exp-progress" src={ExpBarProgress} />
+                        </div>
+                      </div>
                       <div className="total-earned">
-                        <img className="total-earned" src={TotalPoints} alt="" />
+                        <img className="total-earned" src={PointsBar} alt="" />
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
                       <div id="gameArea" className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
@@ -186,31 +198,31 @@ const App: React.FC = () => {
             <ul>
               <li>
                 <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                  <img src={NavHome} style={{width:"70px"}}alt="" />
+                  <img className="nav-img "src={NavHome} />
                   <p>Home</p>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/googoo" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                  <img src={NavGG} style={{width:"70px"}}alt="" />
+                  <img className="nav-img "src={NavGG} />
                   <p>Gooo Gooo</p>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/earn" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                  <img src={NavEarn} style={{width:"70px"}}alt="" />
+                  <img className="nav-img "src={NavEarn} />
                   <p>Earn</p>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                  <img src={NavFriends} style={{width:"70px"}}alt="" />
+                  <img className="nav-img "src={NavFriends} />
                   <p>Friends</p>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}>
-                  <img src={NavAirdrop} style={{width:"70px"}}alt="" />
+                  <img className="nav-img "src={NavAirdrop} />
                   <p>Airdrop</p>
                 </NavLink>
               </li>
