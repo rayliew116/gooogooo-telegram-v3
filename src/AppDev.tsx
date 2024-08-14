@@ -23,9 +23,11 @@ import ExpBarIcon from './assets/img/new/expbar-icon.png'
 import AlienBig from './assets/img/new/alien-big.png'
 import AlienMedium from './assets/img/new/alien-medium.png'
 import AlienSmall from './assets/img/new/alien-small.png'
+import Pop from './assets/img/new/pop.png'
 
 // Import sound effects
-import GGSound from './assets/sound/gg-sound.mp3'
+import GGSound from './assets/sound/gg-sound.mp3';
+import BubblePop from './assets/sound/bubble.mp3';
 
 // Import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
@@ -54,11 +56,14 @@ const App: React.FC = () => {
   const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const alienPop = useRef<HTMLAudioElement | null>(null);
 
   const gameWidth = 455;
   const gameHeight = window.innerHeight;
 
   useEffect(() => {
+
+    alienPop.current = new Audio(BubblePop);
 
     // Initialize the audio element and set it to the ref
     audioRef.current = new Audio(GGSound);
@@ -90,7 +95,7 @@ const App: React.FC = () => {
         },
       ]);
       
-    }, 200);  // Adjust the interval time as needed
+    }, 600);  // Adjust the interval time as needed
 
     // Clean up interval on component unmount
     return () => clearInterval(alienInterval);
@@ -133,6 +138,12 @@ const App: React.FC = () => {
           y <= alien.y + size;
 
         if (isColliding) {
+          if (alienPop.current) {
+            alienPop.current.play().catch(error => {
+              console.error('Failed to play audio:', error);
+            });
+            alienPop.current.currentTime = 0;
+          }
           setPoints(prevPoints => prevPoints + 10);
         }
 
@@ -224,8 +235,8 @@ const App: React.FC = () => {
                       }}>
                         <img src={GoooGoooGif} alt="GoooGooo Gif" />
                         {/* Cursor Style */}
-                        {/* <img
-                          src={showGoooGoooGif ? GoooGoooGif : GoooGooo}
+                        <img
+                          src={Pop}
                           alt="GoooGooo"
                           style={{
                             position: 'absolute',
@@ -236,7 +247,7 @@ const App: React.FC = () => {
                             height: '100px',
                             pointerEvents: 'none', // Prevent interfering with cursor interaction
                           }}
-                        /> */}
+                        />
 
                         {/* Render alien images */}
                           {aliens.map(alien => {
