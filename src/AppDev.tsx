@@ -47,15 +47,13 @@ type AlienType = 'large' | 'medium' | 'small';
 
 const App: React.FC = () => {
 
-
-  
-
   const location = useLocation();
   const [points, setPoints] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const swipeSound = useRef<HTMLAudioElement | null>(null);
   const [aliens, setAliens] = useState<Alien[]>([]);
   const [showGoooGoooGif, setShowGoooGoooGif] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
 
   const playSwipeSound = () => {
@@ -91,10 +89,37 @@ const App: React.FC = () => {
     setAliens(generatedAliens);
   }, []);
 
-  const handleAlienSwipe = (id: number) => {
-    setAliens(aliens.filter(alien => alien.id !== id));
-    setPoints(points + 10); // Increment points on alien swipe
+  const handleMouseMove = (event: React.MouseEvent) => {
+    setCursorPosition({ x: event.clientX, y: event.clientY });
   };
+
+  useEffect(() => {
+    const checkCollisions = () => {
+      setAliens(prevAliens =>
+        prevAliens.filter(alien => {
+          const { size } = getAlienSizeAndImage(alien.type);
+          const isColliding =
+            cursorPosition.x >= alien.x &&
+            cursorPosition.x <= alien.x + size &&
+            cursorPosition.y >= alien.y &&
+            cursorPosition.y <= alien.y + size;
+
+          if (isColliding) {
+            setPoints(prevPoints => prevPoints + 10);
+          }
+
+          return !isColliding;
+        })
+      );
+    };
+
+    checkCollisions();
+  }, [cursorPosition]);
+
+  // const handleAlienSwipe = (id: number) => {
+  //   setAliens(aliens.filter(alien => alien.id !== id));
+  //   setPoints(points + 10); // Increment points on alien swipe
+  // };
 
   const getAlienSizeAndImage = (type: 'large' | 'medium' | 'small') => {
     switch (type) {
@@ -109,44 +134,56 @@ const App: React.FC = () => {
     }
   };
 
-  const isAlienInSwipePath = (alien: {type: "large" | "medium" | "small"; id: number, x: number, y: number }, initialX: number, initialY: number, deltaX: number, deltaY: number) => {
-    const { size } = getAlienSizeAndImage(alien.type);
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    const steps = Math.max(1, Math.floor(distance / 10)); // Check at every 10 pixels
-    for (let i = 0; i <= steps; i++) {
-      const x = initialX + (deltaX / steps) * i;
-      const y = initialY + (deltaY / steps) * i;
-      if (x >= alien.x && x <= alien.x + size && y >= alien.y && y <= alien.y + size) {
-        return true;
-      }
-    }
-    return false;
-  };
+  // const isAlienInSwipePath = (alien: Alien, x: number, y: number) => {
+  //   const { size } = getAlienSizeAndImage(alien.type);
+  //   return x >= alien.x && x <= alien.x + size && y >= alien.y && y <= alien.y + size;
+  // };
 
-  const swipeHandlers = useSwipeable({
-    onSwiping: (eventData) => {
-      if (!isSwiping) {
-        setIsSwiping(true);
-        setShowGoooGoooGif(true);
-        playSwipeSound();
-      }
+  // const swipeHandlers = useSwipeable({
+  //   onSwiping: (eventData) => {
+  //     const { absX, absY } = eventData;
+  //     if (!isSwiping) {
+  //       setIsSwiping(true);
+  //       setShowGoooGoooGif(true);
+  //       playSwipeSound();
+  //       aliens.forEach(alien => {
+  //         if (isAlienInSwipePath(alien, absX, absY)) {
+  //           handleAlienSwipe(alien.id);
+  //         }
+  //       });
+  //     }
+  //   },
+  //   onSwiped: () => {
+  //     setIsSwiping(false);
+  //     setShowGoooGoooGif(false);
+  //     stopSwipeSound();  
+  //   },
+  //   trackMouse: true, // Optional: Allows swiping with mouse for testing
+  // });
 
-      // Handle alien swipes along the swipe path
-      const { deltaX, deltaY, initial } = eventData;
-      aliens.forEach(alien => {
-        if (isAlienInSwipePath(alien, initial[0], initial[1], deltaX, deltaY)) {
-          handleAlienSwipe(alien.id);
-        }
-      });
-    },
-    onSwiped: () => {
-      setIsSwiping(false);
-      setShowGoooGoooGif(false);
-      stopSwipeSound();  
-    },
-    trackMouse: true, // Optional: Allows swiping with mouse for testing
-  });
+  // const swipeHandlers = useSwipeable({
+  //   onSwiping: (eventData) => {
+  //     const { absX, absY } = eventData;
+  //     // Handle alien swipes along the swipe path in real-time
+  //     aliens.forEach(alien => {
+  //       if (isAlienInSwipePath(alien, absX, absY)) {
+  //         handleAlienSwipe(alien.id);
+  //       }
+  //     });
+  //   },
+  //   onSwiped: () => {
+  //     setShowGoooGoooGif(true);
+      
+  //     if (swipeSound.current) {
+  //       swipeSound.current.play();
+  //     }
 
+  //     setTimeout(() => {
+  //       setShowGoooGoooGif(false);
+  //     }, 1000); // Duration for GoooGoooGif display
+  //   },
+  //   trackMouse: true, // Optional: Allows swiping with mouse for testing
+  // });
 
   useEffect(() => {
     // const urlParams = new URLSearchParams(window.location.search);
@@ -160,8 +197,6 @@ const App: React.FC = () => {
       document.body.style.overflow = "";
     };
   }, [location.pathname]);
-  
-
 
   return (
     <div className="container game-container">
@@ -198,33 +233,31 @@ const App: React.FC = () => {
                         <img className="total-earned" src={PointsBar} alt="" />
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
-                      <div className="gg-swipe" {...swipeHandlers}>
-                      <audio ref={swipeSound} src={GGSound} onEnded={handleSoundEnd}/>
-                      {isSwiping ? (
-                        <img src={GoooGoooGif} alt="GoooGooo Gif" />
-                      ) : (
-                        <img src={GoooGooo} alt="GoooGooo" />
-                      )}
+                      <div onMouseMove={handleMouseMove} className="gg-swipe">
+                        <audio ref={swipeSound} src={GGSound} onEnded={handleSoundEnd}/>
+                        {showGoooGoooGif ? (
+                          <img src={GoooGoooGif} alt="GoooGooo Gif" />
+                        ) : (
+                          <img src={GoooGooo} alt="GoooGooo" />
+                        )}
 
-                       {/* Render alien images */}
-                        {aliens.map(alien => {
-                          const { size,image } = getAlienSizeAndImage(alien.type);
-                          return(
-                          <img 
-                            key={alien.id} 
-                            src={image} 
-                            alt="Alien" 
-                            style={{ 
-                              position: 'absolute', 
-                              left: alien.x, 
-                              top: alien.y, 
-                              width: `${size}px`, 
-                              height: 'auto',
-                              objectFit: 'contain' }}
-                          />
-                          );
-                        })}
-                        
+                        {/* Render alien images */}
+                          {aliens.map(alien => {
+                            const { size,image } = getAlienSizeAndImage(alien.type);
+                            return(
+                            <img 
+                              key={alien.id} 
+                              src={image} 
+                              alt="Alien" 
+                              style={{ 
+                                position: 'absolute', 
+                                left: alien.x, 
+                                top: alien.y, 
+                                width: `${size}px`, 
+                                height: 'auto',}}
+                            />
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
@@ -241,31 +274,46 @@ const App: React.FC = () => {
           <div className="navbar p-0" id='navbar'>
             <ul>
               <li>
-                <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
                   <img className="nav-img "src={NavHome} />
                   <p>Home</p>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/googoo" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                <NavLink to="/googoo" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
                   <img className="nav-img "src={NavGG} />
                   <p>Gooo Gooo</p>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/earn" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                <NavLink to="/earn" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
                   <img className="nav-img "src={NavEarn} />
                   <p>Earn</p>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
                   <img className="nav-img "src={NavFriends} />
                   <p>Friends</p>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
                   <img className="nav-img "src={NavAirdrop} />
                   <p>Airdrop</p>
                 </NavLink>
