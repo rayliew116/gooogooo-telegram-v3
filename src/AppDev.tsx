@@ -5,7 +5,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
 import { useSwipeable, SwipeableHandlers } from 'react-swipeable'
-import Hammer from 'hammerjs';
 
 
 // Import images
@@ -24,6 +23,8 @@ import ExpBar from './assets/img/new/expbar-empty.png'
 import ExpBarProgress from './assets/img/new/expbar-progress.png'
 import ExpBarIcon from './assets/img/new/expbar-icon.png'
 import AlienBig from './assets/img/new/alien-big.png'
+import AlienMedium from './assets/img/new/alien-medium.png'
+import AlienSmall from './assets/img/new/alien-small.png'
 
 // Import sound effects
 import GGSound from './assets/sound/gg-sound.mp3'
@@ -35,16 +36,27 @@ import EarnPage from './pages/EarnPage/Earn';
 import FriendsPage from './pages/FriendsPage/Friends';
 import AirdropPage from './pages/AirdropPage/Airdrop';
 
+type AlienType = 'large' | 'medium' | 'small';
+
+  interface Alien {
+    id: number;
+    x: number;
+    y: number;
+    type: AlienType;
+  }
 
 const App: React.FC = () => {
 
+
+  
+
+  const location = useLocation();
   const [points, setPoints] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
-  const lastSwipeDirectionRef = useRef<string | null>(null);
-  const lastSwipeTimeRef = useRef(Date.now());
   const swipeSound = useRef<HTMLAudioElement | null>(null);
-  const location = useLocation();
-  // const [imageKey, setImageKey] = useState(0);
+  const [aliens, setAliens] = useState<Alien[]>([]);
+  const [showGoooGoooGif, setShowGoooGoooGif] = useState(false);
+
 
   const playSwipeSound = () => {
     if (swipeSound.current && !swipeSound.current.onplaying) {
@@ -63,74 +75,87 @@ const App: React.FC = () => {
       swipeSound.current.play(); 
     }
   };
-  const handleSwipe: SwipeableHandlers = useSwipeable({
-    onSwiped: () => {
-      setPoints((prevPoints) => prevPoints + 1);
-      // setImageKey((prevKey) => prevKey + 1); // Force re-render to add a new image
-    },
-    trackMouse: true, // Optional: allows mouse swiping
-  });
-  // const generateRandomPosition = (): { top: number; left: number } => {
-  //   const top = Math.random() * (window.innerHeight - 100); // Adjust 100 to your image height
-  //   const left = Math.random() * (window.innerWidth - 100);  // Adjust 100 to your image width
-  //   return { top, left };
-  // };
-  
-  const swiperNoSwiping = useSwipeable({
+
+  useEffect(() => {
+    // Generate random aliens on load
+    const generatedAliens: Alien[] = [];
+    for (let i = 0; i < 20; i++) { // You can adjust the number of aliens
+      const type: 'large' | 'medium' | 'small' = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
+      generatedAliens.push({
+        id: i,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        type,
+      });
+    }
+    setAliens(generatedAliens);
+  }, []);
+
+  const handleAlienSwipe = (id: number) => {
+    setAliens(aliens.filter(alien => alien.id !== id));
+    setPoints(points + 10); // Increment points on alien swipe
+  };
+
+  const getAlienSizeAndImage = (type: 'large' | 'medium' | 'small') => {
+    switch (type) {
+      case 'large':
+        return { size: 100, image: AlienBig };
+      case 'medium':
+        return { size: 65, image: AlienMedium };
+      case 'small':
+        return { size: 30, image: AlienSmall };
+      default:
+        return { size: 65, image: AlienMedium };
+    }
+  };
+
+  const isAlienInSwipePath = (alien: {type: "large" | "medium" | "small"; id: number, x: number, y: number }, initialX: number, initialY: number, deltaX: number, deltaY: number) => {
+    const { size } = getAlienSizeAndImage(alien.type);
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const steps = Math.max(1, Math.floor(distance / 10)); // Check at every 10 pixels
+    for (let i = 0; i <= steps; i++) {
+      const x = initialX + (deltaX / steps) * i;
+      const y = initialY + (deltaY / steps) * i;
+      if (x >= alien.x && x <= alien.x + size && y >= alien.y && y <= alien.y + size) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const swipeHandlers = useSwipeable({
     onSwiping: (eventData) => {
-      const now = Date.now();
       if (!isSwiping) {
         setIsSwiping(true);
+        setShowGoooGoooGif(true);
         playSwipeSound();
       }
-      if (
-        eventData.dir !== lastSwipeDirectionRef.current ||
-        now - lastSwipeTimeRef.current > 300
-      ) {
-        setPoints((prevPoints) => prevPoints + 1);
-        lastSwipeDirectionRef.current = eventData.dir;
-        lastSwipeTimeRef.current = now;
-      }
+
+      // Handle alien swipes along the swipe path
+      const { deltaX, deltaY, initial } = eventData;
+      aliens.forEach(alien => {
+        if (isAlienInSwipePath(alien, initial[0], initial[1], deltaX, deltaY)) {
+          handleAlienSwipe(alien.id);
+        }
+      });
     },
     onSwiped: () => {
       setIsSwiping(false);
+      setShowGoooGoooGif(false);
       stopSwipeSound();  
     },
-    trackMouse: true,
+    trackMouse: true, // Optional: Allows swiping with mouse for testing
   });
 
-  // useEffect(() => {
-  //   const addImageToGameArea = () => {
-  //     const gameArea = document.getElementById('gameArea');
-  //     if (gameArea) {
-  //       const img = document.createElement('img');
-  //       img.src = AlienBig; // Replace with your image path
-  //       img.style.position = 'absolute';
-  //       img.style.width = '20%'
-
-  //       const { top, left } = generateRandomPosition();
-  //       img.style.top = `${top}px`;
-  //       img.style.left = `${left}px`;
-  //       img.style.zIndex = '1000'; // Ensure image is on top
-
-  //       // Attach swipeable behavior directly using the handlers
-  //       Object.assign(img, handleSwipe);
-
-  //       gameArea.appendChild(img);
-  //     }
-  //   };
-  //   addImageToGameArea(); // Add the image when the component mounts or when imageKey changes
-  // }, [imageKey]);
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('referral_code');
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const code = urlParams.get('referral_code');
     if (location.pathname === "/") {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "";  // Reset to default when not on the specific page
+      document.body.style.overflow = "";
     }
-    // Cleanup when the component is unmounted or the path changes
     return () => {
       document.body.style.overflow = "";
     };
@@ -173,13 +198,32 @@ const App: React.FC = () => {
                         <img className="total-earned" src={PointsBar} alt="" />
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
-                      <div id="gameArea" className="gg-swipe" {...swiperNoSwiping} style={{touchAction: 'pan-y'}}>
+                      <div className="gg-swipe" {...swipeHandlers}>
                       <audio ref={swipeSound} src={GGSound} onEnded={handleSoundEnd}/>
                       {isSwiping ? (
-                          <img src={GoooGoooGif} alt="" />
+                        <img src={GoooGoooGif} alt="GoooGooo Gif" />
                       ) : (
-                        <img src={GoooGooo} alt="" />
+                        <img src={GoooGooo} alt="GoooGooo" />
                       )}
+
+                       {/* Render alien images */}
+                        {aliens.map(alien => {
+                          const { size,image } = getAlienSizeAndImage(alien.type);
+                          return(
+                          <img 
+                            key={alien.id} 
+                            src={image} 
+                            alt="Alien" 
+                            style={{ 
+                              position: 'absolute', 
+                              left: alien.x, 
+                              top: alien.y, 
+                              width: `${size}px`, 
+                              height: 'auto',
+                              objectFit: 'contain' }}
+                          />
+                          );
+                        })}
                         
                       </div>
                     </div>

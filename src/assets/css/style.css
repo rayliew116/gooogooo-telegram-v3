@@ -163,6 +163,11 @@
   }
 }
 
+.gg-swipe {
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+}
 .gg-swipe img {
   width: 80%;
 }

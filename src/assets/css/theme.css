@@ -59,7 +59,7 @@
 .profit-green {color:#48a600;}
 
 body {
-  max-width: 900px;
+  max-width: 455px;
   height: 100vh;
   margin: 0 auto;
   padding:0;
@@ -131,5 +131,5 @@ img {
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
-  -o-user-drag: none;   
+  -o-user-drag: none;
 }

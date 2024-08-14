@@ -124,9 +124,9 @@
     display: flex;
     justify-content: center;
     width: 80%;
+    max-width: 370px;
     position: fixed;
     bottom: 13%;
-    left: 10%;
     z-index: 100;
 }
 
@@ -134,6 +134,9 @@
 @media (max-width: 399px) {
     .tasklist-content {
         width: 80%;
+    }
+    .invite-friends {
+        width: 90%;
     }
 }
 @media (max-width: 376px) {
