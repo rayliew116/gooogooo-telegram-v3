@@ -59,6 +59,7 @@ const App: React.FC = () => {
   const gameHeight = window.innerHeight;
 
   useEffect(() => {
+
     // Initialize the audio element and set it to the ref
     audioRef.current = new Audio(GGSound);
     audioRef.current.loop = true;  // Loop the audio while moving
@@ -88,7 +89,8 @@ const App: React.FC = () => {
           type,
         },
       ]);
-    }, 2000);  // Adjust the interval time as needed
+      
+    }, 100);  // Adjust the interval time as needed
 
     // Clean up interval on component unmount
     return () => clearInterval(alienInterval);
@@ -111,7 +113,7 @@ const App: React.FC = () => {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;  // Reset sound to the beginning
       }
-    }, 200);  // Adjust the delay as needed
+    }, 500);  // Adjust the delay as needed
 
     // Play sound only if it's not already playing
     if (audioRef.current && audioRef.current.paused) {
@@ -159,11 +161,11 @@ const App: React.FC = () => {
       case 'large':
         return { size: 100, image: AlienBig };
       case 'medium':
-        return { size: 65, image: AlienMedium };
+        return { size: 75, image: AlienMedium };
       case 'small':
-        return { size: 30, image: AlienSmall };
+        return { size: 40, image: AlienSmall };
       default:
-        return { size: 65, image: AlienMedium };
+        return { size: 75, image: AlienMedium };
     }
   };
 
@@ -215,14 +217,13 @@ const App: React.FC = () => {
                         <img className="total-earned" src={PointsBar} alt="" />
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
-                      <div onMouseMove={handleMouseMove} onTouchMove={handleTouchMove} className='gg-swipe'>
-                        {/* <audio ref={swipeSound} src={GGSound} onEnded={handleSoundEnd}/> */}
-                        {isMoving ? (
-                          <img src={GoooGoooGif} alt="GoooGooo Gif" />
-                        ) : (
-                          <img src={GoooGooo} alt="GoooGooo" />
-                        )}
-
+                      <div onMouseMove={handleMouseMove} onTouchMove={handleTouchMove} className='gg-swipe' 
+                      style={{
+                        width: `${gameWidth}px`,
+                        height: `${gameHeight}px`,
+                      }}>
+                        <img src={GoooGoooGif} alt="GoooGooo Gif" />
+                        {/* Cursor Style */}
                         {/* <img
                           src={showGoooGoooGif ? GoooGoooGif : GoooGooo}
                           alt="GoooGooo"
