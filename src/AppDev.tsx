@@ -4,8 +4,6 @@
 // import { CopyToClipboard } from 'react-copy-to-clipboard';
 import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
-import { useSwipeable, SwipeableHandlers } from 'react-swipeable'
-
 
 // Import images
 import MainLogo from './assets/img/new/logo.png';
@@ -49,79 +47,114 @@ const App: React.FC = () => {
 
   const location = useLocation();
   const [points, setPoints] = useState(0);
-  const [isSwiping, setIsSwiping] = useState(false);
-  const swipeSound = useRef<HTMLAudioElement | null>(null);
   const [aliens, setAliens] = useState<Alien[]>([]);
-  const [showGoooGoooGif, setShowGoooGoooGif] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isMoving, setIsMoving] = useState(false);
+  const movementTimeoutRef = useRef<number | null>(null);
+  const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
 
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const playSwipeSound = () => {
-    if (swipeSound.current && !swipeSound.current.onplaying) {
-      swipeSound.current.currentTime = 0;
-      swipeSound.current.play();
-    }
-  };
-  const stopSwipeSound = () => {
-    if (swipeSound.current) {
-      swipeSound.current.pause(); 
-      swipeSound.current.currentTime = 0; 
-    }
-  };
-  const handleSoundEnd = () => {
-    if (isSwiping && swipeSound.current) {
-      swipeSound.current.play(); 
-    }
-  };
+  const gameWidth = 455;
+  const gameHeight = window.innerHeight;
 
   useEffect(() => {
+    // Initialize the audio element and set it to the ref
+    audioRef.current = new Audio(GGSound);
+    audioRef.current.loop = true;  // Loop the audio while moving
+
     // Generate random aliens on load
     const generatedAliens: Alien[] = [];
     for (let i = 0; i < 20; i++) { // You can adjust the number of aliens
-      const type: 'large' | 'medium' | 'small' = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
+      const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
       generatedAliens.push({
-        id: i,
+        id: alienIdRef.current++,
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
         type,
       });
     }
     setAliens(generatedAliens);
-  }, []);
 
-  const handleMouseMove = (event: React.MouseEvent) => {
-    setCursorPosition({ x: event.clientX, y: event.clientY });
+    // Set up interval to generate new aliens
+    const alienInterval = setInterval(() => {
+      const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
+      setAliens(prevAliens => [
+        ...prevAliens,
+        {
+          id: alienIdRef.current++,
+          x: Math.random() * gameWidth,
+          y: Math.random() * gameHeight,
+          type,
+        },
+      ]);
+    }, 2000);  // Adjust the interval time as needed
+
+    // Clean up interval on component unmount
+    return () => clearInterval(alienInterval);
+
+  }, [gameWidth, gameHeight]);
+
+  const handleMovement = (x: number, y: number) => {
+    setCursorPosition({ x, y });
+    setIsMoving(true);
+
+    // Clear previous timeout if it exists
+    if (movementTimeoutRef.current) {
+      clearTimeout(movementTimeoutRef.current);
+    }
+
+    // Set a timeout to detect when movement stops
+    movementTimeoutRef.current = window.setTimeout(() => {
+      setIsMoving(false);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;  // Reset sound to the beginning
+      }
+    }, 200);  // Adjust the delay as needed
+
+    // Play sound only if it's not already playing
+    if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.play().catch(error => {
+        console.error('Failed to play audio:', error);
+      });
+    }
+
+    // Check for collisions and update points and alien list
+    setAliens(prevAliens =>
+      prevAliens.filter(alien => {
+        const { size } = getAlienSizeAndImage(alien.type);
+        const isColliding =
+          x >= alien.x &&
+          x <= alien.x + size &&
+          y >= alien.y &&
+          y <= alien.y + size;
+
+        if (isColliding) {
+          setPoints(prevPoints => prevPoints + 10);
+        }
+
+        return !isColliding;
+      })
+    );
   };
 
-  useEffect(() => {
-    const checkCollisions = () => {
-      setAliens(prevAliens =>
-        prevAliens.filter(alien => {
-          const { size } = getAlienSizeAndImage(alien.type);
-          const isColliding =
-            cursorPosition.x >= alien.x &&
-            cursorPosition.x <= alien.x + size &&
-            cursorPosition.y >= alien.y &&
-            cursorPosition.y <= alien.y + size;
+  const handleMouseMove = (event: React.MouseEvent) => {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    handleMovement(x, y);
+  };
 
-          if (isColliding) {
-            setPoints(prevPoints => prevPoints + 10);
-          }
+  const handleTouchMove = (event: React.TouchEvent) => {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const touch = event.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    handleMovement(x, y);
+  };
 
-          return !isColliding;
-        })
-      );
-    };
-
-    checkCollisions();
-  }, [cursorPosition]);
-
-  // const handleAlienSwipe = (id: number) => {
-  //   setAliens(aliens.filter(alien => alien.id !== id));
-  //   setPoints(points + 10); // Increment points on alien swipe
-  // };
-
-  const getAlienSizeAndImage = (type: 'large' | 'medium' | 'small') => {
+  const getAlienSizeAndImage = (type: AlienType) => {
     switch (type) {
       case 'large':
         return { size: 100, image: AlienBig };
@@ -133,57 +166,6 @@ const App: React.FC = () => {
         return { size: 65, image: AlienMedium };
     }
   };
-
-  // const isAlienInSwipePath = (alien: Alien, x: number, y: number) => {
-  //   const { size } = getAlienSizeAndImage(alien.type);
-  //   return x >= alien.x && x <= alien.x + size && y >= alien.y && y <= alien.y + size;
-  // };
-
-  // const swipeHandlers = useSwipeable({
-  //   onSwiping: (eventData) => {
-  //     const { absX, absY } = eventData;
-  //     if (!isSwiping) {
-  //       setIsSwiping(true);
-  //       setShowGoooGoooGif(true);
-  //       playSwipeSound();
-  //       aliens.forEach(alien => {
-  //         if (isAlienInSwipePath(alien, absX, absY)) {
-  //           handleAlienSwipe(alien.id);
-  //         }
-  //       });
-  //     }
-  //   },
-  //   onSwiped: () => {
-  //     setIsSwiping(false);
-  //     setShowGoooGoooGif(false);
-  //     stopSwipeSound();  
-  //   },
-  //   trackMouse: true, // Optional: Allows swiping with mouse for testing
-  // });
-
-  // const swipeHandlers = useSwipeable({
-  //   onSwiping: (eventData) => {
-  //     const { absX, absY } = eventData;
-  //     // Handle alien swipes along the swipe path in real-time
-  //     aliens.forEach(alien => {
-  //       if (isAlienInSwipePath(alien, absX, absY)) {
-  //         handleAlienSwipe(alien.id);
-  //       }
-  //     });
-  //   },
-  //   onSwiped: () => {
-  //     setShowGoooGoooGif(true);
-      
-  //     if (swipeSound.current) {
-  //       swipeSound.current.play();
-  //     }
-
-  //     setTimeout(() => {
-  //       setShowGoooGoooGif(false);
-  //     }, 1000); // Duration for GoooGoooGif display
-  //   },
-  //   trackMouse: true, // Optional: Allows swiping with mouse for testing
-  // });
 
   useEffect(() => {
     // const urlParams = new URLSearchParams(window.location.search);
@@ -233,29 +215,43 @@ const App: React.FC = () => {
                         <img className="total-earned" src={PointsBar} alt="" />
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
-                      <div onMouseMove={handleMouseMove} className="gg-swipe">
-                        <audio ref={swipeSound} src={GGSound} onEnded={handleSoundEnd}/>
-                        {showGoooGoooGif ? (
+                      <div onMouseMove={handleMouseMove} onTouchMove={handleTouchMove} className='gg-swipe'>
+                        {/* <audio ref={swipeSound} src={GGSound} onEnded={handleSoundEnd}/> */}
+                        {isMoving ? (
                           <img src={GoooGoooGif} alt="GoooGooo Gif" />
                         ) : (
                           <img src={GoooGooo} alt="GoooGooo" />
                         )}
 
+                        {/* <img
+                          src={showGoooGoooGif ? GoooGoooGif : GoooGooo}
+                          alt="GoooGooo"
+                          style={{
+                            position: 'absolute',
+                            left: cursorPosition.x - 50, // Centering GoooGooo on the cursor
+                            top: cursorPosition.y - 50,
+                            zIndex: 1000,
+                            width: '100px',
+                            height: '100px',
+                            pointerEvents: 'none', // Prevent interfering with cursor interaction
+                          }}
+                        /> */}
+
                         {/* Render alien images */}
                           {aliens.map(alien => {
                             const { size,image } = getAlienSizeAndImage(alien.type);
                             return(
-                            <img 
-                              key={alien.id} 
-                              src={image} 
-                              alt="Alien" 
-                              style={{ 
-                                position: 'absolute', 
-                                left: alien.x, 
-                                top: alien.y, 
-                                width: `${size}px`, 
-                                height: 'auto',}}
-                            />
+                              <img 
+                                key={alien.id} 
+                                src={image} 
+                                alt="Alien" 
+                                style={{ 
+                                  position: 'absolute', 
+                                  left: alien.x, 
+                                  top: alien.y, 
+                                  width: `${size}px`, 
+                                  height: 'auto'}}
+                              />
                             );
                           })}
                       </div>
