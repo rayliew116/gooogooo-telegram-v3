@@ -90,7 +90,7 @@ const App: React.FC = () => {
         },
       ]);
       
-    }, 800);  // Adjust the interval time as needed
+    }, 200);  // Adjust the interval time as needed
 
     // Clean up interval on component unmount
     return () => clearInterval(alienInterval);
@@ -163,7 +163,7 @@ const App: React.FC = () => {
       case 'medium':
         return { size: 75, image: AlienMedium };
       case 'small':
-        return { size: 40, image: AlienSmall };
+        return { size: 50, image: AlienSmall };
       default:
         return { size: 75, image: AlienMedium };
     }
