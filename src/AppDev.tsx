@@ -235,7 +235,7 @@ const App: React.FC = () => {
                       }}>
                         <img src={GoooGoooGif} alt="GoooGooo Gif" />
                         {/* Cursor Style */}
-                        <img
+                        {/* <img
                           src={Pop}
                           alt="GoooGooo"
                           style={{
@@ -247,7 +247,7 @@ const App: React.FC = () => {
                             height: '100px',
                             pointerEvents: 'none', // Prevent interfering with cursor interaction
                           }}
-                        />
+                        /> */}
 
                         {/* Render alien images */}
                           {aliens.map(alien => {

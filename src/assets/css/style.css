@@ -3,12 +3,12 @@
 }
 
 .game-container {
-  max-width: 455px;
+  max-width: 475px;
   overflow-x: hidden;
 }
 
 .game-bg {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background-image: url('../img/new/bg-default.png');
   background-position: center;
   background-repeat: no-repeat;
