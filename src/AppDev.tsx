@@ -90,7 +90,7 @@ const App: React.FC = () => {
         },
       ]);
       
-    }, 100);  // Adjust the interval time as needed
+    }, 800);  // Adjust the interval time as needed
 
     // Clean up interval on component unmount
     return () => clearInterval(alienInterval);
@@ -113,7 +113,7 @@ const App: React.FC = () => {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;  // Reset sound to the beginning
       }
-    }, 500);  // Adjust the delay as needed
+    }, 200);  // Adjust the delay as needed
 
     // Play sound only if it's not already playing
     if (audioRef.current && audioRef.current.paused) {
