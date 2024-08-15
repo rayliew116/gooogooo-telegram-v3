@@ -84,22 +84,22 @@
 }
 .total-earned h2 {
   position: absolute;
-  top: 48%;
-  left: 50%;
+  top: 50%;
+  left: 53%;
   transform: translate(-50%, -38%);
   color: white;
-  font-size: 40px;
+  font-size: 32px;
   font-family: 'PEPSI';
 }
 /* Points Bar Responsive */
 @media (max-width: 376px) {
   .total-earned h2 {
-    font-size: 35px;
+    font-size: 28px;
   }
 }
 @media (max-width: 321px) {
   .total-earned h2 {
-    font-size: 30px;
+    font-size: 23px;
   }
 }
 

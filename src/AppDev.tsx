@@ -26,8 +26,9 @@ import AlienSmall from './assets/img/new/alien-small.png'
 import Pop from './assets/img/new/pop.png'
 
 // Import sound effects
-import GGSound from './assets/sound/gg-sound.mp3';
-import BubblePop from './assets/sound/bubble.mp3';
+// import GGSound from './assets/sound/gg-sound.mp3';
+// import BubblePop from './assets/sound/bubble.mp3';
+import BubblePop from './assets/sound/continuous-bubble-pop.mp3';
 
 // Import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
@@ -63,10 +64,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
 
-    alienPop.current = new Audio(BubblePop);
+    // alienPop.current = new Audio(BubblePop);
 
     // Initialize the audio element and set it to the ref
-    audioRef.current = new Audio(GGSound);
+    audioRef.current = new Audio(BubblePop);
     audioRef.current.loop = true;  // Loop the audio while moving
 
     const alienBox = document.querySelector('.aliens-box');
@@ -94,7 +95,7 @@ const App: React.FC = () => {
     }
     setAliens(generatedAliens);
 
-    const maxAliens = 50;
+    const maxAliens = 20;
 
     // Set up interval to generate new aliens
     const alienInterval = setInterval(() => {
@@ -135,20 +136,20 @@ const App: React.FC = () => {
     }
 
     // Set a timeout to detect when movement stops
-    // movementTimeoutRef.current = window.setTimeout(() => {
-    //   setIsMoving(false);
-    //   if (audioRef.current) {
-    //     audioRef.current.pause();
-    //     audioRef.current.currentTime = 0;  // Reset sound to the beginning
-    //   }
-    // }, 200);  // Adjust the delay as needed
+    movementTimeoutRef.current = window.setTimeout(() => {
+      setIsMoving(false);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;  // Reset sound to the beginning
+      }
+    }, 200);  // Adjust the delay as needed
 
     // Play sound only if it's not already playing
-    // if (audioRef.current && audioRef.current.paused) {
-    //   audioRef.current.play().catch(error => {
-    //     console.error('Failed to play audio:', error);
-    //   });
-    // }
+    if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.play().catch(error => {
+        console.error('Failed to play audio:', error);
+      });
+    }
 
     // Check for collisions and update points and alien list
     setAliens(prevAliens =>
@@ -161,12 +162,12 @@ const App: React.FC = () => {
           y <= alien.y + size;
 
         if (isColliding) {
-          if (alienPop.current) {
-            alienPop.current.play().catch(error => {
-              console.error('Failed to play audio:', error);
-            });
-            alienPop.current.currentTime = 0;
-          }
+          // if (alienPop.current) {
+          //   alienPop.current.play().catch(error => {
+          //     console.error('Failed to play audio:', error);
+          //   });
+          //   alienPop.current.currentTime = 0;
+          // }
           setPoints(prevPoints => prevPoints + 10);
         }
 
@@ -197,7 +198,7 @@ const App: React.FC = () => {
       case 'medium':
         return { size: 75, image: AlienMedium };
       case 'small':
-        return { size: 50, image: AlienSmall };
+        return { size: 75, image: AlienSmall };
       default:
         return { size: 75, image: AlienMedium };
     }
@@ -268,7 +269,7 @@ const App: React.FC = () => {
                           alignItems: 'center',
                         }}
                       >
-                        <img 
+                        {/* <img 
                           src={GoooGoooGif} 
                           alt="GoooGooo Gif" 
                           style={{
@@ -280,7 +281,7 @@ const App: React.FC = () => {
                             width: '280px', 
                             height: 'auto',
                           }}
-                        />
+                        /> */}
                           <img
                           src={GoooGoooGif}
                           alt="GoooGooo"
@@ -289,8 +290,8 @@ const App: React.FC = () => {
                             left: cursorPosition.x - 50, // Centering GoooGooo on the cursor
                             top: cursorPosition.y - 50,
                             zIndex: 1000,
-                            width: '100px',
-                            height: '100px',
+                            width: '120px',
+                            height: '120px',
                             pointerEvents: 'none', // Prevent interfering with cursor interaction
                           }}
                         />
@@ -300,7 +301,7 @@ const App: React.FC = () => {
                             position: 'relative',
                             width: '100%', 
                             height: '100%',
-                            zIndex: 2, 
+                            // zIndex: 2, 
                           }}
                         >
                           {aliens.map(alien => {
