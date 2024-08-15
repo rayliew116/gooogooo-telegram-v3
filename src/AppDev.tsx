@@ -90,7 +90,7 @@ const App: React.FC = () => {
     
     // Generate random aliens on load
     const generatedAliens: Alien[] = [];
-    for (let i = 0; i < 2; i++) { // You can adjust the number of aliens
+    for (let i = 0; i < 10; i++) { // You can adjust the number of aliens
       const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
       const { size } = getAlienSizeAndImage(type);
       generatedAliens.push({
@@ -103,7 +103,7 @@ const App: React.FC = () => {
     }
     setAliens(generatedAliens);
 
-    const maxAliens = 5;
+    const maxAliens = 25;
 
     // Set up interval to generate new aliens
     const alienInterval = setInterval(() => {
@@ -162,12 +162,6 @@ const App: React.FC = () => {
       // }
     }, 200);  // Adjust the delay as needed
 
-    // Play sound only if it's not already playing
-    // if (audioRef.current && audioRef.current.paused) {
-    //   audioRef.current.play().catch(error => {
-    //     console.error('Failed to play audio:', error);
-    //   });
-    // }
 
     // Check for collisions and update points and alien list
     setAliens(prevAliens =>
@@ -183,7 +177,9 @@ const App: React.FC = () => {
 
         if (isColliding && !alien.collided ) {
 
-          setPoints(prevPoints => prevPoints + 1);
+          if (!alien.animation) {
+            setPoints(prevPoints => prevPoints + 1);
+          }
 
           if (alienPop.current) {
             alienPop.current.play().catch(error => {
@@ -191,30 +187,20 @@ const App: React.FC = () => {
             });
           }
         
-          // Set the animation state
           const updatedAlien = { ...alien, animation: true };
 
-          if (alien.animation) {
-
-          }
-
-        
           // Delay setting collided to true
           setTimeout(() => {
             setAliens(prevAliens => 
               prevAliens.map(a => 
-                a.id === alien.id ? { ...a, collided: true, animation: false } : a
+                a.id === alien.id ? { ...a, collided: true } : a
               )
             );
-          }, 800);  // 1 second delay
+          }, 1000);
         
-
           return updatedAlien;
         }
 
-
-
-        // return !isColliding;
         return alien;
       })
     );
@@ -241,11 +227,11 @@ const App: React.FC = () => {
   const getAlienSizeAndImage = (type: AlienType) => {
     switch (type) {
       case 'large':
-        return { size: 100, image: AlienBig };
+        return { size: 125, image: AlienBig };
       case 'medium':
-        return { size: 75, image: AlienMedium };
+        return { size: 105, image: AlienMedium };
       case 'small':
-        return { size: 75, image: AlienSmall };
+        return { size: 85, image: AlienSmall };
       default:
         return { size: 75, image: AlienMedium };
     }
@@ -362,18 +348,6 @@ const App: React.FC = () => {
                           {aliens.map(alien => {
                             const { size, image } = getAlienSizeAndImage(alien.type);
                             return (
-                              // <img 
-                              //   key={alien.id} 
-                              //   src={image} 
-                              //   alt="Alien" 
-                              //   style={{ 
-                              //     position: 'absolute', 
-                              //     left: alien.x, 
-                              //     top: alien.y, 
-                              //     width: `${size}px`, 
-                              //     height: 'auto',
-                              //   }} 
-                              // />
                               <img 
                                 key={alien.id} 
                                 src={alien.animation ? Explode1 : image} 
@@ -386,6 +360,7 @@ const App: React.FC = () => {
                                   width: `${size}px`, 
                                   height: 'auto',
                                   transform: 'translate(-50%, -50%)',
+                                  transition: alien.animation ? 'transform 0.5s ease, opacity 0.5s ease' : 'none',
                                 }} 
                               />
                             );
