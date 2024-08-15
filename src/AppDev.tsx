@@ -281,7 +281,19 @@ const App: React.FC = () => {
                             height: 'auto',
                           }}
                         />
-
+                          <img
+                          src={GoooGoooGif}
+                          alt="GoooGooo"
+                          style={{
+                            position: 'absolute',
+                            left: cursorPosition.x - 50, // Centering GoooGooo on the cursor
+                            top: cursorPosition.y - 50,
+                            zIndex: 1000,
+                            width: '100px',
+                            height: '100px',
+                            pointerEvents: 'none', // Prevent interfering with cursor interaction
+                          }}
+                        />
                         <div 
                           className="aliens-box" 
                           style={{
