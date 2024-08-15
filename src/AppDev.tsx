@@ -58,8 +58,8 @@ const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const alienPop = useRef<HTMLAudioElement | null>(null);
 
-  const gameWidth = 455;
-  const gameHeight = window.innerHeight;
+  const gameWidth = window.innerWidth;
+  const gameHeight = window.innerHeight * 0.5;
 
   useEffect(() => {
 
@@ -69,36 +69,59 @@ const App: React.FC = () => {
     audioRef.current = new Audio(GGSound);
     audioRef.current.loop = true;  // Loop the audio while moving
 
+    const alienBox = document.querySelector('.aliens-box');
+    const boxWidth = alienBox?.clientWidth || gameWidth;
+    const boxHeight = alienBox?.clientHeight || gameHeight;
+
+    const generateRandomPosition = (size: number, max: number) => {
+      const margin = 5;  // Adjusted margin to prevent clustering
+      return Math.random() * (max - size - margin * 2) + margin;  // Ensures the alien stays within bounds
+    };
+
+    
     // Generate random aliens on load
     const generatedAliens: Alien[] = [];
-    for (let i = 0; i < 20; i++) { // You can adjust the number of aliens
+    for (let i = 0; i < 10; i++) { // You can adjust the number of aliens
       const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
+      const { size } = getAlienSizeAndImage(type);
       generatedAliens.push({
         id: alienIdRef.current++,
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
+        x: generateRandomPosition(size, boxWidth),
+        y: generateRandomPosition(size, boxHeight),
         type,
       });
+
     }
     setAliens(generatedAliens);
+
+    const maxAliens = 50;
 
     // Set up interval to generate new aliens
     const alienInterval = setInterval(() => {
       const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
-      setAliens(prevAliens => [
-        ...prevAliens,
-        {
-          id: alienIdRef.current++,
-          x: Math.random() * gameWidth,
-          y: Math.random() * gameHeight,
-          type,
-        },
-      ]);
-      
-    }, 600);  // Adjust the interval time as needed
+      const { size } = getAlienSizeAndImage(type);
+
+      setAliens(prevAliens => {
+        if (prevAliens.length >= maxAliens) {
+          return prevAliens;  // Do not add more aliens if the limit is reached
+        }
+  
+        return [
+          ...prevAliens,
+          {
+            id: alienIdRef.current++,
+            x: generateRandomPosition(size, boxWidth),
+            y: generateRandomPosition(size, boxHeight),
+            type,
+          },
+        ];
+      });
+
+    }, 100);
 
     // Clean up interval on component unmount
     return () => clearInterval(alienInterval);
+
 
   }, [gameWidth, gameHeight]);
 
@@ -112,20 +135,20 @@ const App: React.FC = () => {
     }
 
     // Set a timeout to detect when movement stops
-    movementTimeoutRef.current = window.setTimeout(() => {
-      setIsMoving(false);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;  // Reset sound to the beginning
-      }
-    }, 200);  // Adjust the delay as needed
+    // movementTimeoutRef.current = window.setTimeout(() => {
+    //   setIsMoving(false);
+    //   if (audioRef.current) {
+    //     audioRef.current.pause();
+    //     audioRef.current.currentTime = 0;  // Reset sound to the beginning
+    //   }
+    // }, 200);  // Adjust the delay as needed
 
     // Play sound only if it's not already playing
-    if (audioRef.current && audioRef.current.paused) {
-      audioRef.current.play().catch(error => {
-        console.error('Failed to play audio:', error);
-      });
-    }
+    // if (audioRef.current && audioRef.current.paused) {
+    //   audioRef.current.play().catch(error => {
+    //     console.error('Failed to play audio:', error);
+    //   });
+    // }
 
     // Check for collisions and update points and alien list
     setAliens(prevAliens =>
@@ -212,7 +235,7 @@ const App: React.FC = () => {
               <Route path="/" element={
                 <>
                   <div className="row">
-                    <div className="col-12 text-center mb-5">
+                    <div className="col-12 text-center">
                       <div className="exp-bar">
                         <div className='exp-bar-text'>
                           <h6>STEEL</h6>
@@ -228,31 +251,49 @@ const App: React.FC = () => {
                         <img className="total-earned" src={PointsBar} alt="" />
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
-                      <div onMouseMove={handleMouseMove} onTouchMove={handleTouchMove} className='gg-swipe' 
-                      style={{
-                        width: `${gameWidth}px`,
-                        height: `${gameHeight}px`,
-                      }}>
-                        <img src={GoooGoooGif} alt="GoooGooo Gif" />
-                        {/* Cursor Style */}
-                        {/* <img
-                          src={Pop}
-                          alt="GoooGooo"
+                    </div>
+                    <div className="col-12 mb-5">
+                      <div 
+                        onMouseMove={handleMouseMove} 
+                        onTouchMove={handleTouchMove} 
+                        className='gg-swipe' 
+                        style={{
+                          width: `${gameWidth}px`,
+                          height: `${gameHeight}px`,
+                          position: 'relative', 
+                          overflow: 'hidden',
+                          margin: '0 auto',  
+                          display: 'flex', 
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <img 
+                          src={GoooGoooGif} 
+                          alt="GoooGooo Gif" 
                           style={{
                             position: 'absolute',
-                            left: cursorPosition.x - 50, // Centering GoooGooo on the cursor
-                            top: cursorPosition.y - 50,
-                            zIndex: 1000,
-                            width: '100px',
-                            height: '100px',
-                            pointerEvents: 'none', // Prevent interfering with cursor interaction
+                            left: '50%', 
+                            top: '50%', 
+                            transform: 'translate(-50%, -50%)', 
+                            zIndex: 1, 
+                            width: '280px', 
+                            height: 'auto',
                           }}
-                        /> */}
+                        />
 
-                        {/* Render alien images */}
+                        <div 
+                          className="aliens-box" 
+                          style={{
+                            position: 'relative',
+                            width: '100%', 
+                            height: '100%',
+                            zIndex: 2, 
+                          }}
+                        >
                           {aliens.map(alien => {
-                            const { size,image } = getAlienSizeAndImage(alien.type);
-                            return(
+                            const { size, image } = getAlienSizeAndImage(alien.type);
+                            return (
                               <img 
                                 key={alien.id} 
                                 src={image} 
@@ -262,10 +303,12 @@ const App: React.FC = () => {
                                   left: alien.x, 
                                   top: alien.y, 
                                   width: `${size}px`, 
-                                  height: 'auto'}}
+                                  height: 'auto',
+                                }} 
                               />
                             );
                           })}
+                        </div>
                       </div>
                     </div>
                   </div>
