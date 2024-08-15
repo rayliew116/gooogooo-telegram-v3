@@ -24,6 +24,7 @@ import AlienBig from './assets/img/new/alien-big.png'
 import AlienMedium from './assets/img/new/alien-medium.png'
 import AlienSmall from './assets/img/new/alien-small.png'
 import Pop from './assets/img/new/pop.png'
+import Explode1 from './assets/img/new/exposion.gif'
 
 // Import sound effects
 // import GGSound from './assets/sound/gg-sound.mp3';
@@ -44,6 +45,7 @@ type AlienType = 'large' | 'medium' | 'small';
     x: number;
     y: number;
     type: AlienType;
+    collided?: boolean;
   }
 
 const App: React.FC = () => {
@@ -103,6 +105,14 @@ const App: React.FC = () => {
       const { size } = getAlienSizeAndImage(type);
 
       setAliens(prevAliens => {
+        // const activeAliens = prevAliens.filter(alien => !alien.collided);
+
+        // if (activeAliens.length >= maxAliens) {
+        //   return activeAliens;  // Do not add more aliens if the limit is reached
+        // }
+  
+        // return [
+        //   ...activeAliens,
         if (prevAliens.length >= maxAliens) {
           return prevAliens;  // Do not add more aliens if the limit is reached
         }
@@ -114,6 +124,7 @@ const App: React.FC = () => {
             x: generateRandomPosition(size, boxWidth),
             y: generateRandomPosition(size, boxHeight),
             type,
+            collided: false,
           },
         ];
       });
@@ -153,7 +164,8 @@ const App: React.FC = () => {
 
     // Check for collisions and update points and alien list
     setAliens(prevAliens =>
-      prevAliens.filter(alien => {
+      // prevAliens.filter(alien => {
+      prevAliens.map(alien => {
         const { size } = getAlienSizeAndImage(alien.type);
         const isColliding =
           x >= alien.x &&
@@ -161,7 +173,7 @@ const App: React.FC = () => {
           y >= alien.y &&
           y <= alien.y + size;
 
-        if (isColliding) {
+        if (isColliding && !alien.collided ) {
           // if (alienPop.current) {
           //   alienPop.current.play().catch(error => {
           //     console.error('Failed to play audio:', error);
@@ -169,11 +181,14 @@ const App: React.FC = () => {
           //   alienPop.current.currentTime = 0;
           // }
           setPoints(prevPoints => prevPoints + 10);
+          return { ...alien, collided: true };
         }
 
-        return !isColliding;
+        // return !isColliding;
+        return alien;
       })
     );
+
   };
 
   const handleMouseMove = (event: React.MouseEvent) => {
@@ -262,7 +277,7 @@ const App: React.FC = () => {
                           width: `${gameWidth}px`,
                           height: `${gameHeight}px`,
                           position: 'relative', 
-                          overflow: 'hidden',
+                          // overflow: 'hidden',
                           margin: '0 auto',  
                           display: 'flex', 
                           justifyContent: 'center',
@@ -301,24 +316,38 @@ const App: React.FC = () => {
                             position: 'relative',
                             width: '100%', 
                             height: '100%',
-                            // zIndex: 2, 
+                            zIndex: 2, 
                           }}
                         >
                           {aliens.map(alien => {
                             const { size, image } = getAlienSizeAndImage(alien.type);
                             return (
+                              // <img 
+                              //   key={alien.id} 
+                              //   src={image} 
+                              //   alt="Alien" 
+                              //   style={{ 
+                              //     position: 'absolute', 
+                              //     left: alien.x, 
+                              //     top: alien.y, 
+                              //     width: `${size}px`, 
+                              //     height: 'auto',
+                              //   }} 
+                              // />
                               <img 
-                                key={alien.id} 
-                                src={image} 
-                                alt="Alien" 
-                                style={{ 
-                                  position: 'absolute', 
-                                  left: alien.x, 
-                                  top: alien.y, 
-                                  width: `${size}px`, 
-                                  height: 'auto',
-                                }} 
-                              />
+        key={alien.id} 
+        src={alien.collided ? Explode1 : image} 
+        alt="Alien" 
+        className={alien.collided ? 'pan-animation' : ''}
+        style={{ 
+          position: 'absolute', 
+          left: alien.x, 
+          top: alien.y, 
+          width: `${size}px`, 
+          height: 'auto',
+          transform: 'translate(-50%, -50%)',
+        }} 
+      />
                             );
                           })}
                         </div>
