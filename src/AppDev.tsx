@@ -90,7 +90,7 @@ const App: React.FC = () => {
     
     // Generate random aliens on load
     const generatedAliens: Alien[] = [];
-    for (let i = 0; i < 20; i++) { // You can adjust the number of aliens
+    for (let i = 0; i < 2; i++) { // You can adjust the number of aliens
       const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
       const { size } = getAlienSizeAndImage(type);
       generatedAliens.push({
@@ -103,7 +103,7 @@ const App: React.FC = () => {
     }
     setAliens(generatedAliens);
 
-    const maxAliens = 30;
+    const maxAliens = 5;
 
     // Set up interval to generate new aliens
     const alienInterval = setInterval(() => {
@@ -136,7 +136,7 @@ const App: React.FC = () => {
         ];
       });
 
-    }, 100);
+    }, 500);
 
     // Clean up interval on component unmount
     return () => clearInterval(alienInterval);
@@ -179,18 +179,25 @@ const App: React.FC = () => {
           x <= alien.x + size &&
           y >= alien.y &&
           y <= alien.y + size;
+        
 
         if (isColliding && !alien.collided ) {
+
+          setPoints(prevPoints => prevPoints + 1);
+
           if (alienPop.current) {
             alienPop.current.play().catch(error => {
               console.error('Failed to play audio:', error);
             });
           }
         
-          setPoints(prevPoints => prevPoints + 10);
-        
           // Set the animation state
           const updatedAlien = { ...alien, animation: true };
+
+          if (alien.animation) {
+
+          }
+
         
           // Delay setting collided to true
           setTimeout(() => {
@@ -201,13 +208,18 @@ const App: React.FC = () => {
             );
           }, 800);  // 1 second delay
         
+
           return updatedAlien;
         }
+
+
 
         // return !isColliding;
         return alien;
       })
     );
+
+
 
   };
 
@@ -229,13 +241,13 @@ const App: React.FC = () => {
   const getAlienSizeAndImage = (type: AlienType) => {
     switch (type) {
       case 'large':
-        return { size: 120, image: AlienBig };
+        return { size: 100, image: AlienBig };
       case 'medium':
-        return { size: 85, image: AlienMedium };
+        return { size: 75, image: AlienMedium };
       case 'small':
-        return { size: 85, image: AlienSmall };
+        return { size: 75, image: AlienSmall };
       default:
-        return { size: 85, image: AlienMedium };
+        return { size: 75, image: AlienMedium };
     }
   };
 
