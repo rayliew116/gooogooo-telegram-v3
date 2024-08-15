@@ -299,7 +299,7 @@ const App: React.FC = () => {
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
                     </div>
-                    <div className="col-12 mt-5 mb-5">
+                    <div className="col-12 mt-3 mb-5">
                       <div 
                         onMouseMove={handleMouseMove} 
                         onTouchMove={handleTouchMove} 
