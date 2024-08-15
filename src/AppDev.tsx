@@ -30,6 +30,8 @@ import Explode1 from './assets/img/new/exposion.gif'
 // import GGSound from './assets/sound/gg-sound.mp3';
 // import BubblePop from './assets/sound/bubble.mp3';
 import BubblePop from './assets/sound/continuous-bubble-pop.mp3';
+import CrystalPop from './assets/sound/crystal2.mp3';
+import BGMusic from './assets/sound/gooogoooplanet-low.mp3';
 
 // Import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
@@ -46,6 +48,7 @@ type AlienType = 'large' | 'medium' | 'small';
     y: number;
     type: AlienType;
     collided?: boolean;
+    animation?: boolean;
   }
 
 const App: React.FC = () => {
@@ -58,6 +61,7 @@ const App: React.FC = () => {
   const movementTimeoutRef = useRef<number | null>(null);
   const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
 
+  const bgm = useRef<HTMLAudioElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const alienPop = useRef<HTMLAudioElement | null>(null);
 
@@ -66,11 +70,13 @@ const App: React.FC = () => {
 
   useEffect(() => {
 
-    // alienPop.current = new Audio(BubblePop);
+    bgm.current = new Audio(BGMusic);
+    bgm.current.loop = true;
 
-    // Initialize the audio element and set it to the ref
+    alienPop.current = new Audio(CrystalPop);
+
     audioRef.current = new Audio(BubblePop);
-    audioRef.current.loop = true;  // Loop the audio while moving
+    // audioRef.current.loop = true;  // Loop the audio while moving
 
     const alienBox = document.querySelector('.aliens-box');
     const boxWidth = alienBox?.clientWidth || gameWidth;
@@ -84,7 +90,7 @@ const App: React.FC = () => {
     
     // Generate random aliens on load
     const generatedAliens: Alien[] = [];
-    for (let i = 0; i < 10; i++) { // You can adjust the number of aliens
+    for (let i = 0; i < 20; i++) { // You can adjust the number of aliens
       const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
       const { size } = getAlienSizeAndImage(type);
       generatedAliens.push({
@@ -97,7 +103,7 @@ const App: React.FC = () => {
     }
     setAliens(generatedAliens);
 
-    const maxAliens = 20;
+    const maxAliens = 30;
 
     // Set up interval to generate new aliens
     const alienInterval = setInterval(() => {
@@ -105,26 +111,27 @@ const App: React.FC = () => {
       const { size } = getAlienSizeAndImage(type);
 
       setAliens(prevAliens => {
-        // const activeAliens = prevAliens.filter(alien => !alien.collided);
+        const activeAliens = prevAliens.filter(alien => !alien.collided);
 
-        // if (activeAliens.length >= maxAliens) {
-        //   return activeAliens;  // Do not add more aliens if the limit is reached
-        // }
-  
-        // return [
-        //   ...activeAliens,
-        if (prevAliens.length >= maxAliens) {
-          return prevAliens;  // Do not add more aliens if the limit is reached
+        if (activeAliens.length >= maxAliens) {
+          return activeAliens;  // Do not add more aliens if the limit is reached
         }
   
         return [
-          ...prevAliens,
+          ...activeAliens,
+        // if (prevAliens.length >= maxAliens) {
+        //   return prevAliens;  // Do not add more aliens if the limit is reached
+        // }
+  
+        // return [
+        //   ...prevAliens,
           {
             id: alienIdRef.current++,
             x: generateRandomPosition(size, boxWidth),
             y: generateRandomPosition(size, boxHeight),
             type,
             collided: false,
+            animation: false,
           },
         ];
       });
@@ -149,18 +156,18 @@ const App: React.FC = () => {
     // Set a timeout to detect when movement stops
     movementTimeoutRef.current = window.setTimeout(() => {
       setIsMoving(false);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;  // Reset sound to the beginning
-      }
+      // if (audioRef.current) {
+      //   audioRef.current.pause();
+      //   audioRef.current.currentTime = 0;  // Reset sound to the beginning
+      // }
     }, 200);  // Adjust the delay as needed
 
     // Play sound only if it's not already playing
-    if (audioRef.current && audioRef.current.paused) {
-      audioRef.current.play().catch(error => {
-        console.error('Failed to play audio:', error);
-      });
-    }
+    // if (audioRef.current && audioRef.current.paused) {
+    //   audioRef.current.play().catch(error => {
+    //     console.error('Failed to play audio:', error);
+    //   });
+    // }
 
     // Check for collisions and update points and alien list
     setAliens(prevAliens =>
@@ -174,14 +181,27 @@ const App: React.FC = () => {
           y <= alien.y + size;
 
         if (isColliding && !alien.collided ) {
-          // if (alienPop.current) {
-          //   alienPop.current.play().catch(error => {
-          //     console.error('Failed to play audio:', error);
-          //   });
-          //   alienPop.current.currentTime = 0;
-          // }
+          if (alienPop.current) {
+            alienPop.current.play().catch(error => {
+              console.error('Failed to play audio:', error);
+            });
+          }
+        
           setPoints(prevPoints => prevPoints + 10);
-          return { ...alien, collided: true };
+        
+          // Set the animation state
+          const updatedAlien = { ...alien, animation: true };
+        
+          // Delay setting collided to true
+          setTimeout(() => {
+            setAliens(prevAliens => 
+              prevAliens.map(a => 
+                a.id === alien.id ? { ...a, collided: true, animation: false } : a
+              )
+            );
+          }, 800);  // 1 second delay
+        
+          return updatedAlien;
         }
 
         // return !isColliding;
@@ -209,13 +229,13 @@ const App: React.FC = () => {
   const getAlienSizeAndImage = (type: AlienType) => {
     switch (type) {
       case 'large':
-        return { size: 100, image: AlienBig };
+        return { size: 120, image: AlienBig };
       case 'medium':
-        return { size: 75, image: AlienMedium };
+        return { size: 85, image: AlienMedium };
       case 'small':
-        return { size: 75, image: AlienSmall };
+        return { size: 85, image: AlienSmall };
       default:
-        return { size: 75, image: AlienMedium };
+        return { size: 85, image: AlienMedium };
     }
   };
 
@@ -243,8 +263,16 @@ const App: React.FC = () => {
                 <img className="header-logo" src={MainLogo} />
               </div>
               <div className="col-3 header-icons-box">
-                <button className="btn p-0"><img className="header-icons" src={LanguageIcon} alt="" /></button>
-                <button className="btn p-0"><img className="header-icons" src={MusicIcon} alt="" /></button>
+                <button className="btn p-0"><img className="header-icons" src={LanguageIcon}/></button>
+                <button className="btn p-0" onClick={(e) => {
+                  if (bgm.current && bgm.current.paused) {
+                    bgm.current.play();
+                  }
+
+                }}>
+                  <img className="header-icons" src={MusicIcon}/>
+
+                </button>
               </div>
             </div>
             <Routes>
@@ -305,8 +333,8 @@ const App: React.FC = () => {
                             left: cursorPosition.x - 50, // Centering GoooGooo on the cursor
                             top: cursorPosition.y - 50,
                             zIndex: 1000,
-                            width: '120px',
-                            height: '120px',
+                            width: '180px',
+                            height: '180px',
                             pointerEvents: 'none', // Prevent interfering with cursor interaction
                           }}
                         />
@@ -335,19 +363,19 @@ const App: React.FC = () => {
                               //   }} 
                               // />
                               <img 
-        key={alien.id} 
-        src={alien.collided ? Explode1 : image} 
-        alt="Alien" 
-        className={alien.collided ? 'pan-animation' : ''}
-        style={{ 
-          position: 'absolute', 
-          left: alien.x, 
-          top: alien.y, 
-          width: `${size}px`, 
-          height: 'auto',
-          transform: 'translate(-50%, -50%)',
-        }} 
-      />
+                                key={alien.id} 
+                                src={alien.animation ? Explode1 : image} 
+                                alt="Alien" 
+                                className={alien.animation ? 'pan-animation' : ''}
+                                style={{ 
+                                  position: 'absolute', 
+                                  left: alien.x, 
+                                  top: alien.y, 
+                                  width: `${size}px`, 
+                                  height: 'auto',
+                                  transform: 'translate(-50%, -50%)',
+                                }} 
+                              />
                             );
                           })}
                         </div>
