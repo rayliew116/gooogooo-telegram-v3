@@ -62,6 +62,8 @@ const App: React.FC = () => {
   const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
 
   const bgm = useRef<HTMLAudioElement | null>(null);
+  const [bgmIsPlaying, setBgmIsPlaying]= useState(false);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const alienPop = useRef<HTMLAudioElement | null>(null);
 
@@ -136,7 +138,7 @@ const App: React.FC = () => {
         ];
       });
 
-    }, 500);
+    }, 300);
 
     // Clean up interval on component unmount
     return () => clearInterval(alienInterval);
@@ -261,12 +263,15 @@ const App: React.FC = () => {
                 <img className="header-logo" src={MainLogo} />
               </div>
               <div className="col-3 header-icons-box">
-                <button className="btn p-0"><img className="header-icons" src={LanguageIcon}/></button>
+                <button disabled className="btn p-0"><img className="header-icons" src={LanguageIcon}/></button>
                 <button className="btn p-0" onClick={(e) => {
-                  if (bgm.current && bgm.current.paused) {
+                  if (bgm.current && !bgmIsPlaying) {
                     bgm.current.play();
+                    setBgmIsPlaying(true);
+                  } else if (bgm.current && bgmIsPlaying) {
+                    bgm.current.pause();
+                    setBgmIsPlaying(false);
                   }
-
                 }}>
                   <img className="header-icons" src={MusicIcon}/>
 
@@ -294,7 +299,7 @@ const App: React.FC = () => {
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
                     </div>
-                    <div className="col-12 mb-5">
+                    <div className="col-12 mt-5 mb-5">
                       <div 
                         onMouseMove={handleMouseMove} 
                         onTouchMove={handleTouchMove} 
@@ -310,20 +315,7 @@ const App: React.FC = () => {
                           alignItems: 'center',
                         }}
                       >
-                        {/* <img 
-                          src={GoooGoooGif} 
-                          alt="GoooGooo Gif" 
-                          style={{
-                            position: 'absolute',
-                            left: '50%', 
-                            top: '50%', 
-                            transform: 'translate(-50%, -50%)', 
-                            zIndex: 1, 
-                            width: '280px', 
-                            height: 'auto',
-                          }}
-                        /> */}
-                          <img
+                        <img
                           src={GoooGoooGif}
                           alt="GoooGooo"
                           style={{
@@ -352,7 +344,7 @@ const App: React.FC = () => {
                                 key={alien.id} 
                                 src={alien.animation ? Explode1 : image} 
                                 alt="Alien" 
-                                className={alien.animation ? 'pan-animation' : ''}
+                                className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
                                 style={{ 
                                   position: 'absolute', 
                                   left: alien.x, 

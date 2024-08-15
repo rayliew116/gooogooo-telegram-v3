@@ -204,3 +204,41 @@
 .pan-animation {
   animation: panIn 0.8s ease-out, panOut 0.8s 0.8s ease-in forwards;
 }
+
+@keyframes popOut {
+  0% {
+    transform: scale(0.6) translate(-50%, -50%);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2) translate(-50%, -50%);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+.pop-animation {
+  animation: popOut 0.4s ease-in forwards;
+}
+
+@keyframes popOutPanLeft {
+  0% {
+    transform: translateX(-100%) scale(0.6);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(0) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-5%) scale(1);
+    opacity: 1;
+  }
+}
+
+.pop-animation-pan-left {
+  animation: popOutPanLeft 0.8s ease-in forwards;
+}
