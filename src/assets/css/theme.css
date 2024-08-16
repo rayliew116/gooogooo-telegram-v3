@@ -52,7 +52,9 @@
   font-display: swap;
 }
 
-
+span {
+  font-family: 'MOON GET!';
+}
 .brand-yellow {color:#FDC300;}
 .light-yellow {color:#FFF155;}
 .text-gray {color:#a8a8a8;}

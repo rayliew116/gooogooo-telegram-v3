@@ -49,6 +49,7 @@ type AlienType = 'large' | 'medium' | 'small';
     type: AlienType;
     collided?: boolean;
     animation?: boolean;
+    showPlusOne? : boolean;
   }
 
 const App: React.FC = () => {
@@ -134,6 +135,7 @@ const App: React.FC = () => {
             type,
             collided: false,
             animation: false,
+            showPlusOne: false,
           },
         ];
       });
@@ -189,7 +191,7 @@ const App: React.FC = () => {
             });
           }
         
-          const updatedAlien = { ...alien, animation: true };
+          const updatedAlien = { ...alien, animation: true, showPlusOne: true };
 
           // Delay setting collided to true
           setTimeout(() => {
@@ -340,21 +342,40 @@ const App: React.FC = () => {
                           {aliens.map(alien => {
                             const { size, image } = getAlienSizeAndImage(alien.type);
                             return (
-                              <img 
-                                key={alien.id} 
-                                src={alien.animation ? Explode1 : image} 
-                                alt="Alien" 
-                                className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
-                                style={{ 
-                                  position: 'absolute', 
-                                  left: alien.x, 
-                                  top: alien.y, 
-                                  width: `${size}px`, 
-                                  height: 'auto',
-                                  transform: 'translate(-50%, -50%)',
-                                  transition: alien.animation ? 'transform 0.5s ease, opacity 0.5s ease' : 'none',
-                                }} 
-                              />
+                              <>
+                                <img
+                                  key={alien.id}
+                                  src={alien.animation ? Explode1 : image}
+                                  alt="Alien"
+                                  className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
+                                  style={{
+                                    position: 'absolute',
+                                    left: alien.x,
+                                    top: alien.y,
+                                    width: `${size}px`,
+                                    height: 'auto',
+                                    transform: 'translate(-50%, -50%)',
+                                    transition: alien.animation ? 'transform 0.5s ease, opacity 0.5s ease' : 'none',
+                                  }} />
+                                  {alien.showPlusOne && (
+                                    <span
+                                    
+                                      className="plus-one-animation"
+                                      style={{
+                                        
+                                        position: 'absolute',
+                                        left: alien.x,
+                                        top: alien.y,
+                                        transform: 'translate(-50%, -50%)',
+                                        fontSize: '40px',
+                                        color: 'white',
+                                      }}
+                                    >
+                                      +1
+                                    </span>
+                                    
+                                  )}
+                              </>
                             );
                           })}
                         </div>

@@ -242,3 +242,18 @@
 .pop-animation-pan-left {
   animation: popOutPanLeft 0.8s ease-in forwards;
 }
+
+@keyframes fadeAndMoveUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+}
+
+.plus-one-animation {
+  animation: fadeAndMoveUp 2s ease-out forwards;
+}
