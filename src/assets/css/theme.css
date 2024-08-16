@@ -90,6 +90,9 @@ button {
   background-color: transparent;
 }
 
+.modal {
+  background: rgba(0, 0, 0, 0.6);
+}
 /* h1, h2, h3 {font-family: 'PEPSI';}
 h4, h5, h6 {font-family: 'Bebas Neue'; letter-spacing: 2px;} */
 
