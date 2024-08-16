@@ -21,12 +21,14 @@ import MusicIcon from './assets/img/new/music-icon.png';
 import ExpBar from './assets/img/new/expbar-empty.png';
 import ExpBarProgress from './assets/img/new/expbar-progress.png';
 import ExpBarIcon from './assets/img/new/expbar-icon.png';
-import AlienBig from './assets/img/new/new-alien.png';
-import AlienMedium from './assets/img/new/new-alien.png';
-import AlienSmall from './assets/img/new/new-alien.png';
+// import AlienBig from './assets/img/new/new-alien.png';
+// import AlienMedium from './assets/img/new/new-alien.png';
+// import AlienSmall from './assets/img/new/new-alien.png';
 import Pop from './assets/img/new/pop.png';
 import Explode1 from './assets/img/new/exposion.gif';
-
+import AlienNormal from './assets/img/new/alien-new.png'
+import AlienBomber from './assets/img/new/bomber-new.png'
+import BiteEffect from './assets/img/new/bite.gif'
 
 // Import sound effects
 // import GGSound from './assets/sound/gg-sound.mp3';
@@ -42,17 +44,17 @@ import EarnPage from './pages/EarnPage/Earn';
 import FriendsPage from './pages/FriendsPage/Friends';
 import AirdropPage from './pages/AirdropPage/Airdrop';
 
-type AlienType = 'large' | 'medium' | 'small';
+type AlienType = 'normal' | 'bomber' ;
 
-  interface Alien {
-    id: number;
-    x: number;
-    y: number;
-    type: AlienType;
-    collided?: boolean;
-    animation?: boolean;
-    showPlusOne? : boolean;
-  }
+interface Alien {
+  id: number;
+  x: number;
+  y: number;
+  type: AlienType;
+  collided?: boolean;
+  animation?: boolean;
+  showPlusOne? : boolean;
+}
 
 const App: React.FC = () => {
 
@@ -97,7 +99,7 @@ const App: React.FC = () => {
     // Generate random aliens on load
     const generatedAliens: Alien[] = [];
     for (let i = 0; i < 10; i++) { // You can adjust the number of aliens
-      const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
+      const type: AlienType =  Math.random() < 0.995 ? 'normal' : 'bomber';
       const { size } = getAlienSizeAndImage(type);
       generatedAliens.push({
         id: alienIdRef.current++,
@@ -113,7 +115,7 @@ const App: React.FC = () => {
 
     // Set up interval to generate new aliens
     const alienInterval = setInterval(() => {
-      const type: AlienType = Math.random() < 0.33 ? 'large' : Math.random() < 0.5 ? 'medium' : 'small';
+      const type: AlienType =  Math.random() < 0.995 ? 'normal' : 'bomber';
       const { size } = getAlienSizeAndImage(type);
 
       setAliens(prevAliens => {
@@ -234,14 +236,12 @@ const App: React.FC = () => {
 
   const getAlienSizeAndImage = (type: AlienType) => {
     switch (type) {
-      case 'large':
-        return { size: 60, image: AlienBig };
-      case 'medium':
-        return { size: 60, image: AlienMedium };
-      case 'small':
-        return { size: 60, image: AlienSmall };
+      case 'normal':
+        return { size: 60, image: AlienNormal };
+      case 'bomber':
+        return { size: 60, image: AlienBomber };
       default:
-        return { size: 60, image: AlienMedium };
+        return { size: 60, image: AlienNormal };
     }
   };
 
@@ -351,7 +351,7 @@ const App: React.FC = () => {
                           // alignItems: 'center',
                         }}
                       >
-                        {isMoving ? (
+                        {/* {isMoving ? (
                           <img
                             src={GoooGoooGif}
                             alt="GoooGooo"
@@ -381,7 +381,7 @@ const App: React.FC = () => {
                             }}
                             className={!startGame ? "d-none" : ""}
                           />
-                        )}
+                        )} */}
                         <div 
                           className="aliens-box" 
                           style={{
@@ -397,7 +397,7 @@ const App: React.FC = () => {
                               <React.Fragment key={alien.id}> 
                                 <img
                                   // key={alien.id}
-                                  src={alien.animation ? Explode1 : image}
+                                  src={alien.animation ? BiteEffect : image}
                                   alt="Alien"
                                   className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
                                   style={{
