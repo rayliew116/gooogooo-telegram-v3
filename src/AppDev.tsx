@@ -271,13 +271,21 @@ const App: React.FC = () => {
               <div className="col-3 header-icons-box">
                 <button disabled className="btn p-0"><img className="header-icons" src={LanguageIcon}/></button>
                 <button className="btn p-0" onClick={(e) => {
-                  if (bgm.current && !bgmIsPlaying) {
-                    bgm.current.play();
-                    setBgmIsPlaying(true);
-                  } else if (bgm.current && bgmIsPlaying) {
-                    bgm.current.pause();
-                    setBgmIsPlaying(false);
+                  // if (bgm.current && !bgmIsPlaying) {
+                  //   bgm.current.play();
+                  //   setBgmIsPlaying(true);
+                  // } else if (bgm.current && bgmIsPlaying) {
+                  //   bgm.current.pause();
+                  //   setBgmIsPlaying(false);
+                  // }
+                  if (bgm.current && bgmIsPlaying) {
+                      bgm.current.pause();
+                      setBgmIsPlaying(false);
+                  } else if (bgm.current && !bgmIsPlaying) {
+                      bgm.current.play();
+                      setBgmIsPlaying(true);
                   }
+
                 }}>
                   <img className="header-icons" src={MusicIcon}/>
 
@@ -333,13 +341,14 @@ const App: React.FC = () => {
                         className='gg-swipe' 
                         style={{
                           width: `${gameWidth}px`,
+                          maxWidth: '768px',
                           height: `${gameHeight}px`,
                           position: 'relative', 
                           // overflow: 'hidden',
                           margin: '0 auto',  
-                          display: 'flex', 
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                          // display: 'flex', 
+                          // justifyContent: 'center',
+                          // alignItems: 'center',
                         }}
                       >
                         {isMoving ? (
@@ -385,9 +394,9 @@ const App: React.FC = () => {
                           {aliens.map(alien => {
                             const { size, image } = getAlienSizeAndImage(alien.type);
                             return (
-                              <>
+                              <React.Fragment key={alien.id}> 
                                 <img
-                                  key={alien.id}
+                                  // key={alien.id}
                                   src={alien.animation ? Explode1 : image}
                                   alt="Alien"
                                   className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
@@ -399,25 +408,25 @@ const App: React.FC = () => {
                                     height: 'auto',
                                     transform: 'translate(-50%, -50%)',
                                     transition: alien.animation ? 'transform 0.5s ease, opacity 0.5s ease' : 'none',
-                                  }} />
-                                  {alien.showPlusOne && (
-                                    <span
-                                      className="plus-one-animation"
-                                      style={{
-                                        
-                                        position: 'absolute',
-                                        left: alien.x,
-                                        top: alien.y,
-                                        transform: 'translate(-50%, -50%)',
-                                        fontSize: '40px',
-                                        color: 'white',
-                                      }}
-                                    >
-                                      +1
-                                    </span>
-                                    
-                                  )}
-                              </>
+                                  }}
+                                />
+                                {alien.showPlusOne && (
+                                  <span
+                                    className="plus-one-animation"
+                                    style={{
+                                      
+                                      position: 'absolute',
+                                      left: alien.x,
+                                      top: alien.y,
+                                      transform: 'translate(-50%, -50%)',
+                                      fontSize: '40px',
+                                      color: 'white',
+                                    }}
+                                  >
+                                    +1
+                                  </span>
+                                )}
+                              </React.Fragment>
                             );
                           })}
                         </div>

@@ -1,6 +1,14 @@
 .friends-container {
     font-family: 'Gilroy';
 }
+.friends-container-header h5 {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+.friends-container-header img {
+    width: 40%;
+}
 
 .task-container {
     margin: 0 40px;
@@ -13,14 +21,14 @@
 
 .tasklist {
     width: 100%;
-    max-width: 370px;
+    max-width: 768px;
 }
 .tasklist-bg {
     width: 100%;
     position: relative;
 }
 .tasklist-content {
-    width: 78%;
+    width: 83%;
     padding: 8px 0;
     position: absolute;
     display: flex;
@@ -28,7 +36,7 @@
     justify-content: center;
 }
 .tasklist-content p {
-    font-size: 13px;
+    font-size: 18px;
 }
 .present-icon {
     width: 13%;
@@ -59,7 +67,7 @@
     left: 15%;
 }
 .leaderboard-items h5 {
-    font-size: 10px;
+    font-size: 17px;
 }
 .leaderboard-list {
     width: 70%;
@@ -117,26 +125,64 @@
 .item-content p,
 .user-details p,
 .ref-earnings p {
-    font-size: 12px;
+    font-size: 17px;
 }
 
 .invite-friends {
+    width: 100%;
+    max-width: 768px;
     display: flex;
     justify-content: center;
-    width: 80%;
-    max-width: 370px;
     position: fixed;
     bottom: 13%;
     z-index: 100;
 }
 
+
+
 /* Responsive */
+@media (max-width: 658px) {
+    .leaderboard-items h5,
+    .item-content p,
+    .user-details p,
+    .ref-earnings p  {
+        font-size: 12px;
+    }
+}
+@media (max-width: 524px) {
+    .friends-container-header h5 {
+        font-size: 18px;
+    }
+    .tasklist-content p {
+        font-size: 15px;
+    }
+}
+@media (max-width: 478px) {
+    .friends-container-header h5 {
+        font-size: 15px;
+    }
+    .friends-container-header img {
+        width: 45%;
+    }
+    .tasklist-content {
+        width:80%;
+    }
+    .tasklist-content p {
+        font-size: 12px;
+    }
+    .leaderboard-items h5,
+    .item-content p,
+    .user-details p,
+    .ref-earnings p  {
+        font-size: 10px;
+    }
+}
 @media (max-width: 399px) {
+    .friends-container-header h5 {
+        font-size: 10px;
+    }
     .tasklist-content {
         width: 80%;
-    }
-    .invite-friends {
-        width: 90%;
     }
 }
 @media (max-width: 376px) {
@@ -151,7 +197,6 @@
     .ref-earnings p {
         font-size: 10px;
     }
-    
 }
 @media (max-width: 350px) {
     .tasklist-content p {
@@ -178,6 +223,28 @@
     .ref-earnings img {
         width: 18%;
         height: 18%;
+    }
+}
+
+/* max-height responsive */
+@media (max-height: 1108px) {
+    .invite-friends {
+        bottom: 16%;
+    }
+}
+@media (max-height: 937px) {
+    .invite-friends {
+        bottom: 18%;
+    }
+}
+@media (max-height: 750px) {
+    .invite-friends {
+        bottom: 22%;
+    }
+}
+@media (max-height: 643px) {
+    .invite-friends {
+        bottom: 25%;
     }
 }
 

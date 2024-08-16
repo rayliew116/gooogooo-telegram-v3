@@ -33,145 +33,142 @@ const EarnPage = (props: Props) => {
                 </div>
                 <div className="col-12">
                     <div className="earn-container">
-                        <div className="row mt-5">
+                        <div className="earn">
                             <img src={BorderFrame} style={{width:"100%"}}/>
-                            <div className="earn">
-                                <img className="earn-items-bg" src={ItemBg} />
-                                <div className="earn-items">
-                                    <button className="btn">TASKS</button>
-                                    <button className="btn">TOP REWARDS</button>
-                                    <button className="btn">REFERRAL</button>
-                                </div>
-                                <div className="earn-list">
-                                    <ul>
-                                        <li>
-                                            <img className="earn-bg" src={PurpleBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={TwitterIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Follow Twitter Account</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                            <div className="earn-items">
+                                <button className="btn">TASKS</button>
+                                <button className="btn">TOP REWARDS</button>
+                                <button className="btn">REFERRAL</button>
+                            </div>
+                            <div className="earn-list">
+                                <ul>
+                                    <li>
+                                        <img className="earn-bg" src={PurpleBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={TwitterIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Follow Twitter Account</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Arrow} />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <img className="earn-bg" src={PurpleBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={RetweetIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Retweet/Share Twitter Post</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                                            <img className="action-icon" src={Arrow} />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img className="earn-bg" src={PurpleBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={RetweetIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Retweet/Share Twitter Post</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Arrow} />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <img className="earn-bg" src={PurpleBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={CommentIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Comment on Twitter Post</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                                            <img className="action-icon" src={Arrow} />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img className="earn-bg" src={PurpleBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={CommentIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Comment on Twitter Post</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Arrow} />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <img className="earn-bg" src={BlackBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={TelegramIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Join Telegram Channel</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                                            <img className="action-icon" src={Arrow} />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img className="earn-bg" src={BlackBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={TelegramIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Join Telegram Channel</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Complete} />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <img className="earn-bg" src={BlackBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={GroupIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Join Telegram Group</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                                            <img className="action-icon" src={Complete} />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img className="earn-bg" src={BlackBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={GroupIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Join Telegram Group</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Complete} />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <img className="earn-bg" src={BlackBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={PlayIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Watch Ads</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                                            <img className="action-icon" src={Complete} />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img className="earn-bg" src={BlackBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={PlayIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Watch Ads</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Complete} />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <img className="earn-bg" src={BlackBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={PlayIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Watch Ads</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                                            <img className="action-icon" src={Complete} />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img className="earn-bg" src={BlackBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={PlayIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Watch Ads</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Complete} />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <img className="earn-bg" src={BlackBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={PlayIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Watch Ads</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                                            <img className="action-icon" src={Complete} />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img className="earn-bg" src={BlackBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={PlayIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Watch Ads</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Complete} />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <img className="earn-bg" src={BlackBar} />
-                                            <div className="earn-content">
-                                                <img className="item-icon" src={PlayIcon} />
-                                                <div className="earn-task-content">
-                                                    <p>Watch Ads</p>
-                                                    <div className="earn-des">
-                                                        <img src={Crystal} />
-                                                        <p className="brand-yellow m-0 font">+100K</p>
-                                                    </div>
+                                            <img className="action-icon" src={Complete} />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img className="earn-bg" src={BlackBar} />
+                                        <div className="earn-content">
+                                            <img className="item-icon" src={PlayIcon} />
+                                            <div className="earn-task-content">
+                                                <p>Watch Ads</p>
+                                                <div className="earn-des">
+                                                    <img src={Crystal} />
+                                                    <p className="brand-yellow m-0 font">+100K</p>
                                                 </div>
-                                                <img className="action-icon" src={Complete} />
                                             </div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                            <img className="action-icon" src={Complete} />
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

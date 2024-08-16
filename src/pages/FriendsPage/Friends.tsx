@@ -20,10 +20,10 @@ const FriendsPage = (props: Props) => {
     return (
         <>
             <div className="row friends-container">
-                <div className="col-12 text-center">
-                    <img src={Title} style={{width:"45%"}} />
-                    <h5 className="brand-yellow mt-1 mb-0" style={{fontSize:"13px",fontWeight:"bold",letterSpacing:"1px"}}>INVITE A FRIEND</h5>
-                    <h5 className="text-white" style={{fontSize:"10px",fontWeight:"light",letterSpacing:"1px"}}>You and your friend will receive bonuses</h5>
+                <div className="col-12 text-center friends-container-header">
+                    <img src={Title} />
+                    <h5 className="brand-yellow mt-1 mb-0">INVITE A FRIEND</h5>
+                    <h5 className="text-white">You and your friend will receive bonuses</h5>
                 </div>
                 <div className="col-12">
                     <div className="task-container">
@@ -168,13 +168,15 @@ const FriendsPage = (props: Props) => {
                                                     <p>+8.787</p>
                                                 </div>
                                             </div>
-                                        </li>
-                                        
+                                        </li>      
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <div className="invite-friends">
+                    </div>
+                    <div className="invite-friends">
+                        <div style={{width:'80%',margin:'auto', display:'flex'}}>
+                            
                             <button className="btn p-0" style={{backgroundColor:"transparent"}}>
                                 <img src={InviteButton} style={{width:"100%"}}/>
                             </button>
