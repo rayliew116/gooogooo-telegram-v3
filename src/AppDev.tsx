@@ -21,9 +21,9 @@ import MusicIcon from './assets/img/new/music-icon.png';
 import ExpBar from './assets/img/new/expbar-empty.png';
 import ExpBarProgress from './assets/img/new/expbar-progress.png';
 import ExpBarIcon from './assets/img/new/expbar-icon.png';
-import AlienBig from './assets/img/new/alien-big.png';
-import AlienMedium from './assets/img/new/alien-medium.png';
-import AlienSmall from './assets/img/new/alien-small.png';
+import AlienBig from './assets/img/new/new-alien.png';
+import AlienMedium from './assets/img/new/new-alien.png';
+import AlienSmall from './assets/img/new/new-alien.png';
 import Pop from './assets/img/new/pop.png';
 import Explode1 from './assets/img/new/exposion.gif';
 
@@ -235,13 +235,13 @@ const App: React.FC = () => {
   const getAlienSizeAndImage = (type: AlienType) => {
     switch (type) {
       case 'large':
-        return { size: 125, image: AlienBig };
+        return { size: 60, image: AlienBig };
       case 'medium':
-        return { size: 105, image: AlienMedium };
+        return { size: 60, image: AlienMedium };
       case 'small':
-        return { size: 85, image: AlienSmall };
+        return { size: 60, image: AlienSmall };
       default:
-        return { size: 75, image: AlienMedium };
+        return { size: 60, image: AlienMedium };
     }
   };
 
