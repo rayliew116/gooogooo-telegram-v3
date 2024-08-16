@@ -6,6 +6,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
 
 // Import images
+import StartGame from './assets/img/new/start-now.png';
 import MainLogo from './assets/img/new/logo.png';
 import GoooGooo from './assets/img/new/gg-main.png';
 import GoooGoooGif from './assets/img/new/gg.gif';
@@ -15,16 +16,17 @@ import NavEarn from './assets/img/new/nav-earn.png';
 import NavFriends from './assets/img/new/nav-friends.png';
 import NavAirdrop from './assets/img/new/nav-airdrop.png';
 import PointsBar from './assets/img/new/points-bar.png';
-import LanguageIcon from './assets/img/new/language-icon.png'
-import MusicIcon from './assets/img/new/music-icon.png'
-import ExpBar from './assets/img/new/expbar-empty.png'
-import ExpBarProgress from './assets/img/new/expbar-progress.png'
-import ExpBarIcon from './assets/img/new/expbar-icon.png'
-import AlienBig from './assets/img/new/alien-big.png'
-import AlienMedium from './assets/img/new/alien-medium.png'
-import AlienSmall from './assets/img/new/alien-small.png'
-import Pop from './assets/img/new/pop.png'
-import Explode1 from './assets/img/new/exposion.gif'
+import LanguageIcon from './assets/img/new/language-icon.png';
+import MusicIcon from './assets/img/new/music-icon.png';
+import ExpBar from './assets/img/new/expbar-empty.png';
+import ExpBarProgress from './assets/img/new/expbar-progress.png';
+import ExpBarIcon from './assets/img/new/expbar-icon.png';
+import AlienBig from './assets/img/new/alien-big.png';
+import AlienMedium from './assets/img/new/alien-medium.png';
+import AlienSmall from './assets/img/new/alien-small.png';
+import Pop from './assets/img/new/pop.png';
+import Explode1 from './assets/img/new/exposion.gif';
+
 
 // Import sound effects
 // import GGSound from './assets/sound/gg-sound.mp3';
@@ -55,6 +57,7 @@ type AlienType = 'large' | 'medium' | 'small';
 const App: React.FC = () => {
 
   const location = useLocation();
+  const [startGame, setStartGame] = useState(false);
   const [points, setPoints] = useState(0);
   const [aliens, setAliens] = useState<Alien[]>([]);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -221,6 +224,7 @@ const App: React.FC = () => {
   };
 
   const handleTouchMove = (event: React.TouchEvent) => {
+    // event.preventDefault();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const touch = event.touches[0];
     const x = touch.clientX - rect.left;
@@ -283,6 +287,27 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={
                 <>
+                  <div className={"modal fade" + (!startGame ? " show d-block" : " d-none")} id="claimModal" aria-labelledby="claimModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered">
+                      <div className="modal-content start-game-modal">
+                        <div className="modal-body text-center">
+                        <button className="btn p-0" data-dismiss="modal" onClick={(e) => {
+                          setStartGame(true);
+                          if (bgm.current && !bgmIsPlaying) {
+                            bgm.current.play();
+                            setBgmIsPlaying(true);
+                          } 
+                          // else if (bgm.current && bgmIsPlaying) {
+                          //   bgm.current.pause();
+                          //   setBgmIsPlaying(false);
+                          // }
+                        }}>
+                          <img className="w-100" src={StartGame}></img>
+                        </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="row">
                     <div className="col-12 text-center">
                       <div className="exp-bar">
@@ -301,7 +326,7 @@ const App: React.FC = () => {
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
                     </div>
-                    <div className="col-12 mt-3 mb-5">
+                    <div className="col-12 mb-5">
                       <div 
                         onMouseMove={handleMouseMove} 
                         onTouchMove={handleTouchMove} 
@@ -317,19 +342,37 @@ const App: React.FC = () => {
                           alignItems: 'center',
                         }}
                       >
-                        <img
-                          src={GoooGoooGif}
-                          alt="GoooGooo"
-                          style={{
-                            position: 'absolute',
-                            left: cursorPosition.x - 50, // Centering GoooGooo on the cursor
-                            top: cursorPosition.y - 50,
-                            zIndex: 1000,
-                            width: '180px',
-                            height: '180px',
-                            pointerEvents: 'none', // Prevent interfering with cursor interaction
-                          }}
-                        />
+                        {isMoving ? (
+                          <img
+                            src={GoooGoooGif}
+                            alt="GoooGooo"
+                            style={{
+                              position: 'absolute',
+                              left: cursorPosition.x - 50,
+                              top: cursorPosition.y - 50,
+                              zIndex: 1000,
+                              width: '180px',
+                              height: '180px',
+                              pointerEvents: 'none', // Prevent interfering with cursor interaction
+                            }}
+                            className={!startGame ? "d-none" : ""}
+                          />
+                        ):(
+                          <img
+                            src={GoooGoooGif}
+                            alt="GoooGooo"
+                            style={{
+                              position: 'absolute',
+                              left: `calc(50% - 90px)`, // 50% of screen width minus half of the image width (180px / 2)
+                              top: `calc(80% - 90px)`,  // 50% of screen height minus half of the image height (180px / 2)
+                              zIndex: 1000,
+                              width: '180px',
+                              height: '180px',
+                              pointerEvents: 'none', // Prevent interfering with cursor interaction
+                            }}
+                            className={!startGame ? "d-none" : ""}
+                          />
+                        )}
                         <div 
                           className="aliens-box" 
                           style={{
@@ -359,7 +402,6 @@ const App: React.FC = () => {
                                   }} />
                                   {alien.showPlusOne && (
                                     <span
-                                    
                                       className="plus-one-animation"
                                       style={{
                                         

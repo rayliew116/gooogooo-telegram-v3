@@ -45,10 +45,15 @@
   width: 100%;
 }
 
+.start-game-modal {
+  background: none;
+  border: none;
+}
+
 .exp-bar {
   width: 80%;
   margin: auto;
-  padding: 20px;
+  padding: 5px 20px;
 }
 .exp-bar-text {
   display: flex;
@@ -81,14 +86,16 @@
   width: 88%;
   margin: auto;
   display: block;
+  margin-top: -5px;
 }
+
 .total-earned h2 {
   position: absolute;
   top: 50%;
   left: 53%;
   transform: translate(-50%, -38%);
   color: white;
-  font-size: 32px;
+  font-size: 28px;
   font-family: 'PEPSI';
 }
 /* Points Bar Responsive */
