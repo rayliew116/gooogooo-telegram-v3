@@ -54,6 +54,7 @@ interface Alien {
   collided?: boolean;
   animation?: boolean;
   showPlusOne? : boolean;
+  bomber? : boolean;
 }
 
 const App: React.FC = () => {
@@ -66,6 +67,8 @@ const App: React.FC = () => {
   const [isMoving, setIsMoving] = useState(false);
   const movementTimeoutRef = useRef<number | null>(null);
   const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
+  const [gamePaused, setGamePaused] = useState(false); //
+  const [showWhiteScreen, setShowWhiteScreen] = useState(false); //
 
   const bgm = useRef<HTMLAudioElement | null>(null);
   const [bgmIsPlaying, setBgmIsPlaying]= useState(false);
@@ -80,10 +83,9 @@ const App: React.FC = () => {
 
     bgm.current = new Audio(BGMusic);
     bgm.current.loop = true;
-
     alienPop.current = new Audio(CrystalPop);
 
-    audioRef.current = new Audio(BubblePop);
+    // audioRef.current = new Audio(BubblePop);
     // audioRef.current.loop = true;  // Loop the audio while moving
 
     const alienBox = document.querySelector('.aliens-box');
@@ -95,7 +97,6 @@ const App: React.FC = () => {
       return Math.random() * (max - size - margin * 2) + margin;  // Ensures the alien stays within bounds
     };
 
-    
     // Generate random aliens on load
     const generatedAliens: Alien[] = [];
     for (let i = 0; i < 10; i++) { // You can adjust the number of aliens
@@ -107,7 +108,6 @@ const App: React.FC = () => {
         y: generateRandomPosition(size, boxHeight),
         type,
       });
-
     }
     setAliens(generatedAliens);
 
@@ -115,6 +115,8 @@ const App: React.FC = () => {
 
     // Set up interval to generate new aliens
     const alienInterval = setInterval(() => {
+      if (gamePaused) return; //
+
       const type: AlienType =  Math.random() < 0.995 ? 'normal' : 'bomber';
       const { size } = getAlienSizeAndImage(type);
 
@@ -149,9 +151,7 @@ const App: React.FC = () => {
 
     // Clean up interval on component unmount
     return () => clearInterval(alienInterval);
-
-
-  }, [gameWidth, gameHeight]);
+  }, [gamePaused, gameWidth, gameHeight]); //
 
   const handleMovement = (x: number, y: number) => {
     setCursorPosition({ x, y });
@@ -165,10 +165,10 @@ const App: React.FC = () => {
     // Set a timeout to detect when movement stops
     movementTimeoutRef.current = window.setTimeout(() => {
       setIsMoving(false);
-      // if (audioRef.current) {
-      //   audioRef.current.pause();
-      //   audioRef.current.currentTime = 0;  // Reset sound to the beginning
-      // }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;  // Reset sound to the beginning
+      }
     }, 200);  // Adjust the delay as needed
 
 
@@ -185,6 +185,10 @@ const App: React.FC = () => {
         
 
         if (isColliding && !alien.collided ) {
+          if (alien.type === 'bomber') { //
+            handleBomberCollision();
+            return { ...alien, collided: true };
+          } //
 
           if (!alien.animation) {
             setPoints(prevPoints => prevPoints + 1);
@@ -206,17 +210,55 @@ const App: React.FC = () => {
               )
             );
           }, 1000);
-        
+
           return updatedAlien;
         }
-
         return alien;
       })
     );
-
-
-
   };
+
+  const handleBomberCollision = () => { //
+    setGamePaused(true);
+    setShowWhiteScreen(true);
+
+    const disappearingAliensCount = aliens.filter(alien => !alien.collided).length;
+    setPoints(prevPoints => prevPoints + disappearingAliensCount);
+
+    setAliens([]); 
+
+    setTimeout(() => {
+      setTimeout(() => {
+        regenerateAliens();
+        setGamePaused(false);
+        setShowWhiteScreen(false);
+      },500);
+    }, 3000);
+  };
+
+  const regenerateAliens = () => {
+    const alienBox = document.querySelector('.aliens-box');
+    const boxWidth = alienBox?.clientWidth || gameWidth;
+    const boxHeight = alienBox?.clientHeight || gameHeight;
+
+    const generateRandomPosition = (size: number, max: number) => {
+      const margin = 5;
+      return Math.random() * (max - size - margin * 2) + margin;
+    };
+
+    const newAliens: Alien[] = [];
+    for (let i = 0; i < 10; i++) {
+      const type: AlienType = Math.random() < 0.995 ? 'normal' : 'bomber';
+      const { size } = getAlienSizeAndImage(type);
+      newAliens.push({
+        id: alienIdRef.current++,
+        x: generateRandomPosition(size, boxWidth),
+        y: generateRandomPosition(size, boxHeight),
+        type,
+      });
+    }
+    setAliens(newAliens);
+  }; //
 
   const handleMouseMove = (event: React.MouseEvent) => {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
@@ -260,6 +302,8 @@ const App: React.FC = () => {
 
   return (
     <div className="container game-container">
+      <div className={`${showWhiteScreen ? 'bomb-overlay' : ''}`}></div>
+      {/* <div className="bomb-overlay"></div> */}
       <div className="row">
         <div className="col-12 px-0">
           <div className="game-bg">
@@ -397,7 +441,7 @@ const App: React.FC = () => {
                               <React.Fragment key={alien.id}> 
                                 <img
                                   // key={alien.id}
-                                  src={alien.animation ? BiteEffect : image}
+                                  src={alien.animation ? Explode1 : image}
                                   alt="Alien"
                                   className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
                                   style={{
@@ -414,7 +458,6 @@ const App: React.FC = () => {
                                   <span
                                     className="plus-one-animation"
                                     style={{
-                                      
                                       position: 'absolute',
                                       left: alien.x,
                                       top: alien.y,
@@ -443,6 +486,10 @@ const App: React.FC = () => {
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>
+          <div className='corner-gooogooo'>
+            <img src={GoooGoooGif} alt="GoooGooo" />
+          </div>
+          <h5 className='gj-text'>GOOOOD JOB!</h5>
           <div className="navbar p-0" id='navbar'>
             <ul>
               <li>

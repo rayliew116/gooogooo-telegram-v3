@@ -8,9 +8,39 @@
   overflow-x: hidden;
 }
 
+.bomb-overlay {
+  width: 100%;
+  height: 100%;
+  max-width: 768px;
+  content: '';
+  position: fixed;
+  display: block;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255,255,255,1);
+  animation: fadeInOut 3s ease forwards;
+  pointer-events: none;
+  z-index: 1001;
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
 .game-bg {
   min-height: 100vh;
-  background-image: url('../img/new/bg-default.png');
+  background-image: url('../img/new/bg-2.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -121,6 +151,46 @@
   height: 400px;
 } */
 
+/* GoooGooo at corner */
+.corner-gooogooo {
+  width: 100%;
+  max-width: 768px;
+  position: fixed;
+  left: 77%;
+  bottom: 8%;
+}
+.corner-gooogooo img {
+  width: 28%;
+  transform: rotate(-20deg);
+}
+.gj-text {
+  width: 100%;
+  max-width: 768px;
+  position:fixed;
+  bottom: 13%;
+  color: #FDC300;
+  text-align: center;
+  font-size: 32px;
+  font-family: 'Moon Get!';
+}
+@media (max-width: 652px) {
+  .gj-text {
+    font-size: 25px;
+  }
+}
+@media (max-width: 478px) {
+  .gj-text {
+    font-size: 18px;
+  }
+}
+@media (max-width: 399px) {
+  .gj-text {
+    font-size: 10px;
+  }
+}
+
+
+
 /* Navbar */
 .navbar {
   position: fixed;
@@ -133,6 +203,7 @@
   justify-content: center;
   width: 100%;
   max-width: 768px;
+  z-index: 1000;
 }
 .navbar ul {
   list-style-type: none;
