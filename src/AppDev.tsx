@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation 
 import StartGame from './assets/img/start-now.png';
 import MainLogo from './assets/img/logo.png';
 import GoooGooo from './assets/img/gg-main.png';
-import GoooGoooGif from './assets/img/gg.gif';
+import GoooGoooGif from './assets/img/gg-resized.gif';
 import NavHome from './assets/img/nav-home.png';
 import NavGG from './assets/img/nav-gooogooo.png';
 import NavEarn from './assets/img/nav-earn.png';
@@ -25,7 +25,7 @@ import ExpBarIcon from './assets/img/expbar-icon.png';
 // import AlienMedium from './assets/img/new-alien.png';
 // import AlienSmall from './assets/img/new-alien.png';
 import Pop from './assets/img/pop.png';
-import Explode1 from './assets/img/exposion.gif';
+import Explode1 from './assets/img/explosion-resize.gif';
 import AlienNormal from './assets/img/alien-new.png'
 import AlienBomber from './assets/img/bomber-new.png'
 import BiteEffect from './assets/img/bite.gif'
