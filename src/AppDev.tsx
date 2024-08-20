@@ -6,29 +6,29 @@ import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
 
 // Import images
-import StartGame from './assets/img/new/start-now.png';
-import MainLogo from './assets/img/new/logo.png';
-import GoooGooo from './assets/img/new/gg-main.png';
-import GoooGoooGif from './assets/img/new/gg.gif';
-import NavHome from './assets/img/new/nav-home.png';
-import NavGG from './assets/img/new/nav-gooogooo.png';
-import NavEarn from './assets/img/new/nav-earn.png';
-import NavFriends from './assets/img/new/nav-friends.png';
-import NavAirdrop from './assets/img/new/nav-airdrop.png';
-import PointsBar from './assets/img/new/points-bar.png';
-import LanguageIcon from './assets/img/new/language-icon.png';
-import MusicIcon from './assets/img/new/music-icon.png';
-import ExpBar from './assets/img/new/expbar-empty.png';
-import ExpBarProgress from './assets/img/new/expbar-progress.png';
-import ExpBarIcon from './assets/img/new/expbar-icon.png';
-// import AlienBig from './assets/img/new/new-alien.png';
-// import AlienMedium from './assets/img/new/new-alien.png';
-// import AlienSmall from './assets/img/new/new-alien.png';
-import Pop from './assets/img/new/pop.png';
-import Explode1 from './assets/img/new/exposion.gif';
-import AlienNormal from './assets/img/new/alien-new.png'
-import AlienBomber from './assets/img/new/bomber-new.png'
-import BiteEffect from './assets/img/new/bite.gif'
+import StartGame from './assets/img/start-now.png';
+import MainLogo from './assets/img/logo.png';
+import GoooGooo from './assets/img/gg-main.png';
+import GoooGoooGif from './assets/img/gg.gif';
+import NavHome from './assets/img/nav-home.png';
+import NavGG from './assets/img/nav-gooogooo.png';
+import NavEarn from './assets/img/nav-earn.png';
+import NavFriends from './assets/img/nav-friends.png';
+import NavAirdrop from './assets/img/nav-airdrop.png';
+import PointsBar from './assets/img/points-bar.png';
+import LanguageIcon from './assets/img/language-icon.png';
+import MusicIcon from './assets/img/music-icon.png';
+import ExpBar from './assets/img/expbar-empty.png';
+import ExpBarProgress from './assets/img/expbar-progress.png';
+import ExpBarIcon from './assets/img/expbar-icon.png';
+// import AlienBig from './assets/img/new-alien.png';
+// import AlienMedium from './assets/img/new-alien.png';
+// import AlienSmall from './assets/img/new-alien.png';
+import Pop from './assets/img/pop.png';
+import Explode1 from './assets/img/exposion.gif';
+import AlienNormal from './assets/img/alien-new.png'
+import AlienBomber from './assets/img/bomber-new.png'
+import BiteEffect from './assets/img/bite.gif'
 
 // Import sound effects
 // import GGSound from './assets/sound/gg-sound.mp3';
@@ -475,6 +475,10 @@ const App: React.FC = () => {
                         </div>
                       </div>
                     </div>
+                    <div className='corner-gooogooo'>
+                      <img src={GoooGoooGif} alt="GoooGooo" />
+                    </div>
+                    <h5 className='gj-text'>GOOOOD JOB!</h5>
                   </div>
                 </>
               }/>
@@ -486,10 +490,7 @@ const App: React.FC = () => {
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>
-          <div className='corner-gooogooo'>
-            <img src={GoooGoooGif} alt="GoooGooo" />
-          </div>
-          <h5 className='gj-text'>GOOOOD JOB!</h5>
+          
           <div className="navbar p-0" id='navbar'>
             <ul>
               <li>

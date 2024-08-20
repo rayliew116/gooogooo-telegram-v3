@@ -3,19 +3,19 @@ import { BrowserRouter as Router, Route, Routes, Navigate, NavLink } from 'react
 import './googoo-page.css';
 
 // Import images here
-import NavAirdrop from '../../assets/img/new/nav-airdrop.png';
-import ProfilePic from '../../assets/img/new/profile-pic.png';
-import LevelBox from '../../assets/img/new/level-box.png';
-import ReferralButton from '../../assets/img/new/referral-button.png';
-import LockedItem from '../../assets/img/new/locked.png';
-import SampleOne from '../../assets/img/new/item-sample1.png';
-import SampleTwo from '../../assets/img/new/item-sample2.png';
-import SampleThree from '../../assets/img/new/item-sample3.png';
-import SampleFour from '../../assets/img/new/item-sample4.png';
+import NavAirdrop from '../../assets/img/nav-airdrop.png';
+import ProfilePic from '../../assets/img/profile-pic.png';
+import LevelBox from '../../assets/img/level-box.png';
+import ReferralButton from '../../assets/img/referral-button.png';
+import LockedItem from '../../assets/img/locked.png';
+import SampleOne from '../../assets/img/item-sample1.png';
+import SampleTwo from '../../assets/img/item-sample2.png';
+import SampleThree from '../../assets/img/item-sample3.png';
+import SampleFour from '../../assets/img/item-sample4.png';
 
-import PointsBar from '../../assets/img/new/points-bar.png';
+import PointsBar from '../../assets/img/points-bar.png';
 
-import GoooGooo from '../../assets/img/new/gg-main.png';
+import GoooGooo from '../../assets/img/gg-main.png';
 import AliensGroup from './img/aliens.png';
 
 interface Props {}

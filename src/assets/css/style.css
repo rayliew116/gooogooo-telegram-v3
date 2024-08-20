@@ -40,7 +40,7 @@
 
 .game-bg {
   min-height: 100vh;
-  background-image: url('../img/new/bg-2.jpg');
+  background-image: url('../img/bg-2.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -229,7 +229,7 @@
   font-size: 12px;
 }
 .navbar a:hover, .active-link {
-  background-image: url('../img/new/nav-onhoverbg.png');
+  background-image: url('../img/nav-onhoverbg.png');
   background-position: center bottom;
   background-repeat: no-repeat;
   background-size: cover;
