@@ -165,10 +165,10 @@ const App: React.FC = () => {
     // Set a timeout to detect when movement stops
     movementTimeoutRef.current = window.setTimeout(() => {
       setIsMoving(false);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;  // Reset sound to the beginning
-      }
+      // if (audioRef.current) {
+      //   audioRef.current.pause();
+      //   audioRef.current.currentTime = 0;  // Reset sound to the beginning
+      // }
     }, 200);  // Adjust the delay as needed
 
 
@@ -281,7 +281,7 @@ const App: React.FC = () => {
       case 'normal':
         return { size: 60, image: AlienNormal };
       case 'bomber':
-        return { size: 60, image: AlienBomber };
+        return { size: 75, image: AlienBomber };
       default:
         return { size: 60, image: AlienNormal };
     }
