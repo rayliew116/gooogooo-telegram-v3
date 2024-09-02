@@ -3,7 +3,7 @@ import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import React from 'react';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from "./AppDev";
+import App from "./App";
 import "./index.css";
 import "./assets/css/bootstrap.min.css";
 import "./assets/css/theme.css";

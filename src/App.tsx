@@ -1,422 +1,568 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Countdown, { zeroPad } from 'react-countdown';
-import Moment from 'moment';
-import { useSwipeable } from 'react-swipeable'
+// import Countdown, { zeroPad } from 'react-countdown';
+// import Moment from 'moment';
+// import { useClaim } from './hooks/useClaim';
 // import { CopyToClipboard } from 'react-copy-to-clipboard';
+import React, { useEffect, useState, useRef } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
+
+// Import images
+import StartGame from './assets/img/start-now.png';
 import MainLogo from './assets/img/logo.png';
-import MenuIcon from './assets/img/menu.png';
-import UserIcon from './assets/img/user-icon.png';
-import LoginHeader from './assets/img/login-header-text.png';
-import LoginButton from './assets/img/login-button.png';
-import LoginGooGoo from './assets/img/googoo-welcome.png';
-import CheckInHeader from './assets/img/checkin.png';
-import CheckInGooGoo from './assets/img/googoo-checkin.png';
-import CheckInBtn1 from './assets/img/checkinBtn1.png';
-import CheckInBtn2 from './assets/img/checkinBtn2.png';
-import CheckInBtn3 from './assets/img/checkinBtn3.png';
-import Checked from './assets/img/checked.png';
-import ClaimBtn from './assets/img/claim.png';
-import BoosterIcon from './assets/img/booster.png';
-import ArrowDownBtn from './assets/img/arrow-down.png';
-import ReferralHeader from './assets/img/referral-header.png';
-import CopyBtn from './assets/img/copy.png';
-import ShareBtn from './assets/img/share.png';
-import SmallCashSound from './assets/sound/cash-register-small.mp3';
-import LoudCashSound from './assets/sound/cash-register-loud.mp3';
-import { useClaim } from './hooks/useClaim';
+import GoooGooo from './assets/img/gg-main.png';
+import GoooGoooGif from './assets/img/gg-resized.gif';
+import NavHome from './assets/img/nav-home.png';
+import NavGG from './assets/img/nav-gooogooo.png';
+import NavEarn from './assets/img/nav-earn.png';
+import NavFriends from './assets/img/nav-friends.png';
+import NavAirdrop from './assets/img/nav-airdrop.png';
+import PointsBar from './assets/img/points-bar.png';
+import LanguageIcon from './assets/img/language-icon.png';
+import MusicIcon from './assets/img/music-icon.png';
+import ExpBar from './assets/img/expbar-empty.png';
+import ExpBarProgress from './assets/img/expbar-progress.png';
+import ExpBarIcon from './assets/img/expbar-icon.png';
+// import AlienBig from './assets/img/new-alien.png';
+// import AlienMedium from './assets/img/new-alien.png';
+// import AlienSmall from './assets/img/new-alien.png';
+import Pop from './assets/img/pop.png';
+import Explode1 from './assets/img/explosion-resize.gif';
+import AlienNormal from './assets/img/alien-new.png'
+import AlienBomber from './assets/img/bomber-new.png'
+import BiteEffect from './assets/img/bite.gif'
 
+// Import sound effects
+// import GGSound from './assets/sound/gg-sound.mp3';
+// import BubblePop from './assets/sound/bubble.mp3';
+import BubblePop from './assets/sound/continuous-bubble-pop.mp3';
+import CrystalPop from './assets/sound/crystal2.mp3';
+import BGMusic from './assets/sound/gooogoooplanet-low.mp3';
 
-interface UserData {
-  _id: string;
-  profileImageUrl: string;
-  username: string;
-  boosters: number;
-  points: number;
-  lastClaim: string;
-}
+// Import pages here
+import GooGooPage from './pages/GooGooPage/GooGoo';
+import ReferralPage from './pages/ReferralPage/Referral';
+import EarnPage from './pages/EarnPage/Earn';
+import FriendsPage from './pages/FriendsPage/Friends';
+import AirdropPage from './pages/AirdropPage/Airdrop';
 
-interface LeaderboardData {
-  currentUser: {
-    rank: number;
-  };
-  leaderboard: Array<{
-    _id: string;
-    username: string;
-    points: number;
-    referrals: number;
-  }>;
-}
+type AlienType = 'normal' | 'bomber' ;
 
-const defaultUserData: UserData = {
-  _id: '',
-  profileImageUrl: '',
-  username: '',
-  boosters: 0,
-  points: 0,
-  lastClaim: ''
-}
-
-const defaultLeaderboardData: LeaderboardData = {
-  currentUser: {
-    rank: 0
-  },
-  leaderboard: []
+interface Alien {
+  id: number;
+  x: number;
+  y: number;
+  type: AlienType;
+  collided?: boolean;
+  animation?: boolean;
+  showPlusOne? : boolean;
+  bomber? : boolean;
 }
 
 const App: React.FC = () => {
-  const [copied, setCopied] = useState(false);
-  const [copyText, setCopyText] = useState('');
-  const [referralCode, setReferralCode] = useState('');
-  const [userData, setUserData] = useState<UserData>(defaultUserData);
-  const [totalPlayers, setTotalPlayers] = useState('');
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData>(defaultLeaderboardData);
-  const [checked1, setChecked1] = useState(false);
-  const [checked2, setChecked2] = useState(false);
-  const [checked3, setChecked3] = useState(false);
-  const [referralPage, setReferralPage] = useState(false);
-  const [pointsEarned, setPointsEarned] = useState(0);
-  const [boostedPoints, setBoostedPoints] = useState(0);
-  const [checkedIn, setCheckedIn] = useState(false);
-  const { claimRewardPoints } = useClaim();
-  const lastSwipeDirectionRef = useRef<string | null>(null);
-  const lastSwipeTimeRef = useRef<number>(0);
 
-  const copyReferral = () => {
-    setCopied(true);
-    setCopyText('Copied');
-    setTimeout(() => setCopied(false), 3000);
-  };
-
-  const playSmallSFX = () => {
-    new Audio(SmallCashSound).play();
-  };
-
-  const playLoudSFX = () => {
-    new Audio(LoudCashSound).play();
-  };
-
-  const handleLogin = () => {
-    window.location.href = `https://gooodjob.xyz/api/auth/twitter?referral_code=${referralCode}`;
-  };
-
-  const fetchUserData = () => {
-    fetch("https://gooodjob.xyz/api/auth/current_user", {
-      method: 'GET',
-      credentials: 'include',
-    })
-      .then((response) => response.json())
-      .then((user) => {
-        if (user) {
-          setUserData(user);
-          getTotalPlayers();
-        }
-      })
-      .catch((error) => console.error('Error fetching user:', error));
-  };
-
-  const getTotalPlayers = async () => {
-    const response = await fetch('https://gooodjob.xyz/api/user/total');
-    const json = await response.json();
-    if (response.ok) {
-      setTotalPlayers(json);
-      console.log(json);
-    }
-  };
-
+  const location = useLocation();
+  const [startGame, setStartGame] = useState(false);
   const [points, setPoints] = useState(0);
-  const clickTheFuckOutOfIt = async () => {
-    setPoints(points+1);
+  const [aliens, setAliens] = useState<Alien[]>([]);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isMoving, setIsMoving] = useState(false);
+  const movementTimeoutRef = useRef<number | null>(null);
+  const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
+  const [gamePaused, setGamePaused] = useState(false); //
+  const [showWhiteScreen, setShowWhiteScreen] = useState(false); //
+
+  const bgm = useRef<HTMLAudioElement | null>(null);
+  const [bgmIsPlaying, setBgmIsPlaying]= useState(false);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const alienPop = useRef<HTMLAudioElement | null>(null);
+
+  const gameWidth = window.innerWidth;
+  const gameHeight = window.innerHeight * 0.5;
+
+  useEffect(() => {
+
+    bgm.current = new Audio(BGMusic);
+    bgm.current.loop = true;
+    alienPop.current = new Audio(CrystalPop);
+
+    // audioRef.current = new Audio(BubblePop);
+    // audioRef.current.loop = true;  // Loop the audio while moving
+
+    const alienBox = document.querySelector('.aliens-box');
+    const boxWidth = alienBox?.clientWidth || gameWidth;
+    const boxHeight = alienBox?.clientHeight || gameHeight;
+
+    const generateRandomPosition = (size: number, max: number) => {
+      const margin = 5;  // Adjusted margin to prevent clustering
+      return Math.random() * (max - size - margin * 2) + margin;  // Ensures the alien stays within bounds
+    };
+
+    // Generate random aliens on load
+    const generatedAliens: Alien[] = [];
+    for (let i = 0; i < 10; i++) { // You can adjust the number of aliens
+      const type: AlienType =  Math.random() < 0.995 ? 'normal' : 'bomber';
+      const { size } = getAlienSizeAndImage(type);
+      generatedAliens.push({
+        id: alienIdRef.current++,
+        x: generateRandomPosition(size, boxWidth),
+        y: generateRandomPosition(size, boxHeight),
+        type,
+      });
+    }
+    setAliens(generatedAliens);
+
+    const maxAliens = 25;
+
+    // Set up interval to generate new aliens
+    const alienInterval = setInterval(() => {
+      if (gamePaused) return; //
+
+      const type: AlienType =  Math.random() < 0.995 ? 'normal' : 'bomber';
+      const { size } = getAlienSizeAndImage(type);
+
+      setAliens(prevAliens => {
+        const activeAliens = prevAliens.filter(alien => !alien.collided);
+
+        if (activeAliens.length >= maxAliens) {
+          return activeAliens;  // Do not add more aliens if the limit is reached
+        }
+  
+        return [
+          ...activeAliens,
+        // if (prevAliens.length >= maxAliens) {
+        //   return prevAliens;  // Do not add more aliens if the limit is reached
+        // }
+  
+        // return [
+        //   ...prevAliens,
+          {
+            id: alienIdRef.current++,
+            x: generateRandomPosition(size, boxWidth),
+            y: generateRandomPosition(size, boxHeight),
+            type,
+            collided: false,
+            animation: false,
+            showPlusOne: false,
+          },
+        ];
+      });
+
+    }, 300);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(alienInterval);
+  }, [gamePaused, gameWidth, gameHeight]); //
+
+  const handleMovement = (x: number, y: number) => {
+    setCursorPosition({ x, y });
+    setIsMoving(true);
+
+    // Clear previous timeout if it exists
+    if (movementTimeoutRef.current) {
+      clearTimeout(movementTimeoutRef.current);
+    }
+
+    // Set a timeout to detect when movement stops
+    movementTimeoutRef.current = window.setTimeout(() => {
+      setIsMoving(false);
+      // if (audioRef.current) {
+      //   audioRef.current.pause();
+      //   audioRef.current.currentTime = 0;  // Reset sound to the beginning
+      // }
+    }, 200);  // Adjust the delay as needed
+
+
+    // Check for collisions and update points and alien list
+    setAliens(prevAliens =>
+      // prevAliens.filter(alien => {
+      prevAliens.map(alien => {
+        const { size } = getAlienSizeAndImage(alien.type);
+        const isColliding =
+          x >= alien.x &&
+          x <= alien.x + size &&
+          y >= alien.y &&
+          y <= alien.y + size;
+        
+
+        if (isColliding && !alien.collided ) {
+          if (alien.type === 'bomber') { //
+            handleBomberCollision();
+            return { ...alien, collided: true };
+          } //
+
+          if (!alien.animation) {
+            setPoints(prevPoints => prevPoints + 1);
+          }
+
+          if (alienPop.current) {
+            alienPop.current.play().catch(error => {
+              console.error('Failed to play audio:', error);
+            });
+          }
+        
+          const updatedAlien = { ...alien, animation: true, showPlusOne: true };
+
+          // Delay setting collided to true
+          setTimeout(() => {
+            setAliens(prevAliens => 
+              prevAliens.map(a => 
+                a.id === alien.id ? { ...a, collided: true } : a
+              )
+            );
+          }, 1000);
+
+          return updatedAlien;
+        }
+        return alien;
+      })
+    );
   };
 
-  // const swiperNoSwiping = useSwipeable({
-  //   onSwiped: (eventData) => {
-  //     console.log("User Swiped!", eventData);
-  //     setPoints(points+1);
-  //   },
-  // });
-  const swiperNoSwiping = useSwipeable({
-    onSwiping: (eventData) => {
-      const now = Date.now();
-      if (
-        eventData.dir !== lastSwipeDirectionRef.current &&
-        now - lastSwipeTimeRef.current > 400 // 500ms debounce time
-      ) {
-        setPoints(points+1);
-        lastSwipeDirectionRef.current = eventData.dir;
-        lastSwipeTimeRef.current = now;
-      }
-    }
-  });
+  const handleBomberCollision = () => { //
+    setGamePaused(true);
+    setShowWhiteScreen(true);
 
+    const disappearingAliensCount = aliens.filter(alien => !alien.collided).length;
+    setPoints(prevPoints => prevPoints + disappearingAliensCount);
 
-  const fetchLeaderboard = async () => {
-    if (!userData) {
-      fetchUserData();
-    }
-    const response = await fetch('https://gooodjob.xyz/api/user/leaderboard/'+userData._id);
-    const json = await response.json();
-    if (response.ok) {
-      setLeaderboardData(json);
-    }
+    setAliens([]); 
+
+    setTimeout(() => {
+      setTimeout(() => {
+        regenerateAliens();
+        setGamePaused(false);
+        setShowWhiteScreen(false);
+      },500);
+    }, 3000);
   };
 
-  const randomPoints = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  const regenerateAliens = () => {
+    const alienBox = document.querySelector('.aliens-box');
+    const boxWidth = alienBox?.clientWidth || gameWidth;
+    const boxHeight = alienBox?.clientHeight || gameHeight;
+
+    const generateRandomPosition = (size: number, max: number) => {
+      const margin = 5;
+      return Math.random() * (max - size - margin * 2) + margin;
+    };
+
+    const newAliens: Alien[] = [];
+    for (let i = 0; i < 10; i++) {
+      const type: AlienType = Math.random() < 0.995 ? 'normal' : 'bomber';
+      const { size } = getAlienSizeAndImage(type);
+      newAliens.push({
+        id: alienIdRef.current++,
+        x: generateRandomPosition(size, boxWidth),
+        y: generateRandomPosition(size, boxHeight),
+        type,
+      });
+    }
+    setAliens(newAliens);
+  }; //
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    handleMovement(x, y);
   };
 
-  const handleClaimPoints = async () => {
-    fetchUserData();
-    if (!userData) {
-      return;
-    }
-    setCheckedIn(true);
-    const pts = randomPoints(1, 99);
-    setPointsEarned(pts);
-    if (userData.boosters > 0) {
-      setBoostedPoints(pts * 2);
-      await claimRewardPoints(userData._id, userData.points, pts, userData.boosters, true);
-    } else {
-      setBoostedPoints(pts);
-      await claimRewardPoints(userData._id, userData.points, pts, userData.boosters, false);
-    }
-    fetchUserData();
+  const handleTouchMove = (event: React.TouchEvent) => {
+    // event.preventDefault();
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const touch = event.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    handleMovement(x, y);
   };
 
-  const missionCountdown = ({ hours, minutes, seconds, completed }: { hours: number; minutes: number; seconds: number; completed: boolean }) => {
-    if (!completed) {
-      return (
-        <>
-          <div className="col-12 mt-3 text-center timer-padding mb-3">
-            <h6 className="short-text text-white mb-3" style={{ fontSize: '10px' }}>CHECK-IN AVAILABLE IN...</h6>
-            <h3 className="countdown-timer text-white"><span>{zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</span></h3>
-          </div>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <div className="col-12 text-center">
-            <h6 className="short-text text-white mb-3" style={{ fontSize: '10px' }}>HELP GOOOGOOO, CLICK & EARN POINTS.</h6>
-            {!checkedIn ? (
-              <div className="row checkin-btn-cont-padding">
-                <div className="col-4 text-center px-0">
-                  <button className="btn checkin-btn p-0" onClick={(e) => {
-                    setTimeout(() => setChecked1(true), 500);
-                    setTimeout(() => playSmallSFX(), 700);
-                  }}>
-                    <img className="w-100" src={CheckInBtn1}></img>
-                  </button>
-                  {checked1 ? <img className="checked-tick" src={Checked}></img> : <></>}
-                </div>
-                <div className="col-4 text-center px-0">
-                  <button disabled={!checked1} className="btn checkin-btn p-0" onClick={(e) => {
-                    setTimeout(() => setChecked2(true), 500);
-                    setTimeout(() => playSmallSFX(), 700);
-                  }}>
-                    <img className="w-100" src={CheckInBtn2}></img>
-                  </button>
-                  {checked2 ? <img className="checked-tick" src={Checked}></img> : <></>}
-                </div>
-                <div className="col-4 text-center px-0">
-                  <button disabled={!checked2} className="btn checkin-btn p-0" data-bs-toggle="modal" data-bs-target="#claimModal" onClick={(e) => {
-                    setChecked3(true);
-                    setTimeout(() => handleClaimPoints(), 800);
-                    setTimeout(() => playLoudSFX(), 1000);
-                  }}>
-                    <img className="w-100" src={CheckInBtn3}></img>
-                  </button>
-                  {checked3 ? <img className="checked-tick" src={Checked}></img> : <></>}
-                </div>
-              </div>
-            ) : (
-              <h5 className="text-white">Check-in Success!</h5>
-            )}
-          </div>
-        </>
-      );
+  const getAlienSizeAndImage = (type: AlienType) => {
+    switch (type) {
+      case 'normal':
+        return { size: 60, image: AlienNormal };
+      case 'bomber':
+        return { size: 75, image: AlienBomber };
+      default:
+        return { size: 60, image: AlienNormal };
     }
   };
 
   useEffect(() => {
-    fetchUserData();
-    fetchLeaderboard();
-    getTotalPlayers();
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('referral_code');
-    setReferralCode(code ?? '');
-  }, []);
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const code = urlParams.get('referral_code');
+    if (location.pathname === "/") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [location.pathname]);
 
   return (
-    <Router>
-      <div className="container game-container">
-        <div className="row">
-          <div className="col-12 px-0">
-            <div className="game-bg pb-5">
-              <div className="row header-section">
-                <div className="col-6">
-                  <img className="header-logo" src={MainLogo} alt="Logo"></img>
-                  <button className="btn p-0" onClick={(e) => {
-                    fetchUserData();
-                    setReferralPage(false);
-                  }}>
-                  </button>
-                </div>
-                <div className="col-6 text-right">
-                  {userData ? (
-                    <button className="btn p-0" onClick={(e) => {
-                      fetchUserData();
-                      fetchLeaderboard();
-                      setReferralPage(true);
-                    }}>
-                      <img className="header-menu" src={MenuIcon} alt="Menu"></img>
-                    </button>
-                    
-                  ) : (
-                    <></>
-                    
-                  )}
-                </div>
+    <div className="container game-container">
+      <div className={`${showWhiteScreen ? 'bomb-overlay' : ''}`}></div>
+      {/* <div className="bomb-overlay"></div> */}
+      <div className="row">
+        <div className="col-12 px-0">
+          <div className="game-bg">
+            <div className="row header-section">
+              <div className="col-3"></div>
+              <div className="col-6 text-center">
+                <img className="header-logo" src={MainLogo} />
               </div>
-              {userData ? (
+              <div className="col-3 header-icons-box">
+                <button disabled className="btn p-0"><img className="header-icons" src={LanguageIcon}/></button>
+                <button className="btn p-0" onClick={(e) => {
+                  // if (bgm.current && !bgmIsPlaying) {
+                  //   bgm.current.play();
+                  //   setBgmIsPlaying(true);
+                  // } else if (bgm.current && bgmIsPlaying) {
+                  //   bgm.current.pause();
+                  //   setBgmIsPlaying(false);
+                  // }
+                  if (bgm.current && bgmIsPlaying) {
+                      bgm.current.pause();
+                      setBgmIsPlaying(false);
+                  } else if (bgm.current && !bgmIsPlaying) {
+                      bgm.current.play();
+                      setBgmIsPlaying(true);
+                  }
+
+                }}>
+                  <img className="header-icons" src={MusicIcon}/>
+
+                </button>
+              </div>
+            </div>
+            <Routes>
+              <Route path="/" element={
                 <>
-                  {referralPage ? (
-                    <>
-                      <div className="col-12 mt-3 text-center">
-                        <img className="referral-header w-75" src={ReferralHeader}></img>
-                      </div>
-                      <div className="col-12 mt-4 mb-2 text-center">
-                        <p className="text-white">Share your referral link and earn more points!</p>
-                      </div>
-                      <div className="col-12 mt-1 mb-2 text-center">
-                        <div className="row">
-                          <div className="col-2"></div>
-                          <div className="col-8">
-                            <div className="row referral-container mx-auto py-3">
-                              <div className="col-12 text-center mb-3">
-                                <input
-                                  className="referral-input w-100"
-                                  type="text"
-                                  readOnly
-                                  value={`http://localhost:3000/?referral_code=${userData._id}`}
-                                  style={{ backgroundColor: '#222', color: '#fff' }}
-                                />
-                              </div>
-                              {/* <div className="col-6 text-center">
-                                <CopyToClipboard text={`http://localhost:3000/?referral_code=${userData._id}`} onCopy={copyReferral}>
-                                  <button className="btn btn-referral px-1 py-0">
-                                    <img className="referral-icon" src={CopyBtn}></img>
-                                  </button>
-                                </CopyToClipboard>
-                              </div> */}
-                              <div className="col-6 text-center">
-                                <button className="btn btn-referral px-1 py-0" onClick={() => {
-                                  const text = `Check out this cool game! Use my referral link to get started: http://localhost:3000/?referral_code=${userData._id}`;
-                                  if (navigator.share) {
-                                    navigator.share({ title: 'Join GooodJob!', text: text, url: `http://localhost:3000/?referral_code=${userData._id}` });
-                                  } else {
-                                    alert('Sharing is not supported in this browser.');
-                                  }
-                                }}>
-                                  <img className="referral-icon" src={ShareBtn}></img>
-                                </button>
-                              </div>
-                              {copied ? (
-                                <div className="col-12 text-center mt-3">
-                                  <p className="text-white">{copyText}</p>
-                                </div>
-                              ) : (
-                                <></>
-                              )}
-                            </div>
-                          </div>
-                          <div className="col-2"></div>
+                  <div className={"modal fade" + (!startGame ? " show d-block" : " d-none")} id="claimModal" aria-labelledby="claimModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered">
+                      <div className="modal-content start-game-modal">
+                        <div className="modal-body text-center">
+                        <button className="btn p-0" data-dismiss="modal" onClick={(e) => {
+                          setStartGame(true);
+                          if (bgm.current && !bgmIsPlaying) {
+                            bgm.current.play();
+                            setBgmIsPlaying(true);
+                          } 
+                          // else if (bgm.current && bgmIsPlaying) {
+                          //   bgm.current.pause();
+                          //   setBgmIsPlaying(false);
+                          // }
+                        }}>
+                          <img className="w-100" src={StartGame}></img>
+                        </button>
                         </div>
                       </div>
-                      <div className="col-12 mt-3 text-center">
-                        <h5 className="text-white">Leaderboard</h5>
-                        <ul className="leaderboard-list">
-                          {leaderboardData?.leaderboard.map((player, index) => (
-                            <li key={index} className={`leaderboard-item ${userData._id === player._id ? 'leaderboard-item-current' : ''}`}>
-                              <div className="row">
-                                <div className="col-2">{index + 1}</div>
-                                <div className="col-8">{player.username}</div>
-                                <div className="col-2">{player.points}</div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="col-12 mt-3 text-center">
-                        <p className="text-white">Your Rank: {leaderboardData?.currentUser.rank}</p>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="col-12 mt-3 text-center">
-                        <img className="login-header w-75" src={LoginHeader}></img>
-                      </div>
-                      <div className="col-12 text-center mb-5" {...swiperNoSwiping} style={{ touchAction: 'pan-y' }}>
-                        <img className="login-googoo" src={LoginGooGoo}></img>
-                        <h4 className="text-white">Swipe on GoooGooo!</h4>
-                        <h4 className="text-white">{points}</h4>
-                      </div>
-                      {/* <div className="col-12 text-center mb-5">
-                        <button className="btn login-btn p-0" onClick={handleLogin}>
-                          <img className="w-100" src={LoginButton}></img>
-                        </button>
-                      </div> */}
-                      {/* <div className="col-12 text-center mb-4" {...swiperNoSwiping} style={{ touchAction: 'pan-y' }}>
-                        <h4 className="text-white">{points}</h4>
-                        <button className="btn p-0 w-100" style={{height:"400px"}}>
-                          Swipe Me
-                        </button>
-                      </div> */}
-                    </>
-                  )}
-                </>
-              ) : (
-                <>
-                  <div className="col-12 mt-3 text-center">
-                    <img className="checkin-header w-75" src={CheckInHeader}></img>
+                    </div>
                   </div>
-                  {/* <div className="col-12 mt-3 text-center">
-                    <img className="checkin-googoo" src={CheckInGooGoo}></img>
-                  </div> */}
-                  {/* <div className="col-12 text-center mb-4">
-                    <h4 className="text-white">{points}</h4>
-                    <button className="btn p-0 w-100" style={{height:"400px"}} onClick={(e) => {
-                      clickTheFuckOutOfIt();
-                    }}>
-                      Click Me
-                    </button>
-                  </div> */}
+                  <div className="row">
+                    <div className="col-12 text-center">
+                      <div className="exp-bar">
+                        <div className='exp-bar-text'>
+                          <h6>STEEL</h6>
+                          <h6>TIERS 4/10</h6>
+                        </div>
+                        <div className='exp-bar-level'>
+                          <img className="exp-icon" src={ExpBarIcon} />
+                          <img className="exp-empty" src={ExpBar} />
+                          <img className="exp-progress" src={ExpBarProgress} />
+                        </div>
+                      </div>
+                      <div className="total-earned">
+                        <img className="total-earned" src={PointsBar} alt="" />
+                        <h2 className="m-0">{points.toLocaleString()}</h2>
+                      </div>
+                    </div>
+                    <div className="col-12 mb-5">
+                      <div 
+                        onMouseMove={handleMouseMove} 
+                        onTouchMove={handleTouchMove} 
+                        className='gg-swipe' 
+                        style={{
+                          width: `${gameWidth}px`,
+                          maxWidth: '768px',
+                          height: `${gameHeight}px`,
+                          position: 'relative', 
+                          // overflow: 'hidden',
+                          margin: '0 auto',  
+                          // display: 'flex', 
+                          // justifyContent: 'center',
+                          // alignItems: 'center',
+                        }}
+                      >
+                        {/* {isMoving ? (
+                          <img
+                            src={GoooGoooGif}
+                            alt="GoooGooo"
+                            style={{
+                              position: 'absolute',
+                              left: cursorPosition.x - 50,
+                              top: cursorPosition.y - 50,
+                              zIndex: 1000,
+                              width: '180px',
+                              height: '180px',
+                              pointerEvents: 'none', // Prevent interfering with cursor interaction
+                            }}
+                            className={!startGame ? "d-none" : ""}
+                          />
+                        ):(
+                          <img
+                            src={GoooGoooGif}
+                            alt="GoooGooo"
+                            style={{
+                              position: 'absolute',
+                              left: `calc(50% - 90px)`, // 50% of screen width minus half of the image width (180px / 2)
+                              top: `calc(80% - 90px)`,  // 50% of screen height minus half of the image height (180px / 2)
+                              zIndex: 1000,
+                              width: '180px',
+                              height: '180px',
+                              pointerEvents: 'none', // Prevent interfering with cursor interaction
+                            }}
+                            className={!startGame ? "d-none" : ""}
+                          />
+                        )} */}
+                        <div 
+                          className="aliens-box" 
+                          style={{
+                            position: 'relative',
+                            width: '100%', 
+                            height: '100%',
+                            zIndex: 2, 
+                          }}
+                        >
+                          {aliens.map(alien => {
+                            const { size, image } = getAlienSizeAndImage(alien.type);
+                            return (
+                              <React.Fragment key={alien.id}> 
+                                <img
+                                  // key={alien.id}
+                                  src={alien.animation ? Explode1 : image}
+                                  alt="Alien"
+                                  className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
+                                  style={{
+                                    position: 'absolute',
+                                    left: alien.x,
+                                    top: alien.y,
+                                    width: `${size}px`,
+                                    height: 'auto',
+                                    transform: 'translate(-50%, -50%)',
+                                    transition: alien.animation ? 'transform 0.5s ease, opacity 0.5s ease' : 'none',
+                                  }}
+                                />
+                                {alien.showPlusOne && (
+                                  <span
+                                    className="plus-one-animation"
+                                    style={{
+                                      position: 'absolute',
+                                      left: alien.x,
+                                      top: alien.y,
+                                      transform: 'translate(-50%, -50%)',
+                                      fontSize: '40px',
+                                      color: 'white',
+                                    }}
+                                  >
+                                    +1
+                                  </span>
+                                )}
+                              </React.Fragment>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                    <div className='corner-gooogooo'>
+                      <img src={GoooGoooGif} alt="GoooGooo" />
+                    </div>
+                    <h5 className='gj-text'>GOOOOD JOB!</h5>
+                  </div>
                 </>
-              )}
-            </div>
+              }/>
+              <Route path="/googoo" element={<GooGooPage/>}/>
+              <Route path="/referral" element={<ReferralPage/>}/>
+              <Route path="/earn" element={<EarnPage/>}/>
+              <Route path="/friends" element={<FriendsPage/>}/>
+              <Route path="/airdrop" element={<AirdropPage/>}/>
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </div>
+          
+          <div className="navbar p-0" id='navbar'>
+            <ul>
+              <li>
+                <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
+                  <img className="nav-img "src={NavHome} />
+                  <p>Home</p>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/googoo" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
+                  <img className="nav-img "src={NavGG} />
+                  <p>Gooo Gooo</p>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/earn" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
+                  <img className="nav-img "src={NavEarn} />
+                  <p>Earn</p>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
+                  <img className="nav-img "src={NavFriends} />
+                  <p>Friends</p>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                  onClick={(e) => {
+                    window.scrollTo(0, 0);
+                  }}>
+                  <img className="nav-img "src={NavAirdrop} />
+                  <p>Airdrop</p>
+                </NavLink>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      <div className="modal fade" id="claimModal" tabIndex={-1} aria-labelledby="claimModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="claimModalLabel">Claim Your Points</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body text-center">
-              <p>You have earned {pointsEarned} points!</p>
-              {boostedPoints > 0 && <p>With your boosters, you earned a total of {boostedPoints} points!</p>}
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            </div>
+    </div>
+      /* <div className="modal fade" id="claimModal" tabIndex={-1} aria-labelledby="claimModalLabel" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="claimModalLabel">Claim Your Points</h5>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body text-center">
+            <p> You have earned {pointsEarned} points!</p>
+            {boostedPoints > 0 && <p>With your boosters, you earned a total of {boostedPoints} points!</p>}
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
-    </Router>
+    </div> */
+
   );
+}
 
-};
 
-
+export default App;
