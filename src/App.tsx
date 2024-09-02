@@ -426,53 +426,7 @@ const App: React.FC = () => {
                             className={!startGame ? "d-none" : ""}
                           />
                         )} */}
-                        <div 
-                          className="aliens-box" 
-                          style={{
-                            position: 'relative',
-                            width: '100%', 
-                            height: '100%',
-                            zIndex: 2, 
-                          }}
-                        >
-                          {aliens.map(alien => {
-                            const { size, image } = getAlienSizeAndImage(alien.type);
-                            return (
-                              <React.Fragment key={alien.id}> 
-                                <img
-                                  // key={alien.id}
-                                  src={alien.animation ? Explode1 : image}
-                                  alt="Alien"
-                                  className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
-                                  style={{
-                                    position: 'absolute',
-                                    left: alien.x,
-                                    top: alien.y,
-                                    width: `${size}px`,
-                                    height: 'auto',
-                                    transform: 'translate(-50%, -50%)',
-                                    transition: alien.animation ? 'transform 0.5s ease, opacity 0.5s ease' : 'none',
-                                  }}
-                                />
-                                {alien.showPlusOne && (
-                                  <span
-                                    className="plus-one-animation"
-                                    style={{
-                                      position: 'absolute',
-                                      left: alien.x,
-                                      top: alien.y,
-                                      transform: 'translate(-50%, -50%)',
-                                      fontSize: '40px',
-                                      color: 'white',
-                                    }}
-                                  >
-                                    +1
-                                  </span>
-                                )}
-                              </React.Fragment>
-                            );
-                          })}
-                        </div>
+                        
                       </div>
                     </div>
                     <div className='corner-gooogooo'>
