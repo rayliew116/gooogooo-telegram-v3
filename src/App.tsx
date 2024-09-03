@@ -6,7 +6,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
 
 // Import images
-import StartGame from './assets/img/start-now.png';
+import StartGame from './assets/img/start-button.png';
 import MainLogo from './assets/img/logo.png';
 import GoooGooo from './assets/img/gg-main.png';
 // import GoooGoooGif from './assets/img/gg-resized.gif';
@@ -22,7 +22,9 @@ import MusicIcon from './assets/img/music-icon.png';
 import AlienCoin from './assets/img/alien-coin.png'
 import Explode1 from './assets/img/explosion-resize.gif';
 import CoinBubble from './assets/img/coin-bubble.png';
+import Title from './assets/img/start-title.png'
 import GameBG from './assets/img/game-bg.png'
+
 
 // Import sound effects
 // import GGSound from './assets/sound/gg-sound.mp3';
@@ -210,10 +212,15 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={
                 <>
-                  <div className={"modal fade" + (!startGame ? " show d-block" : " d-none")} id="claimModal" aria-labelledby="claimModalLabel" aria-hidden="true">
+                  <div className={"modal fade p-0 m-0" + (!startGame ? " show d-block" : " d-none")} id="claimModal" aria-labelledby="claimModalLabel" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered">
                       <div className="modal-content start-game-modal">
                         <div className="modal-body text-center">
+                          <img style={{width:'50%'}} src={Title} />
+                          <h3>
+                            Hello brave space adventurer! I'm GooGoo from Planet Goo, and I need your help!
+                            I will repay you with our Goo Tokens as a token of my appreciation!
+                          </h3>
                           <button className="btn p-0" data-dismiss="modal" onClick={(e) => {
                             setStartGame(true);
                             // if (bgm.current && !bgmIsPlaying) {
@@ -221,7 +228,7 @@ const App: React.FC = () => {
                             //   setBgmIsPlaying(true);
                             // } 
                           }}>
-                            <img className="w-100" src={StartGame}></img>
+                            <img style={{width:'50%'}} src={StartGame} />
                           </button>
                         </div>
                       </div>
