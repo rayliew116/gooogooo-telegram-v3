@@ -9,31 +9,25 @@ import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation 
 import StartGame from './assets/img/start-now.png';
 import MainLogo from './assets/img/logo.png';
 import GoooGooo from './assets/img/gg-main.png';
-import GoooGoooGif from './assets/img/gg-resized.gif';
+// import GoooGoooGif from './assets/img/gg-resized.gif';
+import ChangeSkinIcon from './assets/img/change-skin-icon.png';
 import NavHome from './assets/img/nav-home.png';
 import NavGG from './assets/img/nav-gooogooo.png';
 import NavEarn from './assets/img/nav-earn.png';
 import NavFriends from './assets/img/nav-friends.png';
-import NavAirdrop from './assets/img/nav-airdrop.png';
+import NavBuild from './assets/img/nav-build.png';
 import PointsBar from './assets/img/points-bar.png';
 import LanguageIcon from './assets/img/language-icon.png';
 import MusicIcon from './assets/img/music-icon.png';
-import ExpBar from './assets/img/expbar-empty.png';
-import ExpBarProgress from './assets/img/expbar-progress.png';
-import ExpBarIcon from './assets/img/expbar-icon.png';
-// import AlienBig from './assets/img/new-alien.png';
-// import AlienMedium from './assets/img/new-alien.png';
-// import AlienSmall from './assets/img/new-alien.png';
-import Pop from './assets/img/pop.png';
+import AlienCoin from './assets/img/alien-coin.png'
 import Explode1 from './assets/img/explosion-resize.gif';
-import AlienNormal from './assets/img/alien-new.png'
-import AlienBomber from './assets/img/bomber-new.png'
-import BiteEffect from './assets/img/bite.gif'
+import CoinBubble from './assets/img/coin-bubble.png';
+import GameBG from './assets/img/game-bg.png'
 
 // Import sound effects
 // import GGSound from './assets/sound/gg-sound.mp3';
 // import BubblePop from './assets/sound/bubble.mp3';
-import BubblePop from './assets/sound/continuous-bubble-pop.mp3';
+// import BubblePop from './assets/sound/continuous-bubble-pop.mp3';
 import CrystalPop from './assets/sound/crystal2.mp3';
 import BGMusic from './assets/sound/gooogoooplanet-low.mp3';
 
@@ -44,7 +38,7 @@ import EarnPage from './pages/EarnPage/Earn';
 import FriendsPage from './pages/FriendsPage/Friends';
 import AirdropPage from './pages/AirdropPage/Airdrop';
 
-type AlienType = 'normal' | 'bomber' ;
+type AlienType = 'normal';
 
 interface Alien {
   id: number;
@@ -54,7 +48,12 @@ interface Alien {
   collided?: boolean;
   animation?: boolean;
   showPlusOne? : boolean;
-  bomber? : boolean;
+}
+
+interface ClickImage {
+  id: number;
+  x: number;
+  y: number;
 }
 
 const App: React.FC = () => {
@@ -63,229 +62,110 @@ const App: React.FC = () => {
   const [startGame, setStartGame] = useState(false);
   const [points, setPoints] = useState(0);
   const [aliens, setAliens] = useState<Alien[]>([]);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [isMoving, setIsMoving] = useState(false);
-  const movementTimeoutRef = useRef<number | null>(null);
   const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
-  const [gamePaused, setGamePaused] = useState(false); //
-  const [showWhiteScreen, setShowWhiteScreen] = useState(false); //
+
+  // const [imagePosition, setImagePosition] = useState<{ x: number; y: number } | null>(null);
+  // const [imageVisible, setImageVisible] = useState(false);
+
+  const [clickImages, setClickImages] = useState<ClickImage[]>([]);
 
   const bgm = useRef<HTMLAudioElement | null>(null);
   const [bgmIsPlaying, setBgmIsPlaying]= useState(false);
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const alienPop = useRef<HTMLAudioElement | null>(null);
+  // const audioRef = useRef<HTMLAudioElement | null>(null);
+  // const alienPop = useRef<HTMLAudioElement | null>(null);
 
   const gameWidth = window.innerWidth;
   const gameHeight = window.innerHeight * 0.5;
 
-  useEffect(() => {
-
-    bgm.current = new Audio(BGMusic);
-    bgm.current.loop = true;
-    alienPop.current = new Audio(CrystalPop);
-
-    // audioRef.current = new Audio(BubblePop);
-    // audioRef.current.loop = true;  // Loop the audio while moving
-
-    const alienBox = document.querySelector('.aliens-box');
-    const boxWidth = alienBox?.clientWidth || gameWidth;
-    const boxHeight = alienBox?.clientHeight || gameHeight;
-
-    const generateRandomPosition = (size: number, max: number) => {
-      const margin = 5;  // Adjusted margin to prevent clustering
-      return Math.random() * (max - size - margin * 2) + margin;  // Ensures the alien stays within bounds
-    };
-
-    // Generate random aliens on load
-    const generatedAliens: Alien[] = [];
-    for (let i = 0; i < 10; i++) { // You can adjust the number of aliens
-      const type: AlienType =  Math.random() < 0.995 ? 'normal' : 'bomber';
-      const { size } = getAlienSizeAndImage(type);
-      generatedAliens.push({
-        id: alienIdRef.current++,
-        x: generateRandomPosition(size, boxWidth),
-        y: generateRandomPosition(size, boxHeight),
-        type,
-      });
-    }
-    setAliens(generatedAliens);
-
-    const maxAliens = 25;
-
-    // Set up interval to generate new aliens
-    const alienInterval = setInterval(() => {
-      if (gamePaused) return; //
-
-      const type: AlienType =  Math.random() < 0.995 ? 'normal' : 'bomber';
-      const { size } = getAlienSizeAndImage(type);
-
-      setAliens(prevAliens => {
-        const activeAliens = prevAliens.filter(alien => !alien.collided);
-
-        if (activeAliens.length >= maxAliens) {
-          return activeAliens;  // Do not add more aliens if the limit is reached
-        }
-  
-        return [
-          ...activeAliens,
-        // if (prevAliens.length >= maxAliens) {
-        //   return prevAliens;  // Do not add more aliens if the limit is reached
-        // }
-  
-        // return [
-        //   ...prevAliens,
-          {
-            id: alienIdRef.current++,
-            x: generateRandomPosition(size, boxWidth),
-            y: generateRandomPosition(size, boxHeight),
-            type,
-            collided: false,
-            animation: false,
-            showPlusOne: false,
-          },
-        ];
-      });
-
-    }, 300);
-
-    // Clean up interval on component unmount
-    return () => clearInterval(alienInterval);
-  }, [gamePaused, gameWidth, gameHeight]); //
-
-  const handleMovement = (x: number, y: number) => {
-    setCursorPosition({ x, y });
-    setIsMoving(true);
-
-    // Clear previous timeout if it exists
-    if (movementTimeoutRef.current) {
-      clearTimeout(movementTimeoutRef.current);
-    }
-
-    // Set a timeout to detect when movement stops
-    movementTimeoutRef.current = window.setTimeout(() => {
-      setIsMoving(false);
-      // if (audioRef.current) {
-      //   audioRef.current.pause();
-      //   audioRef.current.currentTime = 0;  // Reset sound to the beginning
-      // }
-    }, 200);  // Adjust the delay as needed
-
-
-    // Check for collisions and update points and alien list
-    setAliens(prevAliens =>
-      // prevAliens.filter(alien => {
-      prevAliens.map(alien => {
-        const { size } = getAlienSizeAndImage(alien.type);
-        const isColliding =
-          x >= alien.x &&
-          x <= alien.x + size &&
-          y >= alien.y &&
-          y <= alien.y + size;
-        
-
-        if (isColliding && !alien.collided ) {
-          if (alien.type === 'bomber') { //
-            handleBomberCollision();
-            return { ...alien, collided: true };
-          } //
-
-          if (!alien.animation) {
-            setPoints(prevPoints => prevPoints + 1);
-          }
-
-          if (alienPop.current) {
-            alienPop.current.play().catch(error => {
-              console.error('Failed to play audio:', error);
-            });
-          }
-        
-          const updatedAlien = { ...alien, animation: true, showPlusOne: true };
-
-          // Delay setting collided to true
-          setTimeout(() => {
-            setAliens(prevAliens => 
-              prevAliens.map(a => 
-                a.id === alien.id ? { ...a, collided: true } : a
-              )
-            );
-          }, 1000);
-
-          return updatedAlien;
-        }
-        return alien;
-      })
-    );
-  };
-
-  const handleBomberCollision = () => { //
-    setGamePaused(true);
-    setShowWhiteScreen(true);
-
-    const disappearingAliensCount = aliens.filter(alien => !alien.collided).length;
-    setPoints(prevPoints => prevPoints + disappearingAliensCount);
-
-    setAliens([]); 
-
-    setTimeout(() => {
-      setTimeout(() => {
-        regenerateAliens();
-        setGamePaused(false);
-        setShowWhiteScreen(false);
-      },500);
-    }, 3000);
-  };
-
-  const regenerateAliens = () => {
-    const alienBox = document.querySelector('.aliens-box');
-    const boxWidth = alienBox?.clientWidth || gameWidth;
-    const boxHeight = alienBox?.clientHeight || gameHeight;
-
-    const generateRandomPosition = (size: number, max: number) => {
-      const margin = 5;
-      return Math.random() * (max - size - margin * 2) + margin;
-    };
-
-    const newAliens: Alien[] = [];
-    for (let i = 0; i < 10; i++) {
-      const type: AlienType = Math.random() < 0.995 ? 'normal' : 'bomber';
-      const { size } = getAlienSizeAndImage(type);
-      newAliens.push({
-        id: alienIdRef.current++,
-        x: generateRandomPosition(size, boxWidth),
-        y: generateRandomPosition(size, boxHeight),
-        type,
-      });
-    }
-    setAliens(newAliens);
-  }; //
-
-  const handleMouseMove = (event: React.MouseEvent) => {
-    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    handleMovement(x, y);
-  };
-
-  const handleTouchMove = (event: React.TouchEvent) => {
-    // event.preventDefault();
-    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    const touch = event.touches[0];
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    handleMovement(x, y);
+  const generateRandomPosition = (size: number, max: number) => {
+    const margin = 5;
+    return Math.random() * (max - size - margin * 2) + margin;
   };
 
   const getAlienSizeAndImage = (type: AlienType) => {
-    switch (type) {
-      case 'normal':
-        return { size: 60, image: AlienNormal };
-      case 'bomber':
-        return { size: 75, image: AlienBomber };
-      default:
-        return { size: 60, image: AlienNormal };
+    return { size: 80, image: AlienCoin };
+  };
+
+  const generateAlien = () => {
+    const alienBox = document.querySelector('.aliens-box');
+    const boxWidth = alienBox?.clientWidth || gameWidth;
+    const boxHeight = alienBox?.clientHeight || gameHeight;
+    const { size } = getAlienSizeAndImage('normal');
+    const newAlien: Alien = {
+      id: alienIdRef.current++,
+      x: generateRandomPosition(size, boxWidth),
+      y: generateRandomPosition(size, boxHeight),
+      type: 'normal',
+      collided: false,
+      animation: false,
+      showPlusOne: false,
+    };
+    setAliens([newAlien]);
+  };
+  
+  const handleAlienClick = (event: React.MouseEvent) => {
+    const alienBox = event.currentTarget as HTMLElement;
+    const rect = alienBox.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const newImage: ClickImage = { id: Date.now(), x, y };
+    setClickImages(prevImages => [...prevImages, newImage]);
+    
+    setTimeout(() => {
+      setClickImages(prevImages => prevImages.filter(image => image.id !== newImage.id));
+    }, 1000);
+
+    let isAlienClicked = false;
+
+    setAliens(prevAliens => prevAliens.map(alien => {
+      const { size } = getAlienSizeAndImage(alien.type);
+      const isColliding = x >= alien.x && x <= alien.x + size && y >= alien.y && y <= alien.y + size;
+
+      if (isColliding && !alien.collided) {
+          isAlienClicked = true;
+          // if (alienPop.current) {
+          //     alienPop.current.play().catch(error => {
+          //         console.error('Failed to play audio:', error);
+          //     });
+          // }
+          return { ...alien, animation: true, showPlusOne: true, collided: true };
+      }
+      return alien;
+    }));
+  
+    setPoints(prevPoints => prevPoints + (isAlienClicked ? 100 : 1));
+
+    if (isAlienClicked) {
+        setTimeout(() => {
+        setAliens([]);
+        const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
+        setTimeout(() => {
+            generateAlien();
+        }, regenerationDelay); 
+    }, 1000);
     }
   };
+
+  
+
+  useEffect(() => {
+    // bgm.current = new Audio(BGMusic);
+    // bgm.current.loop = true;
+    // alienPop.current = new Audio(CrystalPop);
+
+    const initialDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
+
+    const initialAlienTimeout = setTimeout(() => {
+      generateAlien();
+    }, initialDelay);
+
+    return () => {
+      clearTimeout(initialAlienTimeout);
+      setAliens([]);
+    };
+  }, [gameWidth, gameHeight]);
 
   useEffect(() => {
     // const urlParams = new URLSearchParams(window.location.search);
@@ -302,8 +182,6 @@ const App: React.FC = () => {
 
   return (
     <div className="container game-container">
-      <div className={`${showWhiteScreen ? 'bomb-overlay' : ''}`}></div>
-      {/* <div className="bomb-overlay"></div> */}
       <div className="row">
         <div className="col-12 px-0">
           <div className="game-bg">
@@ -313,26 +191,19 @@ const App: React.FC = () => {
                 <img className="header-logo" src={MainLogo} />
               </div>
               <div className="col-3 header-icons-box">
-                <button disabled className="btn p-0"><img className="header-icons" src={LanguageIcon}/></button>
-                <button className="btn p-0" onClick={(e) => {
-                  // if (bgm.current && !bgmIsPlaying) {
-                  //   bgm.current.play();
-                  //   setBgmIsPlaying(true);
-                  // } else if (bgm.current && bgmIsPlaying) {
-                  //   bgm.current.pause();
-                  //   setBgmIsPlaying(false);
+                <button disabled className="btn p-0">
+                  <img className="header-icons" src={LanguageIcon}/>
+                </button>
+                <button disabled className="btn p-0" onClick={(e) => {
+                  // if (bgm.current && bgmIsPlaying) {
+                  //     bgm.current.pause();
+                  //     setBgmIsPlaying(false);
+                  // } else if (bgm.current && !bgmIsPlaying) {
+                  //     bgm.current.play();
+                  //     setBgmIsPlaying(true);
                   // }
-                  if (bgm.current && bgmIsPlaying) {
-                      bgm.current.pause();
-                      setBgmIsPlaying(false);
-                  } else if (bgm.current && !bgmIsPlaying) {
-                      bgm.current.play();
-                      setBgmIsPlaying(true);
-                  }
-
                 }}>
                   <img className="header-icons" src={MusicIcon}/>
-
                 </button>
               </div>
             </div>
@@ -343,96 +214,110 @@ const App: React.FC = () => {
                     <div className="modal-dialog modal-dialog-centered">
                       <div className="modal-content start-game-modal">
                         <div className="modal-body text-center">
-                        <button className="btn p-0" data-dismiss="modal" onClick={(e) => {
-                          setStartGame(true);
-                          if (bgm.current && !bgmIsPlaying) {
-                            bgm.current.play();
-                            setBgmIsPlaying(true);
-                          } 
-                          // else if (bgm.current && bgmIsPlaying) {
-                          //   bgm.current.pause();
-                          //   setBgmIsPlaying(false);
-                          // }
-                        }}>
-                          <img className="w-100" src={StartGame}></img>
-                        </button>
+                          <button className="btn p-0" data-dismiss="modal" onClick={(e) => {
+                            setStartGame(true);
+                            // if (bgm.current && !bgmIsPlaying) {
+                            //   bgm.current.play();
+                            //   setBgmIsPlaying(true);
+                            // } 
+                          }}>
+                            <img className="w-100" src={StartGame}></img>
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-12 text-center">
-                      <div className="exp-bar">
-                        <div className='exp-bar-text'>
-                          <h6>STEEL</h6>
-                          <h6>TIERS 4/10</h6>
-                        </div>
-                        <div className='exp-bar-level'>
-                          <img className="exp-icon" src={ExpBarIcon} />
-                          <img className="exp-empty" src={ExpBar} />
-                          <img className="exp-progress" src={ExpBarProgress} />
-                        </div>
-                      </div>
                       <div className="total-earned">
                         <img className="total-earned" src={PointsBar} alt="" />
                         <h2 className="m-0">{points.toLocaleString()}</h2>
                       </div>
                     </div>
-                    <div className="col-12 mb-5">
-                      <div 
-                        onMouseMove={handleMouseMove} 
-                        onTouchMove={handleTouchMove} 
+                    <div className="col-12">
+                      <div           
                         className='gg-swipe' 
                         style={{
                           width: `${gameWidth}px`,
                           maxWidth: '768px',
                           height: `${gameHeight}px`,
                           position: 'relative', 
-                          // overflow: 'hidden',
                           margin: '0 auto',  
-                          // display: 'flex', 
-                          // justifyContent: 'center',
-                          // alignItems: 'center',
                         }}
                       >
-                        {/* {isMoving ? (
-                          <img
-                            src={GoooGoooGif}
-                            alt="GoooGooo"
-                            style={{
-                              position: 'absolute',
-                              left: cursorPosition.x - 50,
-                              top: cursorPosition.y - 50,
-                              zIndex: 1000,
-                              width: '180px',
-                              height: '180px',
-                              pointerEvents: 'none', // Prevent interfering with cursor interaction
-                            }}
-                            className={!startGame ? "d-none" : ""}
-                          />
-                        ):(
-                          <img
-                            src={GoooGoooGif}
-                            alt="GoooGooo"
-                            style={{
-                              position: 'absolute',
-                              left: `calc(50% - 90px)`, // 50% of screen width minus half of the image width (180px / 2)
-                              top: `calc(80% - 90px)`,  // 50% of screen height minus half of the image height (180px / 2)
-                              zIndex: 1000,
-                              width: '180px',
-                              height: '180px',
-                              pointerEvents: 'none', // Prevent interfering with cursor interaction
-                            }}
-                            className={!startGame ? "d-none" : ""}
-                          />
-                        )} */}
-                        
+                        <div 
+                          className="aliens-box" 
+                          style={{
+                            position: 'relative',
+                            width: '100%', 
+                            height: '100%',
+                            zIndex: 2, 
+                          }}
+                          onClick={handleAlienClick}
+                        >
+                          {aliens.map(alien => {
+                            const { size, image } = getAlienSizeAndImage(alien.type);
+                            return (
+                              <React.Fragment key={alien.id}> 
+                                <img
+                                  src={alien.animation ? Explode1 : image}
+                                  alt="Alien"
+                                  className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
+                                  style={{
+                                    position: 'absolute',
+                                    left: alien.x,
+                                    top: alien.y,
+                                    width: `${size}px`,
+                                    height: 'auto',
+                                    transform: 'translate(-50%, -50%)',
+                                    transition: alien.animation ? 'transform 0.5s ease, opacity 0.5s ease' : 'none',
+                                  }}
+                                />
+                                {alien.showPlusOne && (
+                                  <span
+                                    className="plus-one-animation"
+                                    style={{
+                                      position: 'absolute',
+                                      left: alien.x,
+                                      top: alien.y,
+                                      transform: 'translate(-50%, -50%)',
+                                      fontSize: '30px',
+                                      color: 'white',
+                                    }}
+                                  >
+                                    +100
+                                  </span>
+                                )}
+                              </React.Fragment>
+                            );
+                          })}
+                          {clickImages.map(image => (
+                            <img
+                              className="plus-one-animation"
+                              key={image.id}
+                              src={CoinBubble}
+                              style={{
+                                position: 'absolute',
+                                left: image.x,
+                                  top: image.y,
+                                  width: '50px', // Adjust size as needed
+                                  height: '50px',
+                                transform: 'translate(-50%, -50%)',
+                                pointerEvents: 'none',
+                                transition: 'transform 0.5s ease, opacity 0.5s ease'
+                              }}
+                            />
+                          ))}
+                        </div>
                       </div>
                     </div>
-                    <div className='corner-gooogooo'>
-                      <img src={GoooGoooGif} alt="GoooGooo" />
-                    </div>
-                    <h5 className='gj-text'>GOOOOD JOB!</h5>
+                      
+                    {/* <div className='corner-gooogooo'>
+                      <img src={ChangeSkinIcon} alt="GoooGooo" />
+                    </div> */}
+                  </div>
+                  <div className='gooogooo-game'>
+                    <img src={GoooGooo} />
                   </div>
                 </>
               }/>
@@ -488,7 +373,7 @@ const App: React.FC = () => {
                   onClick={(e) => {
                     window.scrollTo(0, 0);
                   }}>
-                  <img className="nav-img "src={NavAirdrop} />
+                  <img className="nav-img "src={NavBuild} />
                   <p>Airdrop</p>
                 </NavLink>
               </li>

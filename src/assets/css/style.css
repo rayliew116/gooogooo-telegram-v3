@@ -8,40 +8,10 @@
   overflow-x: hidden;
 }
 
-.bomb-overlay {
-  width: 100%;
-  height: 100%;
-  max-width: 768px;
-  content: '';
-  position: fixed;
-  display: block;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255,255,255,1);
-  animation: fadeInOut 3s ease forwards;
-  pointer-events: none;
-  z-index: 1001;
-}
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-
 .game-bg {
   min-height: 100vh;
-  background-image: url('../img/bg-2.jpg');
-  background-position: center;
+  background-image: url('../img/game-bg.png');
+  background-position: bottom;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -81,36 +51,6 @@
   border: none;
 }
 
-.exp-bar {
-  width: 80%;
-  margin: auto;
-  padding: 5px 20px;
-}
-.exp-bar-text {
-  display: flex;
-  color: white;
-  font-family: 'Bebas Neue';
-  justify-content: space-between;
-}
-.exp-bar-level {
-  display: flex;
-  align-items: center;
-}
-.exp-icon {
-  position: absolute;
-  width: 20px;
-  left: 15%;
-  z-index: 100;
-}
-.exp-progress {
-  position: absolute;
-  width: 50%;
-}
-.exp-empty {
-  width: 100%;
-
-}
-
 .total-earned {
   position: relative;
   padding: 5px;
@@ -146,49 +86,35 @@
     font-size: 23px;
   }
 }
-
-/* #gameArea {
-  height: 400px;
-} */
+.gooogooo-game {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  bottom: 20%;
+}
+.gooogooo-game img {
+  width: 40%;
+}
+@media (max-width: 569px) {
+  .gooogooo-game img {
+    width: 50%;
+  }
+}
 
 /* GoooGooo at corner */
-.corner-gooogooo {
-  width: 100%;
+/* .corner-gooogooo {
+  width: 70%;
   max-width: 768px;
   position: fixed;
-  left: 77%;
-  bottom: 8%;
+  left: 82%;
+  bottom: 15%;
 }
 .corner-gooogooo img {
   width: 28%;
-  transform: rotate(-20deg);
-}
-.gj-text {
-  width: 100%;
-  max-width: 768px;
-  position:fixed;
-  bottom: 13%;
-  color: #FDC300;
-  text-align: center;
-  font-size: 32px;
-  font-family: 'Moon Get!';
-}
-@media (max-width: 652px) {
-  .gj-text {
-    font-size: 25px;
-  }
-}
-@media (max-width: 478px) {
-  .gj-text {
-    font-size: 18px;
-  }
-}
-@media (max-width: 399px) {
-  .gj-text {
-    font-size: 10px;
-  }
-}
-
+} */
 
 
 /* Navbar */
@@ -256,9 +182,9 @@
 .gg-swipe {
   touch-action: none;
 }
-.gg-swipe img {
+/* .gg-swipe img {
   width: 80%;
-}
+} */
 
 @keyframes panIn {
   0% {
