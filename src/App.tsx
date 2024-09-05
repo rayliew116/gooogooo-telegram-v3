@@ -7,9 +7,9 @@ import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation 
 
 // Import images
 import StartGame from './assets/img/start-button.png';
-import MainLogo from './assets/img/logo.png';
+import StartModal from './assets/img/start-modal.png';
+import MainLogo from './assets/img/header-logo.png';
 import GoooGooo from './assets/img/gg-main.png';
-// import GoooGoooGif from './assets/img/gg-resized.gif';
 import ChangeSkinIcon from './assets/img/change-skin-icon.png';
 import NavHome from './assets/img/nav-home.png';
 import NavGG from './assets/img/nav-gooogooo.png';
@@ -19,19 +19,15 @@ import NavBuild from './assets/img/nav-build.png';
 import PointsBar from './assets/img/points-bar.png';
 import LanguageIcon from './assets/img/language-icon.png';
 import MusicIcon from './assets/img/music-icon.png';
-import AlienCoin from './assets/img/alien-coin.png'
-import Explode1 from './assets/img/explosion-resize.gif';
+// import AlienCoin from './assets/img/alien-coin.png'
+import Explode from './assets/img/explode.gif';
 import CoinBubble from './assets/img/coin-bubble.png';
-import Title from './assets/img/start-title.png'
-import GameBG from './assets/img/game-bg.png'
+import AlienCoinBag from './assets/img/alien-coinbag.gif'
 
 
 // Import sound effects
-// import GGSound from './assets/sound/gg-sound.mp3';
-// import BubblePop from './assets/sound/bubble.mp3';
-// import BubblePop from './assets/sound/continuous-bubble-pop.mp3';
-import CrystalPop from './assets/sound/crystal2.mp3';
-import BGMusic from './assets/sound/gooogoooplanet-low.mp3';
+import Kaching from './assets/sound/coin.mp3';
+import BGMusic from './assets/sound/Gold Coins - Rolla Coasta (reduced).mp3';
 
 // Import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
@@ -66,16 +62,12 @@ const App: React.FC = () => {
   const [aliens, setAliens] = useState<Alien[]>([]);
   const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
 
-  // const [imagePosition, setImagePosition] = useState<{ x: number; y: number } | null>(null);
-  // const [imageVisible, setImageVisible] = useState(false);
-
   const [clickImages, setClickImages] = useState<ClickImage[]>([]);
 
   const bgm = useRef<HTMLAudioElement | null>(null);
   const [bgmIsPlaying, setBgmIsPlaying]= useState(false);
 
-  // const audioRef = useRef<HTMLAudioElement | null>(null);
-  // const alienPop = useRef<HTMLAudioElement | null>(null);
+  const alienPop = useRef<HTMLAudioElement | null>(null);
 
   const gameWidth = window.innerWidth;
   const gameHeight = window.innerHeight * 0.5;
@@ -86,7 +78,7 @@ const App: React.FC = () => {
   };
 
   const getAlienSizeAndImage = (type: AlienType) => {
-    return { size: 80, image: AlienCoin };
+    return { size: 80, image: AlienCoinBag };
   };
 
   const generateAlien = () => {
@@ -112,6 +104,12 @@ const App: React.FC = () => {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
+    if (alienPop.current) {
+      alienPop.current.play().catch(error => {
+          console.error('Error playing sound:', error);
+      });
+  }
+
     const newImage: ClickImage = { id: Date.now(), x, y };
     setClickImages(prevImages => [...prevImages, newImage]);
     
@@ -127,11 +125,11 @@ const App: React.FC = () => {
 
       if (isColliding && !alien.collided) {
           isAlienClicked = true;
-          // if (alienPop.current) {
-          //     alienPop.current.play().catch(error => {
-          //         console.error('Failed to play audio:', error);
-          //     });
-          // }
+          if (alienPop.current) {
+              alienPop.current.play().catch(error => {
+                  console.error('Failed to play audio:', error);
+              });
+          }
           return { ...alien, animation: true, showPlusOne: true, collided: true };
       }
       return alien;
@@ -150,19 +148,17 @@ const App: React.FC = () => {
     }
   };
 
-  
-
   useEffect(() => {
-    // bgm.current = new Audio(BGMusic);
-    // bgm.current.loop = true;
-    // alienPop.current = new Audio(CrystalPop);
+    bgm.current = new Audio(BGMusic);
+    bgm.current.loop = true;
+    alienPop.current = new Audio(Kaching);
 
     const initialDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
 
     const initialAlienTimeout = setTimeout(() => {
       generateAlien();
     }, initialDelay);
-
+    // generateAlien();
     return () => {
       clearTimeout(initialAlienTimeout);
       setAliens([]);
@@ -187,23 +183,23 @@ const App: React.FC = () => {
       <div className="row">
         <div className="col-12 px-0">
           <div className="game-bg">
-            <div className="row header-section">
-              <div className="col-3"></div>
+            <div className="row header-box">
+              {/* <div className="col-3"></div> */}
               <div className="col-6 text-center">
                 <img className="header-logo" src={MainLogo} />
               </div>
-              <div className="col-3 header-icons-box">
+              <div className="col-6 header-icons-box">
                 <button disabled className="btn p-0">
                   <img className="header-icons" src={LanguageIcon}/>
                 </button>
-                <button disabled className="btn p-0" onClick={(e) => {
-                  // if (bgm.current && bgmIsPlaying) {
-                  //     bgm.current.pause();
-                  //     setBgmIsPlaying(false);
-                  // } else if (bgm.current && !bgmIsPlaying) {
-                  //     bgm.current.play();
-                  //     setBgmIsPlaying(true);
-                  // }
+                <button className="btn p-0" onClick={(e) => {
+                  if (bgm.current && bgmIsPlaying) {
+                      bgm.current.pause();
+                      setBgmIsPlaying(false);
+                  } else if (bgm.current && !bgmIsPlaying) {
+                      bgm.current.play();
+                      setBgmIsPlaying(true);
+                  }
                 }}>
                   <img className="header-icons" src={MusicIcon}/>
                 </button>
@@ -212,23 +208,18 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={
                 <>
-                  <div className={"modal fade p-0 m-0" + (!startGame ? " show d-block" : " d-none")} id="claimModal" aria-labelledby="claimModalLabel" aria-hidden="true">
+                  <div className={"modal fade" + (!startGame ? " show d-block" : " d-none")} id="claimModal" aria-labelledby="claimModalLabel" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered">
                       <div className="modal-content start-game-modal">
                         <div className="modal-body text-center">
-                          <img style={{width:'50%'}} src={Title} />
-                          <h3>
-                            Hello brave space adventurer! I'm GooGoo from Planet Goo, and I need your help!
-                            I will repay you with our Goo Tokens as a token of my appreciation!
-                          </h3>
                           <button className="btn p-0" data-dismiss="modal" onClick={(e) => {
                             setStartGame(true);
-                            // if (bgm.current && !bgmIsPlaying) {
-                            //   bgm.current.play();
-                            //   setBgmIsPlaying(true);
-                            // } 
+                            if (bgm.current && !bgmIsPlaying) {
+                              bgm.current.play();
+                              setBgmIsPlaying(true);
+                            } 
                           }}>
-                            <img style={{width:'50%'}} src={StartGame} />
+                            <img style={{width:'100%'}} src={StartModal} />
                           </button>
                         </div>
                       </div>
@@ -267,7 +258,7 @@ const App: React.FC = () => {
                             return (
                               <React.Fragment key={alien.id}> 
                                 <img
-                                  src={alien.animation ? Explode1 : image}
+                                  src={alien.animation ? Explode : image}
                                   alt="Alien"
                                   className={alien.animation ? 'pan-animation' : 'pop-animation-pan-left'}
                                   style={{
@@ -367,22 +358,30 @@ const App: React.FC = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                {/* <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active-link' : '')}
                   onClick={(e) => {
                     window.scrollTo(0, 0);
                   }}>
+                    <img className="nav-img "src={NavFriends} />
+                    <p>Friends</p>
+                </NavLink> */}
+                <button disabled className="btn">
                   <img className="nav-img "src={NavFriends} />
-                  <p>Friends</p>
-                </NavLink>
+                  <p className="text-white" style={{fontFamily:"Bebas Neue",letterSpacing:"1px"}}>Coming Soon</p>
+                </button>
               </li>
               <li>
-                <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}
+                {/* <NavLink to="/airdrop" className={({ isActive }) => (isActive ? 'active-link' : '')}
                   onClick={(e) => {
                     window.scrollTo(0, 0);
                   }}>
                   <img className="nav-img "src={NavBuild} />
                   <p>Airdrop</p>
-                </NavLink>
+                </NavLink> */}
+                <button disabled className="btn">
+                  <img className="nav-img "src={NavBuild} />
+                  <p className="text-white" style={{fontFamily:"Bebas Neue",letterSpacing:"1px"}}>Coming Soon</p>
+                </button>
               </li>
             </ul>
           </div>

@@ -1,3 +1,32 @@
+.gg-tabs, .ranking-tabs {
+    background-color: black;
+    border: solid 4px #FFF155;
+    border-radius: 50px;
+    margin: 70px auto;
+    padding: 5px;
+}
+.gg-tabs {
+    width: 70%;
+}
+.ranking-tabs {
+    width: 95%;
+}
+.gg-tabs button, .ranking-tabs button {
+    width: 50%;
+    font-family: 'Bebas Neue';
+    letter-spacing: 2px;
+    font-size: 28px;
+    border-radius: 50px;
+}
+.gg-tabs button:hover, .ranking-tabs button:hover {
+    background-image: url('./img/button-bg.png');
+    background-size: cover;
+}
+.ranking-tabs {
+    margin-top: -15%;
+    margin-bottom: 30px;
+}
+
 .profile-pic {
     width: 100%;
     max-width: 180px;
@@ -14,26 +43,306 @@
     font-family: 'PEPSI';
     font-size: 16px;
 }
-/* @media (max-width: 389px) {
-    .lvl-text {
-        margin-top: -11%;
-    }
-}
-@media (max-width: 399px) {
-    .lvl-text {
-        margin-top: -12%;
-    }
-} */
 
-.refer-btn {
-    width: 65%;
+.your-points {
+    margin-top: -8%;
+    width: 70%;
+    text-align: center;
+}
+.your-points img {
+    width: 100%;
+}
+.your-points h2 {
+    margin-top: -17%;
+    margin-left: 70px;
+    color: white;
+    font-size: 30px;
+    font-family: 'PEPSI';
+    letter-spacing: 3px;
 }
 
-.aliens-container {
-    overflow-x: hidden;
+.profile-container {
+    width: 100%;
+    max-width: 768px;
+    background: rgba(0, 0, 0, 0.6);
+    border: solid 2px #FDC300;
+    border-radius: 10px;
+    margin: 60px;
+}
+.items-collection {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 80px 50px 10px 50px;
 }
 
-.gooogooo {
-    margin-top: -45%;
+.unlock-items {
+    flex: 25%;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-self: center;
+    justify-content: center;
+}
+.unlock-items img {
+    width: 90%;
+}
+.invite {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    margin: 30px auto;
+    gap: 15px;
+}
+.invite-leaderboard {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+    margin: -4% auto auto auto;
+    gap: 15px;
+}
+
+
+/* Leaderboard */
+.ranking-container {
+    width: 80%;
+    margin: auto;
+    font-family: 'Bebas Neue';
+    letter-spacing: 2px;
+    text-align: center;
+    color: white;
+    padding: 50px 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border: solid 2px #FDC300;
+    border-radius: 10px;
+}
+
+.ranking-item-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('./img/top-bg.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+    padding: 10px;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.ranking-item-others {
+    background: rgba(39, 39, 39, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    padding: 10px;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.ranking-number {
+    width: 15%;
+}
+.ranking-number img {
+    width: 60%;
+}
+.ranking-user-details, .ranking-total-points {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.ranking-number p, .ranking-user-details p, .ranking-total-points p {
+    margin: 0;
+}
+.ranking-user-details p, .ranking-number p {
+    font-family: 'Gilroy';
+    font-size: 18px;
+}
+.ranking-total-points p {
+    color: #FDC300;
+    font-family: 'Gilroy';
+    font-size: 18px;
+}
+.ranking-user-details {
+    width: 35%
+}
+.ranking-user-details img {
+    width: 30%;
+}
+.ranking-total-points {
     width: 50%;
+}
+.ranking-total-points img {
+    width: 15%;
+}
+
+
+@media (max-width: 679px) {
+    .ranking-tabs {
+        margin-top: -16%;
+    }
+    .your-points h2 {
+        font-size: 25px;
+    }
+    .items-collection {
+        padding-top: 40px;
+    }
+    .ranking-number img {
+        width: 50%;
+    }
+    .ranking-user-details p, .ranking-total-points p {
+        font-size: 12px;
+    }
+    .ranking-user-details img {
+        width: 25%;
+    }
+    .ranking-total-points img {
+        width: 10%;
+    }
+}
+
+@media (max-width: 568px) {
+    .gg-tabs {
+        margin: 60px auto;
+    }
+    .ranking-tabs{
+        margin-top: -20%;
+    }
+    .gg-tabs button, .ranking-tabs button {
+        font-size: 23px;
+    }
+    .profile-pic {
+        max-width: 160px;
+    }
+    .profile-lvl {
+        max-width: 140px;
+    }
+    .lvl-text {
+        font-size: 14px;
+    }
+    .profile-container {
+        margin: 40px;
+    }
+    .your-points h2 {
+        font-size: 20px;
+        margin-left: 50px;
+    }
+    .items-collection {
+        padding: 40px 30px 10px 30px;
+    }
+    .ranking-user-details p, .ranking-total-points p {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 469px) {
+    .gg-tabs, .ranking-tabs {
+        border-width: 3px;
+        padding: 3px;
+    }
+    .ranking-tabs{
+        margin-top: -23%;
+    }
+    .gg-tabs button, .ranking-tabs button {
+        font-size: 20px;
+    }
+    .profile-pic {
+        max-width: 150px;
+    }
+    .profile-lvl {
+        max-width: 130px;
+    }
+    .lvl-text {
+        font-size: 13px;
+    }
+    .profile-container {
+        margin: 30px 50px;
+    }
+    .your-points h2 {
+        font-size: 16px;
+        margin-left: 30px;
+    }
+    .items-collection {
+        padding: 35px 20px 10px 20px;
+    }
+    .invite {
+        margin: 5px auto 20px auto;
+    }
+    
+}
+
+@media (max-width: 426px) {
+    .gg-tabs button, .ranking-tabs button {
+        font-size: 16px;
+    }
+    .ranking-number {
+        width: 13%;
+    }
+    .ranking-number img {
+        width: 60%;
+    }
+    .ranking-user-details, .ranking-total-points {
+        gap: 5px;
+    }
+    .ranking-user-details p, .ranking-total-points p {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 376px) {
+    .gg-tabs button, .ranking-tabs button {
+        font-size: 13px;
+    }
+    .ranking-tabs{
+        margin-top: -25%;
+    }
+    .profile-pic {
+        max-width: 130px;
+    }
+    .profile-lvl {
+        max-width: 110px;
+    }
+    .lvl-text {
+        font-size: 11px;
+    }
+    .your-points h2 {
+        font-size: 12px;
+    }
+    .ranking-number {
+        width: 10%;
+    }
+    .ranking-number img {
+        width: 70%;
+    }
+    .ranking-user-details p, .ranking-total-points p {
+        font-size: 8px;
+    }
+    .ranking-item-content {
+        gap: 5px;
+    }
+}
+
+@media (max-width: 320px) {
+    .gg-tabs, .ranking-tabs {
+        border-width: 2px;
+        padding: 2px;
+    }
+    .ranking-tabs{
+        margin-top: -25%;
+    }
+    .gg-tabs button, .ranking-tabs button {
+        font-size: 11px;
+    }
+    .profile-container {
+        margin: 20px 60px;
+    }
+    .your-points h2 {
+        font-size: 10px;
+    }
+    .items-collection {
+        padding-top: 20px;
+    }
+    .ranking-user-details {
+        width: 40%;
+    }
+    .ranking-total-points {
+       width: 55%;
+    }
 }

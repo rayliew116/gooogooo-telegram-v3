@@ -88,14 +88,11 @@ button:focus {
 }
 button {
   background-color: transparent;
+  padding: 0;
 }
 
 .modal {
-  background-image: url('../img/start-cover.png');
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+  background: rgba(0, 0, 0, 0.6);
 }
 .modal h3 {
   font-family: 'Gilroy';
@@ -148,4 +145,12 @@ img {
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
+}
+
+li {
+  list-style: none;
+}
+ul {
+  padding: 0;
+  margin: 0;
 }
