@@ -11,10 +11,10 @@
     padding: 5px 0;
 }
 
-.earn-list {
+/* .earn-list {
     width: 90%;
-    margin: auto;
-}
+
+} */
 .earn-list p {
     margin: 0;
 }
@@ -39,7 +39,7 @@
     width: 70%;
 }
 .action-icon img {
-    width: 90%;
+    width: 100%;
 }
 .earn-task-content {
     padding: 0 20px;
@@ -76,11 +76,17 @@
     }
 }
 @media (max-width: 582px) {
+    .earn-task-content {
+        width: 55%;
+    }
     .earn-task-content p {
         font-size: 15px;
     }
     .earn-des p {
         font-size: 13px;
+    }
+    .action-icon {
+        width: 25%;
     }
 }
 @media (max-width: 478px) {

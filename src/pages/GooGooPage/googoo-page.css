@@ -11,6 +11,7 @@
 .ranking-tabs {
     width: 95%;
 }
+
 .gg-tabs button, .ranking-tabs button {
     width: 50%;
     font-family: 'Bebas Neue';
@@ -18,10 +19,13 @@
     font-size: 28px;
     border-radius: 50px;
 }
-.gg-tabs button:hover, .ranking-tabs button:hover {
+
+.active-tab {
     background-image: url('./img/button-bg.png');
     background-size: cover;
+    background-position: center;
 }
+
 .ranking-tabs {
     margin-top: -15%;
     margin-bottom: 30px;
@@ -29,19 +33,19 @@
 
 .profile-pic {
     width: 100%;
-    max-width: 180px;
+    max-width: 220px;
 }
 
 .profile-lvl {
     width: 100%;
-    max-width: 160px;
+    max-width: 200px;
     margin-top:-58px;
 }
 
 .lvl-text {
     margin-top: -48px;
     font-family: 'PEPSI';
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .your-points {
@@ -53,7 +57,7 @@
     width: 100%;
 }
 .your-points h2 {
-    margin-top: -17%;
+    margin-top: -16.5%;
     margin-left: 70px;
     color: white;
     font-size: 30px;
@@ -115,27 +119,23 @@
     border-radius: 10px;
 }
 
-.ranking-item-top {
+.ranking-item-top, .ranking-item-others {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('./img/top-bg.png');
-    background-size: cover;
-    background-position: center;
     border-radius: 15px;
-    padding: 10px;
+    padding: 10px 5px;
     gap: 10px;
     margin-bottom: 10px;
 }
+.ranking-item-top {
+    background-image: url('./img/top-bg.png');
+    background-size: cover;
+    background-position: center;
+
+}
 .ranking-item-others {
     background: rgba(39, 39, 39, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-    padding: 10px;
-    gap: 10px;
-    margin-bottom: 10px;
 }
 .ranking-number {
     width: 15%;
@@ -188,7 +188,7 @@
         width: 50%;
     }
     .ranking-user-details p, .ranking-total-points p {
-        font-size: 12px;
+        font-size: 16px;
     }
     .ranking-user-details img {
         width: 25%;
@@ -209,13 +209,10 @@
         font-size: 23px;
     }
     .profile-pic {
-        max-width: 160px;
+        max-width: 200px;
     }
     .profile-lvl {
-        max-width: 140px;
-    }
-    .lvl-text {
-        font-size: 14px;
+        max-width: 180px;
     }
     .profile-container {
         margin: 40px;
@@ -228,7 +225,7 @@
         padding: 40px 30px 10px 30px;
     }
     .ranking-user-details p, .ranking-total-points p {
-        font-size: 10px;
+        font-size: 13px;
     }
 }
 
@@ -244,13 +241,10 @@
         font-size: 20px;
     }
     .profile-pic {
-        max-width: 150px;
+        max-width: 180px;
     }
     .profile-lvl {
-        max-width: 130px;
-    }
-    .lvl-text {
-        font-size: 13px;
+        max-width: 160px;
     }
     .profile-container {
         margin: 30px 50px;
@@ -258,6 +252,9 @@
     .your-points h2 {
         font-size: 16px;
         margin-left: 30px;
+    }
+    .ranking-user-details p, .ranking-total-points p {
+        font-size: 11px;
     }
     .items-collection {
         padding: 35px 20px 10px 20px;
@@ -272,6 +269,9 @@
     .gg-tabs button, .ranking-tabs button {
         font-size: 16px;
     }
+    .ranking-item-top, .ranking-item-others {
+        border-radius: 10px;
+    }
     .ranking-number {
         width: 13%;
     }
@@ -282,7 +282,7 @@
         gap: 5px;
     }
     .ranking-user-details p, .ranking-total-points p {
-        font-size: 8px;
+        font-size: 9.5px;
     }
 }
 
@@ -294,13 +294,13 @@
         margin-top: -25%;
     }
     .profile-pic {
-        max-width: 130px;
+        max-width: 160px;
     }
     .profile-lvl {
-        max-width: 110px;
+        max-width: 140px;
     }
     .lvl-text {
-        font-size: 11px;
+        font-size: 14px;
     }
     .your-points h2 {
         font-size: 12px;
@@ -311,8 +311,11 @@
     .ranking-number img {
         width: 70%;
     }
+    .ranking-number p {
+        font-size: 15px;
+    }
     .ranking-user-details p, .ranking-total-points p {
-        font-size: 8px;
+        font-size: 8.5px;
     }
     .ranking-item-content {
         gap: 5px;
@@ -344,5 +347,8 @@
     }
     .ranking-total-points {
        width: 55%;
+    }
+    .ranking-user-details p, .ranking-total-points p {
+        font-size: 7px;
     }
 }

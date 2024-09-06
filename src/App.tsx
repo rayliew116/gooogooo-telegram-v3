@@ -26,8 +26,9 @@ import AlienCoinBag from './assets/img/alien-coinbag.gif'
 
 
 // Import sound effects
-import Kaching from './assets/sound/coin.mp3';
-import BGMusic from './assets/sound/Gold Coins - Rolla Coasta (reduced).mp3';
+import SFXOne from './assets/sound/coin-3.mp3';
+import SFXTwo from './assets/sound/jackpot.mp3';
+import BGMusic from './assets/sound/bgm-reduced.mp3';
 
 // Import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
@@ -68,6 +69,7 @@ const App: React.FC = () => {
   const [bgmIsPlaying, setBgmIsPlaying]= useState(false);
 
   const alienPop = useRef<HTMLAudioElement | null>(null);
+  const coinSFX = useRef<HTMLAudioElement | null>(null);
 
   const gameWidth = window.innerWidth;
   const gameHeight = window.innerHeight * 0.5;
@@ -78,7 +80,7 @@ const App: React.FC = () => {
   };
 
   const getAlienSizeAndImage = (type: AlienType) => {
-    return { size: 80, image: AlienCoinBag };
+    return { size: 140, image: AlienCoinBag };
   };
 
   const generateAlien = () => {
@@ -98,60 +100,73 @@ const App: React.FC = () => {
     setAliens([newAlien]);
   };
   
-  const handleAlienClick = (event: React.MouseEvent) => {
+  const handleAlienClick = (event: React.TouchEvent) => {
     const alienBox = event.currentTarget as HTMLElement;
     const rect = alienBox.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
 
-    if (alienPop.current) {
-      alienPop.current.play().catch(error => {
-          console.error('Error playing sound:', error);
-      });
-  }
+    Array.from(event.touches).forEach((touch) => {
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
 
-    const newImage: ClickImage = { id: Date.now(), x, y };
-    setClickImages(prevImages => [...prevImages, newImage]);
-    
-    setTimeout(() => {
-      setClickImages(prevImages => prevImages.filter(image => image.id !== newImage.id));
-    }, 1000);
-
-    let isAlienClicked = false;
-
-    setAliens(prevAliens => prevAliens.map(alien => {
-      const { size } = getAlienSizeAndImage(alien.type);
-      const isColliding = x >= alien.x && x <= alien.x + size && y >= alien.y && y <= alien.y + size;
-
-      if (isColliding && !alien.collided) {
-          isAlienClicked = true;
-          if (alienPop.current) {
-              alienPop.current.play().catch(error => {
-                  console.error('Failed to play audio:', error);
-              });
-          }
-          return { ...alien, animation: true, showPlusOne: true, collided: true };
+      if (coinSFX.current) {
+        const newSound = coinSFX.current.cloneNode(true) as HTMLAudioElement;
+        newSound.play();
       }
-      return alien;
-    }));
-  
-    setPoints(prevPoints => prevPoints + (isAlienClicked ? 100 : 1));
 
-    if (isAlienClicked) {
+      const goooGoooElement = document.querySelector('.gooogooo-game img');
+
+      if (goooGoooElement) {
+        goooGoooElement.classList.add('glow');
+
+        // Remove the glow effect after 300ms (or any duration matching your transition)
         setTimeout(() => {
-        setAliens([]);
-        const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
+          goooGoooElement.classList.remove('glow');
+        }, 100); // Match the duration of the glow transition
+      }
+
+      const newImage: ClickImage = { id: Date.now(), x, y };
+      setClickImages(prevImages => [...prevImages, newImage]);
+      
+      setTimeout(() => {
+        setClickImages(prevImages => prevImages.filter(image => image.id !== newImage.id));
+      }, 1000);
+
+      let isAlienClicked = false;
+
+      setAliens(prevAliens => prevAliens.map(alien => {
+        const { size } = getAlienSizeAndImage(alien.type);
+        const isColliding = x >= alien.x && x <= alien.x + size && y >= alien.y && y <= alien.y + size;
+
+        if (isColliding && !alien.collided) {
+            isAlienClicked = true;
+            if (alienPop.current) {
+              const newSound = alienPop.current.cloneNode(true) as HTMLAudioElement;
+              newSound.play();
+            }
+            return { ...alien, animation: true, showPlusOne: true, collided: true };
+        }
+        return alien;
+      }));
+  
+      setPoints(prevPoints => prevPoints + (isAlienClicked ? 100 : 1));
+
+      if (isAlienClicked) {
         setTimeout(() => {
+          setAliens([]);
+          const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
+          setTimeout(() => {
             generateAlien();
-        }, regenerationDelay); 
-    }, 1000);
-    }
+          }, regenerationDelay); 
+        }, 1000);
+      }
+    });
   };
 
   useEffect(() => {
     bgm.current = new Audio(BGMusic);
     bgm.current.loop = true;
-    alienPop.current = new Audio(Kaching);
+    coinSFX.current = new Audio(SFXOne);
+    alienPop.current = new Audio(SFXTwo);
 
     const initialDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
 
@@ -251,7 +266,7 @@ const App: React.FC = () => {
                             height: '100%',
                             zIndex: 2, 
                           }}
-                          onClick={handleAlienClick}
+                          onTouchStart={handleAlienClick}
                         >
                           {aliens.map(alien => {
                             const { size, image } = getAlienSizeAndImage(alien.type);
@@ -289,6 +304,7 @@ const App: React.FC = () => {
                               </React.Fragment>
                             );
                           })}
+                        </div>
                           {clickImages.map(image => (
                             <img
                               className="plus-one-animation"
@@ -298,15 +314,14 @@ const App: React.FC = () => {
                                 position: 'absolute',
                                 left: image.x,
                                   top: image.y,
-                                  width: '50px', // Adjust size as needed
-                                  height: '50px',
+                                  width: '90px', // Adjust size as needed
+                                  height: '90px',
                                 transform: 'translate(-50%, -50%)',
                                 pointerEvents: 'none',
                                 transition: 'transform 0.5s ease, opacity 0.5s ease'
                               }}
                             />
                           ))}
-                        </div>
                       </div>
                     </div>
                       

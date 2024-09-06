@@ -25,84 +25,22 @@ const GooGooPage = (props: Props) => {
 
   const [openLeaderboard, setOpenLeaderboard] = useState(false);
   const [openTeam, setOpenTeam] = useState(false);
-
+  const [activeTab, setActiveTab] = useState<string>("leaderboard");
+  const [activeLeaderboardTab, setActiveLeaderboardTab] = useState<string>("individual");
 
   return (
     <>
       <div className="row">
         <div className="gg-tabs">
-          <button className="btn text-white" onClick={(e) => {setOpenLeaderboard(false);}}>PROFILE</button>
-          <button className="btn text-white" onClick={(e) => {setOpenLeaderboard(true);}}>LEADERBOARD</button>
+          <button className={activeTab === "leaderboard" ? "btn text-white active-tab" : "btn text-white"} onClick={(e) => {setOpenLeaderboard(false);setActiveTab("leaderboard");}}>LEADERBOARD</button>
+          <button className={activeTab === "profile" ? "btn text-white active-tab" : "btn text-white"} onClick={(e) => {setOpenLeaderboard(true);setActiveTab("profile");}}>PROFILE</button>
         </div>
         {!openLeaderboard ? (
           <> 
-            <div className="col-12 text-center">
-              <img className="profile-pic" src={ProfilePic} alt="" />
-              <div className="lvl-container">
-                <img className="profile-lvl" src={LevelBox} alt="" />
-                <h5 className="brand-yellow lvl-text">LEVEL 4</h5>
-              </div>
-            </div>
-
-            <div className="profile-container">
-              <div className="your-points mx-auto">
-                <img className="w-100" src={PointsBar} />
-                <h2>500,970</h2>
-              </div>
-              <div className="items-collection">
-                <div className="unlock-items text-center px-0">
-                  <img src={SampleOne} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={SampleTwo} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={SampleThree} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={SampleFour} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={LockedItem} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={LockedItem} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={LockedItem} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={LockedItem} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={LockedItem} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={LockedItem} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={LockedItem} alt="" />
-                </div>
-                <div className="unlock-items text-center px-0">
-                  <img src={LockedItem} alt="" />
-                </div>
-              </div>
-              <div className="invite">
-                <button className="btn p-0">
-                  <img src={InviteButton} style={{width:"100%"}}/>
-                </button>
-                <button className="btn p-0" >
-                  <img src={CopyButton} style={{width:"100%"}}/>
-                </button>
-              </div>
-            </div>
-          </>
-        ):(
-          <>
             <div className="ranking-container">
               <div className="ranking-tabs">
-                <button className="btn text-white" onClick={(e) => {setOpenTeam(false);}}>INDIVIDUAL</button>
-                <button className="btn text-white" onClick={(e) => {setOpenTeam(true);}}>TEAM</button>
+                <button className={activeLeaderboardTab === "individual" ? "btn text-white active-tab" : "btn text-white"} onClick={(e) => {setOpenTeam(false);setActiveLeaderboardTab("individual");}}>INDIVIDUAL</button>
+                <button className={activeLeaderboardTab === "team" ? "btn text-white active-tab" : "btn text-white"} onClick={(e) => {setOpenTeam(true);setActiveLeaderboardTab("team");}}>TEAM</button>
               </div>
               <ul>
                   {!openTeam ? (
@@ -119,7 +57,7 @@ const GooGooPage = (props: Props) => {
                           </div>
                           <div className="ranking-total-points">
                             <img src={GoldCoin} />
-                            <p>43652134356178321</p>
+                            <p>4365213435617</p>
                             {/* <p>43652131</p> */}
                           </div>
                         </div>
@@ -136,7 +74,7 @@ const GooGooPage = (props: Props) => {
                           </div>
                           <div className="ranking-total-points">
                             <img src={GoldCoin} />
-                            <p>43652134356178321</p>
+                            <p>4365213435617</p>
                             {/* <p>43652131</p> */}
                           </div>
                         </div>
@@ -153,7 +91,7 @@ const GooGooPage = (props: Props) => {
                           </div>
                           <div className="ranking-total-points">
                             <img src={GoldCoin} />
-                            <p>43652134356178321</p>
+                            <p>4365213435617</p>
                             {/* <p>43652131</p> */}
                           </div>
                         </div>
@@ -170,7 +108,7 @@ const GooGooPage = (props: Props) => {
                           </div>
                           <div className="ranking-total-points">
                             <img src={GoldCoin} />
-                            <p>43652134356178321</p>
+                            <p>4365213435617</p>
                             {/* <p>43652131</p> */}
                           </div>
                         </div>
@@ -194,6 +132,70 @@ const GooGooPage = (props: Props) => {
               <button className="btn p-0" >
                 <img src={CopyButton} style={{width:"100%"}}/>
               </button>
+            </div>
+            
+          </>
+        ):(
+          <>
+            <div className="col-12 text-center">
+              <img className="profile-pic" src={ProfilePic} />
+              <div className="lvl-container">
+                <img className="profile-lvl" src={LevelBox} />
+                <h5 className="brand-yellow lvl-text">LEVEL 1</h5>
+              </div>
+            </div>
+
+            <div className="profile-container">
+              <div className="your-points mx-auto">
+                <img className="w-100" src={PointsBar} />
+                <h2>coming soon</h2>
+              </div>
+              <div className="items-collection">
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+                <div className="unlock-items text-center px-0">
+                  <img src={LockedItem} />
+                </div>
+              </div>
+              <div className="invite">
+                <button className="btn p-0">
+                  <img src={InviteButton} style={{width:"100%"}}/>
+                </button>
+                <button className="btn p-0" >
+                  <img src={CopyButton} style={{width:"100%"}}/>
+                </button>
+              </div>
             </div>
           </>
         )}

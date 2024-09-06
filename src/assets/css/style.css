@@ -28,7 +28,7 @@
   align-items: center;
 }
 .header-logo {
-  width: 70%;
+  width: 90%;
   display: block;
 }
 .header-icons-box {
@@ -37,22 +37,13 @@
   align-items: center;
   justify-items: end;
   justify-content: end;
+  gap: 3px;
 }
 .header-icons-box button {
-  width: auto;
+  width: 25%;
 }
 .header-icons {
-  width: 90%;
-}
-@media (max-width: 576px) {
-  .header-logo {
-    width: 80%;
-  }
-}
-@media (max-width: 426px) {
-  .header-icons {
-    width: 70%;
-  }
+  width: 100%;
 }
 
 
@@ -83,7 +74,12 @@
 @media (max-width: 576px) {
   .total-earned h2 {
     top: 45%;
-    font-size: 38px;
+    font-size: 35px;
+  }
+}
+@media (max-width: 426px) {
+  .total-earned h2 {
+    font-size: 30px;
   }
 }
 @media (max-width: 376px) {
@@ -107,11 +103,16 @@
 }
 .gooogooo-game img {
   width: 40%;
+  transition: filter 0.1s ease-in-out;
 }
 @media (max-width: 569px) {
   .gooogooo-game img {
     width: 50%;
   }
+}
+.glow {
+  filter: drop-shadow(0 0 20px rgba(253, 195, 0, 0.9)); /* Creates a glow around the actual shape of the image */
+  transition: filter 0.1s ease-in-out; /* Smooth transition for the glow */
 }
 
 /* GoooGooo at corner */
@@ -153,7 +154,7 @@
 .navbar li {
   display: inline;
 }
-.navbar a {
+.navbar a, .navbar li button {
   display: block;
   padding: 10px 0;
   color: #FDC300;
@@ -162,9 +163,9 @@
   letter-spacing: 1px;
 }
 .navbar a, p {
-  font-size: 12px;
+  font-size: 15px;
 }
-.navbar a:hover, .active-link {
+.active-link {
   background-image: url('../img/nav-onhoverbg.png');
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -180,20 +181,17 @@
 /* Navbar Responsive */
 @media (max-width: 685px) {
   .navbar a, p {
-    font-size: 10px;
+    font-size: 13px;
   }
 }
 @media (max-width: 399px) {
   .navbar a, p {
-    font-size: 8px;
+    font-size: 10px;
   }
 }
 
-.gg-swipe {
+/* .gg-swipe {
   touch-action: none;
-}
-/* .gg-swipe img {
-  width: 80%;
 } */
 
 @keyframes panIn {
