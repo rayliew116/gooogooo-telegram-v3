@@ -2,14 +2,15 @@
     background-color: black;
     border: solid 4px #FFF155;
     border-radius: 50px;
-    margin: 70px auto;
     padding: 5px;
 }
 .gg-tabs {
     width: 70%;
+    margin: 40px auto 70px auto;
 }
 .ranking-tabs {
     width: 95%;
+    margin: -15% auto 30px auto;
 }
 
 .gg-tabs button, .ranking-tabs button {
@@ -24,11 +25,6 @@
     background-image: url('./img/button-bg.png');
     background-size: cover;
     background-position: center;
-}
-
-.ranking-tabs {
-    margin-top: -15%;
-    margin-bottom: 30px;
 }
 
 .profile-pic {
@@ -101,7 +97,7 @@
     justify-content: center;
     width: 60%;
     margin: -4% auto auto auto;
-    gap: 15px;
+    gap: 10px;
 }
 
 
@@ -200,7 +196,7 @@
 
 @media (max-width: 568px) {
     .gg-tabs {
-        margin: 60px auto;
+        margin: 40px auto 50px auto;
     }
     .ranking-tabs{
         margin-top: -20%;
@@ -328,7 +324,7 @@
         padding: 2px;
     }
     .ranking-tabs{
-        margin-top: -25%;
+        margin-top: -28%;
     }
     .gg-tabs button, .ranking-tabs button {
         font-size: 11px;

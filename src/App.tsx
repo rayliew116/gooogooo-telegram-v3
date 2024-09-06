@@ -75,6 +75,8 @@ const App: React.FC = () => {
   const gameWidth = window.innerWidth;
   const gameHeight = window.innerHeight * 0.5;
 
+  const isTouchRef = useRef(false);
+
   const generateRandomPosition = (size: number, max: number) => {
     const margin = 5;
     return Math.random() * (max - size - margin * 2) + margin;
@@ -104,6 +106,12 @@ const App: React.FC = () => {
   const handleAlienClick = (event: React.TouchEvent | React.MouseEvent) => {
     if (gamePaused) return;
 
+    if (event.type === 'touchstart') {
+      isTouchRef.current = true; // Set flag for touch event
+    } else if (isTouchRef.current) {
+      return; // Skip mouse event if touch event occurred
+    }
+
     const alienBox = event.currentTarget as HTMLElement;
     const rect = alienBox.getBoundingClientRect();
 
@@ -132,10 +140,9 @@ const App: React.FC = () => {
       if (goooGoooElement) {
         goooGoooElement.classList.add('glow');
 
-        // Remove the glow effect after 300ms (or any duration matching your transition)
         setTimeout(() => {
           goooGoooElement.classList.remove('glow');
-        }, 100); // Match the duration of the glow transition
+        }, 100);
       }
 
       const newImage: ClickImage = { id: Date.now(), x, y };
@@ -178,17 +185,6 @@ const App: React.FC = () => {
       }));
   
       setPoints(prevPoints => prevPoints + (isAlienClicked ? 100 : 1));
-
-      // if (isAlienClicked) {
-      //   setTimeout(() => {
-      //     setAliens([]);
-
-      //     const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
-      //     setTimeout(() => {
-      //       generateAlien();
-      //     }, regenerationDelay); 
-      //   }, 1000);
-      // }
     });
   };
 
@@ -228,16 +224,15 @@ const App: React.FC = () => {
       {isFlushing && <img src={CoinFlushImage} alt="Coin Flush" className="coin-flush-animation" />}
       <div className="row">
         <div className="col-12 px-0">
-          <div className="game-bg">
             <div className="row header-box">
               {/* <div className="col-3"></div> */}
               <div className="col-6 text-center">
                 <img className="header-logo" src={MainLogo} />
               </div>
               <div className="col-6 header-icons-box">
-                <button disabled className="btn p-0">
+                {/* <button disabled className="btn p-0">
                   <img className="header-icons" src={LanguageIcon}/>
-                </button>
+                </button> */}
                 <button className="btn p-0" onClick={(e) => {
                   if (bgm.current && bgmIsPlaying) {
                       bgm.current.pause();
@@ -251,6 +246,7 @@ const App: React.FC = () => {
                 </button>
               </div>
             </div>
+          <div className="game-bg">
             <Routes>
               <Route path="/" element={
                 <>

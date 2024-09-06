@@ -69,7 +69,9 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   scroll-behavior: smooth;
-  
+}
+html, body {
+  overscroll-behavior: none;
 }
 body::-webkit-scrollbar {
   display: none;
