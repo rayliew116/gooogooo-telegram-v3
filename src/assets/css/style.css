@@ -275,3 +275,24 @@
 .plus-one-animation {
   animation: fadeAndMoveUp 2s ease-out forwards;
 }
+
+@keyframes panFromTop {
+  0% {
+    top: -180vh;  /* Start above the view */
+  }
+  100% {
+    top: 100vh;  /* End below the view */
+  }
+}
+.coin-flush-animation {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Center the image horizontally */
+  width: 100vw;  /* Full viewport width */
+  height: auto;  /* Auto height to maintain aspect ratio */
+  min-height: 100vh;  /* Ensure it covers the full height of the viewport */
+  object-fit: cover;
+  top: -180vh;
+  animation: panFromTop 4s linear forwards; /* Apply the pan animation over 2 seconds */
+  z-index: 999;  /* Ensure it appears above all other content */
+}

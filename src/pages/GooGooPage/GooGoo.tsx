@@ -3,15 +3,15 @@ import { BrowserRouter as Router, Route, Routes, Navigate, NavLink } from 'react
 import './googoo-page.css';
 
 // Import images here
-import ProfilePic from '../../assets/img/profile-pic.png';
-import LevelBox from '../../assets/img/level-box.png';
-import LockedItem from '../../assets/img/locked.png';
-import SampleOne from '../../assets/img/item-sample1.png';
-import SampleTwo from '../../assets/img/item-sample2.png';
-import SampleThree from '../../assets/img/item-sample3.png';
-import SampleFour from '../../assets/img/item-sample4.png';
 import PointsBar from '../../assets/img/points-bar.png';
 
+import ProfilePic from './img/profile-pic.png';
+import LevelBox from './img/level-box.png';
+import LockedItem from './img/locked.png';
+import SampleOne from './img/item-sample1.png';
+import SampleTwo from './img/item-sample2.png';
+import SampleThree from './img/item-sample3.png';
+import SampleFour from './img/item-sample4.png';
 import InviteButton from './img/invite-button.png'
 import CopyButton from './img/copy-button.png'
 import GoldTrophy from './img/gold-trophy.png'

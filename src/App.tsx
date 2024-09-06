@@ -23,7 +23,7 @@ import MusicIcon from './assets/img/music-icon.png';
 import Explode from './assets/img/explode.gif';
 import CoinBubble from './assets/img/coin-bubble.png';
 import AlienCoinBag from './assets/img/alien-coinbag.gif'
-
+import CoinFlushImage from './assets/img/money-flush.png'
 
 // Import sound effects
 import SFXOne from './assets/sound/coin-3.mp3';
@@ -61,13 +61,14 @@ const App: React.FC = () => {
   const [startGame, setStartGame] = useState(false);
   const [points, setPoints] = useState(0);
   const [aliens, setAliens] = useState<Alien[]>([]);
-  const alienIdRef = useRef(0);  // To keep track of unique IDs for aliens
-
+  const alienIdRef = useRef(0);
   const [clickImages, setClickImages] = useState<ClickImage[]>([]);
+
+  const [isFlushing, setIsFlushing] = useState(false);
+  const [gamePaused, setGamePaused] = useState(false);
 
   const bgm = useRef<HTMLAudioElement | null>(null);
   const [bgmIsPlaying, setBgmIsPlaying]= useState(false);
-
   const alienPop = useRef<HTMLAudioElement | null>(null);
   const coinSFX = useRef<HTMLAudioElement | null>(null);
 
@@ -100,11 +101,24 @@ const App: React.FC = () => {
     setAliens([newAlien]);
   };
   
-  const handleAlienClick = (event: React.TouchEvent) => {
+  const handleAlienClick = (event: React.TouchEvent | React.MouseEvent) => {
+    if (gamePaused) return;
+
     const alienBox = event.currentTarget as HTMLElement;
     const rect = alienBox.getBoundingClientRect();
 
-    Array.from(event.touches).forEach((touch) => {
+    let touches = [];
+
+    if (event.type === 'touchstart') {
+      // Handle touch events
+      touches = Array.from((event as React.TouchEvent).touches);
+    } else {
+      // Handle mouse events (convert the mouse position to mimic a touch point)
+      const mouseEvent = event as React.MouseEvent;
+      touches = [{ clientX: mouseEvent.clientX, clientY: mouseEvent.clientY }];
+    }
+
+    touches.forEach((touch) => {
       const x = touch.clientX - rect.left;
       const y = touch.clientY - rect.top;
 
@@ -138,27 +152,43 @@ const App: React.FC = () => {
         const isColliding = x >= alien.x && x <= alien.x + size && y >= alien.y && y <= alien.y + size;
 
         if (isColliding && !alien.collided) {
-            isAlienClicked = true;
-            if (alienPop.current) {
-              const newSound = alienPop.current.cloneNode(true) as HTMLAudioElement;
-              newSound.play();
-            }
-            return { ...alien, animation: true, showPlusOne: true, collided: true };
+          isAlienClicked = true;
+          
+          if (alienPop.current) {
+            const newSound = alienPop.current.cloneNode(true) as HTMLAudioElement;
+            newSound.play();
+          }
+
+          setIsFlushing(true);
+          setGamePaused(true); // Pause the game during coin flush
+
+          setTimeout(() => {
+            setIsFlushing(false); // Remove the flush after animation
+            setGamePaused(false); // Resume the game
+            // Alien regeneration after coin flush
+            const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
+            setTimeout(() => {
+              generateAlien();
+            }, regenerationDelay);
+          }, 4000);
+
+          return { ...alien, animation: true, showPlusOne: true, collided: true };
         }
         return alien;
       }));
   
       setPoints(prevPoints => prevPoints + (isAlienClicked ? 100 : 1));
 
-      if (isAlienClicked) {
-        setTimeout(() => {
-          setAliens([]);
-          const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
-          setTimeout(() => {
-            generateAlien();
-          }, regenerationDelay); 
-        }, 1000);
-      }
+      // if (isAlienClicked) {
+      //   setTimeout(() => {
+      //     setAliens([]);
+
+      //     const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
+      //     setTimeout(() => {
+      //       generateAlien();
+      //     }, regenerationDelay); 
+      //   }, 1000);
+      // }
     });
   };
 
@@ -173,7 +203,7 @@ const App: React.FC = () => {
     const initialAlienTimeout = setTimeout(() => {
       generateAlien();
     }, initialDelay);
-    // generateAlien();
+    // }, );
     return () => {
       clearTimeout(initialAlienTimeout);
       setAliens([]);
@@ -195,6 +225,7 @@ const App: React.FC = () => {
 
   return (
     <div className="container game-container">
+      {isFlushing && <img src={CoinFlushImage} alt="Coin Flush" className="coin-flush-animation" />}
       <div className="row">
         <div className="col-12 px-0">
           <div className="game-bg">
@@ -266,6 +297,7 @@ const App: React.FC = () => {
                             height: '100%',
                             zIndex: 2, 
                           }}
+                          onMouseDown={handleAlienClick}
                           onTouchStart={handleAlienClick}
                         >
                           {aliens.map(alien => {
@@ -306,21 +338,21 @@ const App: React.FC = () => {
                           })}
                         </div>
                           {clickImages.map(image => (
-                            <img
-                              className="plus-one-animation"
-                              key={image.id}
-                              src={CoinBubble}
-                              style={{
-                                position: 'absolute',
-                                left: image.x,
-                                  top: image.y,
-                                  width: '90px', // Adjust size as needed
-                                  height: '90px',
-                                transform: 'translate(-50%, -50%)',
-                                pointerEvents: 'none',
-                                transition: 'transform 0.5s ease, opacity 0.5s ease'
-                              }}
-                            />
+                              <img
+                                className="plus-one-animation"
+                                key={image.id}
+                                src={CoinBubble}
+                                style={{
+                                  position: 'absolute',
+                                  left: image.x,
+                                    top: image.y,
+                                    width: '90px', // Adjust size as needed
+                                    height: '90px',
+                                  transform: 'translate(-50%, -50%)',
+                                  pointerEvents: 'none',
+                                  transition: 'transform 0.5s ease, opacity 0.5s ease'
+                                }}
+                              />
                           ))}
                       </div>
                     </div>
