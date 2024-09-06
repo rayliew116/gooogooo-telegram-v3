@@ -281,14 +281,19 @@
   animation: fadeAndMoveUp 2s ease-out forwards;
 }
 
-@keyframes panFromTop {
+/* @keyframes panFromTop {
   0% {
-    top: -180vh;  /* Start above the view */
+    top: -190vh;  
   }
   100% {
-    top: 100vh;  /* End below the view */
+    top: 100vh;  
   }
+} */
+@keyframes panFromTop {
+  from {top: -100vh;}
+  to {top: 100vh;}
 }
+
 .coin-flush-animation {
   position: absolute;
   left: 50%;
@@ -297,7 +302,12 @@
   height: auto;  /* Auto height to maintain aspect ratio */
   min-height: 100vh;  /* Ensure it covers the full height of the viewport */
   object-fit: cover;
-  top: -180vh;
-  animation: panFromTop 4s linear forwards; /* Apply the pan animation over 2 seconds */
+  top: -100vh;
   z-index: 999;  /* Ensure it appears above all other content */
+  animation: panFromTop 4s linear forwards;
 }
+/* .coin-flush-animation.animate {
+  animation: panFromTop 4s linear forwards;
+} */
+
+

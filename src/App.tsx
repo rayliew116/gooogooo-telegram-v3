@@ -194,12 +194,12 @@ const App: React.FC = () => {
     coinSFX.current = new Audio(SFXOne);
     alienPop.current = new Audio(SFXTwo);
 
-    const initialDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
+    // const initialDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
 
     const initialAlienTimeout = setTimeout(() => {
       generateAlien();
-    }, initialDelay);
-    // }, );
+    // }, initialDelay);
+    }, );
     return () => {
       clearTimeout(initialAlienTimeout);
       setAliens([]);
@@ -221,7 +221,9 @@ const App: React.FC = () => {
 
   return (
     <div className="container game-container">
-      {isFlushing && <img src={CoinFlushImage} alt="Coin Flush" className="coin-flush-animation" />}
+      {isFlushing && (
+        <img src={CoinFlushImage} className="coin-flush-animation" />
+      )}
       <div className="row">
         <div className="col-12 px-0">
             <div className="row header-box">
