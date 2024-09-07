@@ -121,10 +121,8 @@ const App: React.FC = () => {
     let touches = [];
 
     if (event.type === 'touchstart') {
-      // Handle touch events
       touches = Array.from((event as React.TouchEvent).touches);
     } else {
-      // Handle mouse events (convert the mouse position to mimic a touch point)
       const mouseEvent = event as React.MouseEvent;
       touches = [{ clientX: mouseEvent.clientX, clientY: mouseEvent.clientY }];
     }
