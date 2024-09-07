@@ -6,31 +6,33 @@ import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, NavLink, useLocation } from 'react-router-dom';
 
 // Import images
+import StartCover from './assets/img/start-cover.png'
 import StartGame from './assets/img/start-button.png';
 import StartModal from './assets/img/start-modal.png';
 import MainLogo from './assets/img/header-logo.png';
-import GoooGooo from './assets/img/gg-main.png';
+import LanguageIcon from './assets/img/language-icon.png';
+import MusicIcon from './assets/img/music-icon.png';
 import ChangeSkinIcon from './assets/img/change-skin-icon.png';
+
+import GoooGooo from './assets/img/gg-main.png';
+import PointsBar from './assets/img/points-bar.png';
+
 import NavHome from './assets/img/nav-home.png';
 import NavGG from './assets/img/nav-gooogooo.png';
 import NavEarn from './assets/img/nav-earn.png';
 import NavFriends from './assets/img/nav-friends.png';
 import NavBuild from './assets/img/nav-build.png';
-import PointsBar from './assets/img/points-bar.png';
-import LanguageIcon from './assets/img/language-icon.png';
-import MusicIcon from './assets/img/music-icon.png';
+
 // import AlienCoin from './assets/img/alien-coin.png'
 import Explode from './assets/img/explode.gif';
 import CoinBubble from './assets/img/coin-bubble.png';
 import AlienCoinBag from './assets/img/alien-coinbag.gif'
 import CoinFlushImage from './assets/img/money-flush.png'
 
-// Import sound effects
 import SFXOne from './assets/sound/coin-3.mp3';
 import SFXTwo from './assets/sound/jackpot.mp3';
 import BGMusic from './assets/sound/bgm-reduced.mp3';
 
-// Import pages here
 import GooGooPage from './pages/GooGooPage/GooGoo';
 import ReferralPage from './pages/ReferralPage/Referral';
 import EarnPage from './pages/EarnPage/Earn';
@@ -59,6 +61,7 @@ const App: React.FC = () => {
 
   const location = useLocation();
   const [startGame, setStartGame] = useState(false);
+  const [toGame, setToGame] = useState(false);
   const [points, setPoints] = useState(0);
   const [aliens, setAliens] = useState<Alien[]>([]);
   const alienIdRef = useRef(0);
@@ -166,12 +169,12 @@ const App: React.FC = () => {
             newSound.play();
           }
 
-          setIsFlushing(true);
           setGamePaused(true); // Pause the game during coin flush
+          setIsFlushing(true);
 
           setTimeout(() => {
-            setIsFlushing(false); // Remove the flush after animation
             setGamePaused(false); // Resume the game
+            setIsFlushing(false); // Remove the flush after animation
             // Alien regeneration after coin flush
             const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
             setTimeout(() => {
@@ -224,30 +227,31 @@ const App: React.FC = () => {
       {isFlushing && (
         <img src={CoinFlushImage} className="coin-flush-animation" />
       )}
+
       <div className="row">
         <div className="col-12 px-0">
-            <div className="row header-box">
-              {/* <div className="col-3"></div> */}
-              <div className="col-6 text-center">
-                <img className="header-logo" src={MainLogo} />
-              </div>
-              <div className="col-6 header-icons-box">
-                {/* <button disabled className="btn p-0">
-                  <img className="header-icons" src={LanguageIcon}/>
-                </button> */}
-                <button className="btn p-0" onClick={(e) => {
-                  if (bgm.current && bgmIsPlaying) {
-                      bgm.current.pause();
-                      setBgmIsPlaying(false);
-                  } else if (bgm.current && !bgmIsPlaying) {
-                      bgm.current.play();
-                      setBgmIsPlaying(true);
-                  }
-                }}>
-                  <img className="header-icons" src={MusicIcon}/>
-                </button>
-              </div>
+          <div className="row header-box">
+            {/* <div className="col-3"></div> */}
+            <div className="col-6 text-center">
+              <img className="header-logo" src={MainLogo} />
             </div>
+            <div className="col-6 header-icons-box">
+              {/* <button disabled className="btn p-0">
+                <img className="header-icons" src={LanguageIcon}/>
+              </button> */}
+              <button className="btn p-0" onClick={(e) => {
+                if (bgm.current && bgmIsPlaying) {
+                    bgm.current.pause();
+                    setBgmIsPlaying(false);
+                } else if (bgm.current && !bgmIsPlaying) {
+                    bgm.current.play();
+                    setBgmIsPlaying(true);
+                }
+              }}>
+                <img className="header-icons" src={MusicIcon}/>
+              </button>
+            </div>
+          </div>
           <div className="game-bg">
             <Routes>
               <Route path="/" element={

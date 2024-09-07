@@ -281,33 +281,61 @@
   animation: fadeAndMoveUp 2s ease-out forwards;
 }
 
-/* @keyframes panFromTop {
-  0% {
-    top: -190vh;  
-  }
-  100% {
-    top: 100vh;  
-  }
-} */
-@keyframes panFromTop {
-  from {top: -100vh;}
-  to {top: 100vh;}
-}
 
 .coin-flush-animation {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%); /* Center the image horizontally */
-  width: 100vw;  /* Full viewport width */
-  height: auto;  /* Auto height to maintain aspect ratio */
-  min-height: 100vh;  /* Ensure it covers the full height of the viewport */
+  transform: translateX(-50%); 
+  width: 100vw;  
+  height: auto;  
+  min-height: 100vh;  
   object-fit: cover;
-  top: -100vh;
-  z-index: 999;  /* Ensure it appears above all other content */
-  animation: panFromTop 4s linear forwards;
+  top: -200vh;
+  z-index: 1001; 
+  animation: panFromTop768 4s linear forwards;
 }
-/* .coin-flush-animation.animate {
-  animation: panFromTop 4s linear forwards;
-} */
+@keyframes panFromTop768 {
+  from {top: -200vh;}
+  to {top: 100vh;}
+}
+@keyframes panFromTop597 {
+  from {top: -160vh;}
+  to {top: 100vh;}
+}
+@keyframes panFromTop426 {
+  from {top: -150vh;}
+  to {top: 100vh;}
+}
+@keyframes panFromTop376 {
+  from {top: -130vh;}
+  to {top: 100vh;}
+}
+@keyframes panFromTop321 {
+  from {top: -120vh;}
+  to {top: 100vh;}
+}
 
-
+@media (max-width: 597px) {
+  .coin-flush-animation {
+    top: -160vh;
+    animation: panFromTop597 4s linear forwards;
+  }
+}
+@media (max-width: 426px) {
+  .coin-flush-animation {
+    top: -150vh;
+    animation: panFromTop426 4s linear forwards;
+  }
+}
+@media (max-width: 376px) {
+  .coin-flush-animation {
+    top: -130vh;
+    animation: panFromTop376 4s linear forwards;
+  }
+}
+@media (max-width: 321px) {
+  .coin-flush-animation {
+    top: -120vh;
+    animation: panFromTop321 4s linear forwards;
+  }
+}
