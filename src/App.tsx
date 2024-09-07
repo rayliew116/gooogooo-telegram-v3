@@ -169,13 +169,13 @@ const App: React.FC = () => {
             newSound.play();
           }
 
-          setGamePaused(true); // Pause the game during coin flush
+          setGamePaused(true);
           setIsFlushing(true);
 
           setTimeout(() => {
-            setGamePaused(false); // Resume the game
-            setIsFlushing(false); // Remove the flush after animation
-            // Alien regeneration after coin flush
+            setGamePaused(false);
+            setIsFlushing(false);
+            
             const regenerationDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
             setTimeout(() => {
               generateAlien();
@@ -187,7 +187,10 @@ const App: React.FC = () => {
         return alien;
       }));
   
-      setPoints(prevPoints => prevPoints + (isAlienClicked ? 100 : 1));
+      setTimeout(() => {
+        setPoints(prevPoints => prevPoints + (isAlienClicked ? 100 : 1));
+        // console.log(`Alien clicked: ${isAlienClicked}, points added: ${isAlienClicked ? 100 : 1}`);
+      }, 0); // This ensures it runs after setAliens is processed
     });
   };
 
