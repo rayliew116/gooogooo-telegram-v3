@@ -197,17 +197,17 @@ const App: React.FC = () => {
     coinSFX.current = new Audio(SFXOne);
     alienPop.current = new Audio(SFXTwo);
 
-    // const initialDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
+    const initialDelay = Math.random() * (2 - 1) * 60 * 1000 + 1 * 60 * 1000;
 
     const initialAlienTimeout = setTimeout(() => {
       generateAlien();
-    // }, initialDelay);
-    }, );
+    }, initialDelay);
+    // }, );
     return () => {
       clearTimeout(initialAlienTimeout);
       setAliens([]);
     };
-  }, [gameWidth, gameHeight]);
+  }, [gamePaused, gameWidth, gameHeight]);
 
   useEffect(() => {
     // const urlParams = new URLSearchParams(window.location.search);
@@ -290,6 +290,8 @@ const App: React.FC = () => {
                           position: 'relative', 
                           margin: '0 auto',  
                         }}
+                        onMouseDown={handleAlienClick}
+                        onTouchStart={handleAlienClick}
                       >
                         <div 
                           className="aliens-box" 
@@ -299,8 +301,6 @@ const App: React.FC = () => {
                             height: '100%',
                             zIndex: 2, 
                           }}
-                          onMouseDown={handleAlienClick}
-                          onTouchStart={handleAlienClick}
                         >
                           {aliens.map(alien => {
                             const { size, image } = getAlienSizeAndImage(alien.type);
